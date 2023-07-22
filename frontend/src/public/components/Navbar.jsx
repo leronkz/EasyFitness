@@ -6,10 +6,10 @@ import ActivityIcon from '../img/assets/navbar/activity.svg';
 import ScheduleIcon from '../img/assets/navbar/schedule.svg';
 import DietIcon from '../img/assets/navbar/diet.svg';
 import LogoutIcon from '../img/assets/navbar/logout.svg';
-import ProfileDefault from '../img/assets/navbar/profile.svg';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
-function Navbar(){
+function Navbar(props){
+    
 
     return(
 
@@ -19,7 +19,7 @@ function Navbar(){
                     <Tooltip title="Go to Dashboard">
                     <IconButton
                         size="medium"
-                        sx={{background:"orange"}}
+                        // sx={{background:"orange"}}
                     >
                         <img id={styles.navIcon} src={HomeIcon}/>    
                     </IconButton>

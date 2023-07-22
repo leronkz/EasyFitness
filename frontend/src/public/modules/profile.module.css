@@ -1,0 +1,107 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    overflow:hidden;
+    background: rgba(255, 255, 255, 0.98);
+}
+.mainPanel{
+    width: 100%;
+    display:grid;
+    grid-template-columns: 0.2fr 2fr;
+    height: 100%;
+}
+.profilePanel{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-left: 3em;
+    margin-top: 2ch;
+}
+.profilePictureContainer{
+    display:flex;
+    flex-direction: column;
+    width: 60%;
+    text-align: center;
+    align-items: center;
+}
+#profilePicture{
+    display:inline-block;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+.profilePictureWrapper{
+    display:flex;
+}
+.profilePictureText{
+    color: #000;
+    font-size: 24px;
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out
+}
+.profilePictureText:hover{
+    color: #41D4F5;
+}
+.personalDataContainer{
+    display:flex;
+    flex-direction: column;
+    width: 80%;
+}
+.personalDataHeader{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.personalDataHeaderText{
+    color: #000;
+    font-size: 30px;
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+#profileIcons{
+    width:30%;
+    /* margin-right: 3ch; */
+}
+.parametersDataContainer{
+    display:flex;
+    flex-direction: column;
+    width: 80%;
+}
+.personalDataBody{
+    display:flex;
+    flex-direction: column;
+}
+.personalDataText{
+    color: #000;
+    font-size: 24px;
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 1ch;
+}
+#editDataButton{
+    flex-shrink: 0;
+    border-radius: 30px;
+    background: #41D4F5;
+    color: #FFF;
+    font-size: 20px;
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    width: 60%;
+    height: 40%;
+    cursor:pointer;
+    align-self: center;
+}

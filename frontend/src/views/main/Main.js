@@ -6,13 +6,13 @@ import nextIcon from '../../public/img/assets/go_next.svg';
 import gymIcon from '../../public/img/assets/activity/gym.svg';
 import runningIcon from '../../public/img/assets/activity/running.svg';
 import swimmingIcon from '../../public/img/assets/activity/swimming.svg';
+import cyclingIcon from '../../public/img/assets/activity/cycling.svg';
 import energyIcon from '../../public/img/assets/diet/energy.svg';
-import { Divider } from '@mui/material';
+import { Container, CssBaseline, Divider, Box, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 function Main(){
     
     return(
-
         <div className={styles.container}>
             <header><Header title={"Dashboard"}/></header>
             <div className={styles.mainPanel}>
@@ -27,6 +27,7 @@ function Main(){
                                 </div>
                                 <Divider sx={{mt:"1ch", borderBottomWidth:2}}/>
                                 <div className={styles.tileBody}>
+                                    <p className={styles.tileBodyText} style={{marginBottom: "3ch"}}>Your last activity:</p>
                                     <div className={styles.activityPreview}>
                                         <div className={styles.activityIconContainer}>
                                             <img alt="activity-icon" src={gymIcon} id={styles.activityIcon}/>
@@ -34,20 +35,20 @@ function Main(){
                                         <p className={styles.tileBodyText}>Gym</p>
                                         <p className={styles.tileBodyText}>17.06.2023</p>
                                     </div>
-                                    <div className={styles.activityPreview}>
+                                    {/* <div className={styles.activityPreview}>
                                         <div className={styles.activityIconContainer}>
                                             <img alt="activity-icon" src={runningIcon} id={styles.activityIcon}/>
                                         </div>
                                         <p className={styles.tileBodyText}>Running</p>
                                         <p className={styles.tileBodyText}>15.06.2023</p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </Link>
-                        <Link to="/account" style={{textDecoration:"none"}}>
+                        <Link to="/profile" style={{textDecoration:"none"}}>
                             <div className={styles.tile} style={{background:"rgba(90, 128, 226, 0.50)", height:"fit-content"}}>
                                 <div className={styles.tileHeader}>
-                                    <p className={styles.tileHeaderText}>My account</p>
+                                    <p className={styles.tileHeaderText}>My profile</p>
                                     <img alt="Go" src={nextIcon}/>
                                 </div>
                             </div>
@@ -126,7 +127,6 @@ function Main(){
                 </div>
             </div>
         </div>
-
     );
 
 }
