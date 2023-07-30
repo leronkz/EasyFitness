@@ -7,13 +7,14 @@ import emailIcon from '../../public/img/assets/settings/email.svg';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Divider, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import DeleteConfirmation from "../../public/components/DeleteConfirmation";
 
 function Settings(){
 
     const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
     const [showNewPassword, setShowNewPassword] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-    // const handleClickShowPassword = () => setShowCurrentPassword((show)=> !show);
+    const [openDelete, setOpenDelete] = React.useState(false);
     const handleMouseDownPassword = (event) =>{
         event.preventDefault();
     }
@@ -23,6 +24,7 @@ function Settings(){
             <div className={styles.mainPanel}>
                 <Navbar/>
                 <div className={styles.settingsPanel}>
+                    <DeleteConfirmation open={openDelete} onClose={()=>{setOpenDelete(!openDelete)}} handleDelete={() => {}}/>
                     <div className={styles.changePanel}>
                         <div className={styles.changePasswordPanel}>
                             <div className={styles.changePasswordHeader}>
@@ -99,7 +101,7 @@ function Settings(){
                             </form>
                         </div>
                     </div>
-                    <button id={styles.deleteBtn}>Delete account</button>
+                    <button id={styles.deleteBtn} onClick={()=>{setOpenDelete(true)}}>Delete account</button>
                 </div>
             </div>
         </div>
