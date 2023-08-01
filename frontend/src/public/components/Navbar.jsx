@@ -18,7 +18,7 @@ function Navbar(props){
                 <Link to="/dashboard">
                     <Tooltip title="Go to Dashboard">
                     <IconButton
-                        size="medium"
+                        size="small"
                         // sx={{background:"orange"}}
                     >
                         <img id={styles.navIcon} src={HomeIcon}/>    
@@ -28,7 +28,7 @@ function Navbar(props){
                 <Link to="/activity">
                     <Tooltip title="Go to Activity">
                     <IconButton
-                        size="medium"
+                        size="small"
                     >
                         <img id={styles.navIcon} src={ActivityIcon}/>       
                     </IconButton>
@@ -37,7 +37,7 @@ function Navbar(props){
                 <Link to="/schedule">
                     <Tooltip title="Go to Schedule">
                     <IconButton
-                        size="medium"
+                        size="small"
                     >
                         <img id={styles.navIcon} src={ScheduleIcon}/>    
                     </IconButton>
@@ -46,7 +46,7 @@ function Navbar(props){
                 <Link to="/diet">
                     <Tooltip title="Go to Diet">
                     <IconButton
-                        size="medium"
+                        size="small"
                     >
                         <img id={styles.navIcon} src={DietIcon}/>    
                     </IconButton>
@@ -55,7 +55,7 @@ function Navbar(props){
                 <Link to="/">
                     <Tooltip title="Logout">
                     <IconButton
-                        size="medium"
+                        size="small"
                     >
                         <img id={styles.navIcon} src={LogoutIcon} style={{marginLeft:9}}/>    
                     </IconButton>

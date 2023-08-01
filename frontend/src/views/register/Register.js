@@ -55,7 +55,10 @@ function Register(){
                         }
                         placeholder="repeat password"
                     />
-                    <button id={styles.signUpBtn}>Sign up</button>
+                    <Button sx={{textTransform:"none", fontFamily:"Lexend", color: "white", background: "#41D4F5", 
+                                fontSize:"16px", borderRadius: "15px", justifySelf:"end", ":hover":{background:"white", color: "black", border:"1px solid #41D4F5"}}}>
+                        Sign up
+                    </Button>
                 </div>
                 <div className={styles.registerFooter}>
                     <Divider sx={{width:"100%"}}><p className={styles.dividerText}>or Sign up with</p></Divider>

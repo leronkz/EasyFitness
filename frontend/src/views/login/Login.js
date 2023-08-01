@@ -38,7 +38,10 @@ function Login(){
                         }
                         placeholder="password"
                     />
-                    <button id={styles.signInBtn}>Sign in</button>
+                    <Button sx={{textTransform:"none", fontFamily:"Lexend", color: "white", background: "#41D4F5", 
+                                fontSize:"16px", borderRadius: "15px", justifySelf:"end", ":hover":{background:"white", color: "black", border:"1px solid #41D4F5"}}}>
+                        Sign in
+                    </Button>
                 </div>
                 <div className={styles.loginFooter}>
                     <Divider sx={{width:"100%"}}><p className={styles.dividerText}>or Sign in with</p></Divider>
