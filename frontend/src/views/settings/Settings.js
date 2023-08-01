@@ -6,7 +6,7 @@ import passwordIcon from '../../public/img/assets/settings/password.svg';
 import emailIcon from '../../public/img/assets/settings/email.svg';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Divider, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import { Button, Divider, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import DeleteConfirmation from "../../public/components/DeleteConfirmation";
 
 function Settings(){
@@ -84,7 +84,10 @@ function Settings(){
                                     }
                                     placeholder="confirm password"
                                 />
-                                <button id={styles.saveBtn} type="submit">Change password</button>
+                                <Button sx={{textTransform:"none", fontFamily:"Lexend", color: "white", background: "#41D4F5", 
+                                        fontSize:"17px", borderRadius: "30px", justifySelf:"end", ":hover":{background:"#3FB9F5", color: "black"}}}>
+                                    Change password
+                                </Button>
                             </form>
                         </div>
                         <div className={styles.changeEmailPanel}>
@@ -97,11 +100,17 @@ function Settings(){
                                 <input id={styles.emailInput} type="text" placeholder="current email"/>
                                 <input id={styles.emailInput} type="text" placeholder="new email"/>
                                 <input id={styles.emailInput} type="text" placeholder="confirm email"/>
-                                <button id={styles.saveBtn}>Change email</button>
+                                <Button sx={{textTransform:"none", fontFamily:"Lexend", color: "white", background: "#41D4F5", 
+                                        fontSize:"17px", borderRadius: "30px", justifySelf:"end", ":hover":{background:"#3FB9F5", color: "black"}}}>
+                                    Change email
+                                </Button>
                             </form>
                         </div>
                     </div>
-                    <button id={styles.deleteBtn} onClick={()=>{setOpenDelete(true)}}>Delete account</button>
+                    <Button sx={{mt:"3ch", alignSelf:"center", width:"20%", textTransform:"none", fontFamily:"Lexend", color: "white", background: "#F54141", 
+                                fontSize:"17px", borderRadius: "30px", justifySelf:"end", ":hover":{background:"#FF635B", color: "black"}}}>
+                        Delete account
+                    </Button>
                 </div>
             </div>
         </div>
