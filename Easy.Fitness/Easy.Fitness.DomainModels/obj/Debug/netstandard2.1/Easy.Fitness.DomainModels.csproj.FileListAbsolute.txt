@@ -1,0 +1,10 @@
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\bin\Debug\netstandard2.1\Easy.Fitness.DomainModels.deps.json
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\bin\Debug\netstandard2.1\Easy.Fitness.DomainModels.dll
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\bin\Debug\netstandard2.1\Easy.Fitness.DomainModels.pdb
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\obj\Debug\netstandard2.1\Easy.Fitness.DomainModels.csproj.AssemblyReference.cache
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\obj\Debug\netstandard2.1\Easy.Fitness.DomainModels.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\obj\Debug\netstandard2.1\Easy.Fitness.DomainModels.AssemblyInfoInputs.cache
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\obj\Debug\netstandard2.1\Easy.Fitness.DomainModels.AssemblyInfo.cs
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\obj\Debug\netstandard2.1\Easy.Fitness.DomainModels.csproj.CoreCompileInputs.cache
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\obj\Debug\netstandard2.1\Easy.Fitness.DomainModels.dll
+C:\Users\Mateusz\Desktop\studia\VII semestr\Inżynierka\Easy Fitness\Easy.Fitness\Easy.Fitness.DomainModels\obj\Debug\netstandard2.1\Easy.Fitness.DomainModels.pdb
