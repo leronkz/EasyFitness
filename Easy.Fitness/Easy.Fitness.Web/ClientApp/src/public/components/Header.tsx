@@ -1,10 +1,9 @@
 import {Toolbar, Typography, Menu, IconButton, Avatar, Button } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import styles from '../modules/header.module.css'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import React from "react";
+import TestAvatar from '../img/assets/header/test_photo.jpg';
 
 const drawerWidth: number = 240;
 
@@ -47,15 +46,15 @@ function Header({ title }: HeaderInterface) {
         >
           {title}
         </Typography>
-        <Button className={styles.avatarBox}>
-          <Avatar alt="user">
-            <AccountCircleIcon />
+        <Button className={styles.avatarBox} onClick={(e: any) => {e.stopPropagation();}}>
+          <Avatar alt="user" src={TestAvatar}>
+            
           </Avatar>
           <Typography sx={{ fontFamily: 'Lexend', color: "black", ml: "1ch" }}>Mateusz Owsiak</Typography>
           <IconButton
             size="small"
             color="primary"
-            onClick={(event: any) => { event.stopPropagation(); }}
+            onMouseDown={(event: any) => { event.stopPropagation(); }}
           >
             <ExpandMoreIcon />
           </IconButton>

@@ -44,7 +44,7 @@
 }
 
 .tileBody {
-  margin-top: 2ch;
+  margin-top: 1ch;
   display: flex;
   flex-direction: column;
 }
