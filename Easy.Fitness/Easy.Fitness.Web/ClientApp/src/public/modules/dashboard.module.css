@@ -1,0 +1,86 @@
+.tilesMenu {
+  display: flex;
+  justify-content: center;
+}
+
+#link {
+  text-decoration: none;
+  color: black;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5em;
+  border-radius: 30px;
+  padding: 3ch;
+  transition: transform 0.3s;
+  height: 255px;
+}
+
+.tile:hover {
+  transform: translateY(-5px);
+  box-shadow: -5px 8px 36px -13px rgba(66, 68, 90, 1);
+}
+
+.tileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#tileTextHeader {
+  font-family: 'Lexend';
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+
+#tileText {
+  font-family: 'Lexend';
+  font-size: 17px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.tileBody {
+  margin-top: 2ch;
+  display: flex;
+  flex-direction: column;
+}
+
+.tileActivity {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  margin-top: 2ch;
+}
+
+.activity {
+  background: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+#nextIcon {
+  width: 12%;
+}
+
+#activityIcon {
+  width: 60%;
+}
+
+.tileDietMacros {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  margin-top: 1ch;
+}
+
+.dietMacro {
+  display: flex;
+  flex-direction: column;
+}

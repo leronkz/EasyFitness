@@ -5,9 +5,9 @@
   justify-content: center;
 }
 
-.loginForm {
+.registerForm {
   padding: 1ch;
-  margin-top: 10ch;
+  margin-top: 5ch;
   border: 1px solid black;
   border-radius: 30px;
   display: flex;
@@ -17,7 +17,7 @@
   align-items: center;
 }
 
-.loginHeader {
+.registerHeader {
   justify-self: center;
   display: flex;
   flex-direction: column;
@@ -46,7 +46,7 @@
   line-height: normal;
 }
 
-.loginPanel {
+.registerPanel {
   margin-top: 4ch;
   display: flex;
   flex-direction: column;
@@ -70,7 +70,7 @@
   font-family: 'Lexend';
 }
 
-#signInButton {
+#signUpButton {
   text-transform: none !important;
   font-family: 'Lexend';
   color: white;
@@ -80,13 +80,13 @@
   justify-items: end;
 }
 
-#signInButton:hover {
-  background: none;
+#signUpButton:hover {
+  background: white;
   color: black;
   border: 1px solid #41D4F5;
 }
 
-.loginFooter {
+.registerFooter {
   margin-top: 1ch;
   display: flex;
   flex-direction: column;
@@ -96,25 +96,34 @@
 
 .dividerText {
   color: #000;
-  font-family: 'Lexend';
+  font-family: Lexend;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 
-.externalLoginPanel {
+.externalRegisterPanel {
   margin-top: 2ch;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
 }
 
-.loginFooterText {
+.registerFooterText {
   margin-top: 3ch;
   display: flex;
   width: 100%;
   justify-content: center;
+}
+
+.registerFooterText>p {
+  color: #000;
+  font-family: Lexend;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .link {

@@ -1,26 +1,25 @@
-.navbarMain{
-    width: 100%;
-    height: 100%;
-    display:flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+#logo {
+  width: 100%;
 }
 
-.mainNavPanel{
-    width: 70%;
-    margin-left: 1em;
-    border-radius: 45px;
-    background: #E1DFDF;
-    display:flex;
-    flex-direction: column;
-    padding: 1ch;
+.list {
+  width: 90%;
+  align-self: center;
 }
-#navIcon{
-    width: 60%;
-    margin-bottom:0.8ch;
+
+#listItemButton {
+  border-radius: 15px;
+  margin-bottom: 1ch;
+  transition: background 0.5s ease
 }
-.bottomNavPanel{
-    display:flex;
-    justify-content: center;
-    margin-bottom: 2ch;
+
+#listItemButtonSelected {
+  background: #41D4F5;
+  border-radius: 15px;
+  margin-bottom: 1ch;
+  transition: background 0.5s ease
+}
+
+#listItemButtonSelected:hover, #listItemButton:hover {
+  background: #82F6AD;
 }
