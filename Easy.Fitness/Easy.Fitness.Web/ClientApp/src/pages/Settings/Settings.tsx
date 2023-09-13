@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 export default function Settings() {
 
-  const [language, setLanguage] = useState<string>('Polski');
+  const [language, setLanguage] = useState<string>('pl');
 
   const handleChange = (event: SelectChangeEvent) => {
     setLanguage(event.target.value as string);
