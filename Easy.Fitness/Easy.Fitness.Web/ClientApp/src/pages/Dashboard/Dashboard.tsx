@@ -107,7 +107,7 @@ export default function Dashboard() {
               </Link>
             </Grid>
             <Grid item xs={12} md={8} lg={4}>
-              <Link to="/profile" id={styles.link}>
+              <Link to="/account" id={styles.link}>
                 <Box className={styles.tile} sx={{ background: "rgba(90, 128, 226, 0.50)", height:'fit-content !important'}}>
                   <Box className={styles.tileHeader}>
                     <Typography id={styles.tileTextHeader}>Twój profil</Typography>

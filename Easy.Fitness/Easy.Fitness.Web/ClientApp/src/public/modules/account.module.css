@@ -1,6 +1,6 @@
-.settingsPanel {
+.accountPanel {
   background: white;
-  width: 98%;
+  width: 90%;
   margin: auto;
   border-radius: 15px;
   height: 80vh;
@@ -10,15 +10,15 @@
   padding: 2ch;
 }
 
-.profileEditPanel {
+.profilePicturePanel {
   display: flex;
   flex-direction: column;
 }
 
-.profileEditForm {
+.profilePictureContainer {
   margin-top: 1ch;
-  width: 90%;
   border: 3px solid #f5f5f5;
+  width: 90%;
   border-radius: 15px;
   height: 90%;
   display: flex;
@@ -27,54 +27,65 @@
   padding: 1ch;
 }
 
-#profileEditFormText, #passwordEditFormText, #languageEditFormText {
-  align-self: flex-start;
+#profilePicture {
+  display: inline-block;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  transition: transform 0.3s ease;
 }
 
-.settingInput {
-  margin: 0.5ch 0;
-  width: 80%;
-  font-family: 'Lexend';
+#profilePicture:hover {
+  cursor: pointer;
+  transform: scale(1.05);
 }
 
-.credentialsEditPanel {
+#profilePictureText {
+  margin-top: 1ch;
+  font-size: 20px;
+}
+
+.profileInfoPanel {
   display: grid;
   grid-template-rows: repeat(2, 1fr);
   height: 100%;
 }
 
-.passwordEditPanel {
-  display: flex;
-  flex-direction: column;
-}
-
-.passwordEditForm {
+.profileParametersContainer {
   margin-top: 1ch;
-  width: 90%;
   border: 3px solid #f5f5f5;
+  width: 90%;
   border-radius: 15px;
   height: fit-content;
   display: flex;
   flex-direction: column;
-  padding: 1ch;
   align-items: center;
+  padding: 1ch;
 }
 
-.languageEditPanel {
-  display: flex;
-  flex-direction: column;
-}
-
-.languageEditForm {
+.profileSummaryContainer {
   margin-top: 1ch;
-  width: 90%;
   border: 3px solid #f5f5f5;
+  width: 90%;
   border-radius: 15px;
   height: fit-content;
-  padding: 1ch;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1ch;
+}
+
+#profileParametersText {
+  align-self: flex-start;
+}
+
+.profileInput {
+  margin: 0.3ch 0;
+  width: 80%;
+  font-family: 'Lexend';
 }
 
 #saveButton {
@@ -91,4 +102,18 @@
 #saveButton:hover {
   background: #82F6AD;
   color: black;
+}
+
+.summaryPart {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  margin-bottom: 1ch;
+  align-items: center;
+}
+
+.summaryPartTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
