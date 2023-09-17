@@ -39,6 +39,7 @@ namespace Easy.Fitness.Web
             app.UseMetricServer();
             app.UseHttpMetrics();
             app.UseRouting();
+            app.UseAuthentication(_configuration.AuthTokenValidation);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

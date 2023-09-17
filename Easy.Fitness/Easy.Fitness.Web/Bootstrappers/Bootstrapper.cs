@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Easy.Fitness.Infrastructure;
 using Easy.Fitness.Infrastructure.Configuration;
+using Easy.Fitness.Application;
 
 namespace Easy.Fitness.Web.Bootstrappers
 {
@@ -16,7 +17,7 @@ namespace Easy.Fitness.Web.Bootstrappers
 
         private static void RegisterServices(IServiceCollection services)
         {
-            
+            services.AddScoped<IUserContext, UserContext>();
         }
         private static void RegisterDatabase(IServiceCollection services, AppConfiguration configuration)
         {
@@ -26,6 +27,8 @@ namespace Easy.Fitness.Web.Bootstrappers
         private static void SetConfiguration(IServiceCollection services, AppConfiguration configuration)
         {
             services.AddSingleton(configuration);
+            services.AddSingleton(configuration.HostConfiguration);
+            services.AddSingleton(configuration.AuthTokenValidation);
         }
     }
 }
