@@ -39,7 +39,8 @@
 
 .credentialsEditPanel {
   display: grid;
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  height: 100%;
 }
 
 .passwordEditPanel {
@@ -52,7 +53,7 @@
   width: 90%;
   border: 3px solid #f5f5f5;
   border-radius: 15px;
-  height: 80%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   padding: 1ch;
@@ -69,7 +70,7 @@
   width: 90%;
   border: 3px solid #f5f5f5;
   border-radius: 15px;
-  height: 75%;
+  height: fit-content;
   padding: 1ch;
   display: flex;
   flex-direction: column;
