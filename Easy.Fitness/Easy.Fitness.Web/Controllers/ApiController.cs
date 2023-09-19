@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Easy.Fitness.Web.Controllers
 {
     [ApiVersion("1.0", Deprecated = false), Route("api/v{version:apiVersion}")]
-    [AllowAnonymous]
+    [Authorize]
     [ApiController]
     public class ApiController : ControllerBase
     {

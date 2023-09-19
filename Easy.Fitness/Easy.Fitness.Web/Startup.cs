@@ -28,8 +28,9 @@ namespace Easy.Fitness.Web
             services.AddHttpContextAccessor();
             services.AddHttpClient();
             services.AddMemoryCache();
-            services.ConfigureRouteOptions();
+            services.AddAuthorization(_configuration.AuthTokenValidation, CurrentEnvironment);
             services.ConfigureApiVersioning();
+            services.ConfigureRouteOptions();
             services.AddSwagger();
             services.ConfigureApiControllers();
             services.AddSpa();

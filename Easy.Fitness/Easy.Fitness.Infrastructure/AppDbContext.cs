@@ -36,11 +36,10 @@ namespace Easy.Fitness.Infrastructure
         private void AddAuditInfo()
         {
             var entities = ChangeTracker.Entries<Entity<Guid>>().Where(e => e.State == EntityState.Modified);
-            var user = _userContext?.CurrentUserId ?? UserId.Empty;
 
             foreach(var entity in entities)
             {
-                entity.Entity.ModifiedBy = user;
+                entity.Entity.ModifiedBy = _userContext?.CurrentUserId ?? UserId.Empty;
                 entity.Entity.ModifiedOn = DateTime.UtcNow;
             }
         }

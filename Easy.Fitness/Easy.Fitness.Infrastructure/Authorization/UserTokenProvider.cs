@@ -1,8 +1,9 @@
-﻿using Easy.Fitness.Infrastructure.Configuration;
+﻿using Easy.Fitness.Application;
+using Easy.Fitness.Infrastructure.Configuration;
 
 namespace Easy.Fitness.Infrastructure.Authorization
 {
-    public class UserTokenProvider
+    public class UserTokenProvider : IUserTokenProvider
     {
         private readonly TokensClient _tokensClient;
         private UserCredentials _userCredentials;
@@ -12,9 +13,17 @@ namespace Easy.Fitness.Infrastructure.Authorization
             _tokensClient = new TokensClient(authConfig);
         }
 
+        public void SetUserCredentials(string email, string password)
+        {
+            _userCredentials = new UserCredentials()
+            {
+                Email = email,
+                Password = password
+            };
+        }
         public string GetAccessToken()
         {
-            return _tokensClient.GetNewToken(_userCredentials);
+            return _tokensClient.GetNewToken(_userCredentials).AccessToken;
         }
     }
 }

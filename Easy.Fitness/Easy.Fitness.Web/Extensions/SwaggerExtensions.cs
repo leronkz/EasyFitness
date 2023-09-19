@@ -2,6 +2,7 @@
 using Easy.Fitness.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.OpenApi.Models;
@@ -37,11 +38,18 @@ namespace Easy.Fitness.Web.Extensions
                             .OfType<ApiVersionAttribute>()
                             .SelectMany(attr => attr.Versions)
                             .ToList();
+
+                        versions.AddRange(controller.MethodInfo.GetCustomAttributes()
+                            .OfType<ApiVersionAttribute>()
+                            .SelectMany(attr => attr.Versions)
+                            .ToList());
+
+                        versions = versions.Distinct().ToList();
                     }
                     return versions.Any(v => $"v{v.MajorVersion}" == docName);
                 });
                 LoadDocumentation(c);
-                AddCustomMappings(c);
+                //AddCustomMappings(c);
             });
             services.ConfigureSwaggerGen(options =>
             {
@@ -51,7 +59,7 @@ namespace Easy.Fitness.Web.Extensions
         private static void LoadDocumentation(SwaggerGenOptions options)
         {
             string outputDit = Path.GetDirectoryName(typeof(Startup).GetTypeInfo().Assembly.Location);
-            List<string> files = Directory.GetFiles(outputDit, "RM.Services*.xml").ToList();
+            List<string> files = Directory.GetFiles(outputDit, "EasyFitness*.xml").ToList();
             files.ForEach(x => options.IncludeXmlComments(x));
         }
         public static void UseSwagger(this IApplicationBuilder app)
@@ -77,21 +85,21 @@ namespace Easy.Fitness.Web.Extensions
                 Type = SecuritySchemeType.ApiKey
             });
         }
-        private static void AddCustomMappings(SwaggerGenOptions c)
-        {
-            c.MapAsGuid<UserId>();
-            c.MapAsNumber<DateTime>("Date as UnixTimeMilliseconds");
-            c.MapAsNumber<DateTime?>("Date as UnixTimeMilliseconds or null");
-        }
-        private static void MapAsGuid<T>(this SwaggerGenOptions options)
-        {
-            options.MapType<T>(() => new OpenApiSchema { Type = "string", Format = "uuid" });
-        }
+        //private static void AddCustomMappings(SwaggerGenOptions c)
+        //{
+        //    c.MapAsGuid<UserId>();
+        //    c.MapAsNumber<DateTime>("Date as UnixTimeMilliseconds");
+        //    c.MapAsNumber<DateTime?>("Date as UnixTimeMilliseconds or null");
+        //}
+        //private static void MapAsGuid<T>(this SwaggerGenOptions options)
+        //{
+        //    options.MapType<T>(() => new OpenApiSchema { Type = "string", Format = "uuid" });
+        //}
 
-        private static void MapAsNumber<T>(this SwaggerGenOptions options, string description = null)
-        {
-            options.MapType<T>(() => new OpenApiSchema { Type = "number", Description = description });
-        }
+        //private static void MapAsNumber<T>(this SwaggerGenOptions options, string description = null)
+        //{
+        //    options.MapType<T>(() => new OpenApiSchema { Type = "number", Description = description });
+        //}
         private static void SetBasePath(OpenApiDocument swaggerDoc, Microsoft.AspNetCore.Http.HttpRequest req)
         {
             if (req.Headers.TryGetValue("X-Original-URI", out StringValues values))

@@ -15,7 +15,7 @@ namespace Easy.Fitness.Infrastructure.Authorization
             _authConfig = authConfig;
         }
 
-        internal string GetNewToken(UserCredentials user)
+        internal AccessTokenDto GetNewToken(UserCredentials user)
         {
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_authConfig.Key));
             SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
@@ -29,7 +29,12 @@ namespace Easy.Fitness.Infrastructure.Authorization
                 claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+
+            AccessTokenDto accessToken = new AccessTokenDto
+            {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token)
+            };
+            return accessToken;
         }
     }
 }
