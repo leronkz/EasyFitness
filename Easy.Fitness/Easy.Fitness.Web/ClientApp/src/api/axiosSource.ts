@@ -2,17 +2,6 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 axios.defaults.baseURL = process.env.PUBLIC_URL;
 
-// const authorizationHeaderInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-//   const token = localStorage.getItem('token');
-//   config.headers = {
-//     ...config.headers,
-//     Authorization: 'Bearer ' + token,
-//   };
-//   return config;
-// }
-
-// axios.interceptors.request.use(authorizationHeaderInterceptor);
-
 export const isCancel = (error: any) => axios.isCancel(error);
 
 export const get = async <T>(url: string, config?: AxiosRequestConfig): Promise<T> => {

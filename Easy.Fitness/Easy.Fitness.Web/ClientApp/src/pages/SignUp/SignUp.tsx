@@ -106,11 +106,6 @@ export default function SignUp() {
         isPasswordValid: false
       }));
       setIsInvalidPassword(true);
-      // setSnackbar({
-      //   open: true,
-      //   type: "error",
-      //   message: "The password must be 8 or more characters long and contain one uppercase letter, one lowercase letter and a number"
-      // });
     }
     if (!isPassword(formData.repeatPassword!)) {
       isValid = false;
