@@ -9,5 +9,8 @@ namespace Easy.Fitness.Infrastructure.Configuration
 
         [JsonRequired]
         public DataBaseConfig PostgresDataBase { get; set; }
+
+        [JsonRequired]
+        public AuthConfiguration AuthTokenValidation { get; set; }
     }
 }

@@ -5,15 +5,16 @@ import Settings from './pages/Settings/Settings';
 import Account from './pages/Account/Account';
 import { Routes, Route } from 'react-router';
 import './App.css';
+import ProtectedRoute from './security/ProtectedRoute';
 
 function App() {
   return (
     <Routes>
-      <Route index path="/" element={ <Login /> } />
-      <Route path="/register" element={ <SignUp /> } />
-      <Route path="/dashboard" element={ <Dashboard /> } />
-      <Route path="/settings" element={ <Settings /> } />
-      <Route path="/account" element={ <Account /> } />
+      <Route index path="/" element={<Login />} />
+      <Route path="/register" element={<SignUp />} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
     </Routes>
   );
 }

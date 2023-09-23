@@ -130,7 +130,7 @@
   text-decoration: none;
 }
 
-.link > p {
+.link>p {
   cursor: pointer;
   transition: color 0.3s ease;
   color: #000;
@@ -141,6 +141,12 @@
   line-height: normal;
 }
 
-.link > p:hover {
+.link>p:hover {
   color: #41D4F5;
+}
+
+#passwordHelperText {
+  color: red;
+  font-family: 'Lexend';
+  font-size: 12px;
 }

@@ -1,16 +1,16 @@
-﻿using Easy.Fitness.DomainModels.Ids;
-using Easy.Fitness.Infrastructure.Configuration;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Easy.Fitness.DomainModels.Ids;
 
 namespace Easy.Fitness.Web.Extensions
 {
@@ -37,6 +37,13 @@ namespace Easy.Fitness.Web.Extensions
                             .OfType<ApiVersionAttribute>()
                             .SelectMany(attr => attr.Versions)
                             .ToList();
+
+                        versions.AddRange(controller.MethodInfo.GetCustomAttributes()
+                            .OfType<ApiVersionAttribute>()
+                            .SelectMany(attr => attr.Versions)
+                            .ToList());
+
+                        versions = versions.Distinct().ToList();
                     }
                     return versions.Any(v => $"v{v.MajorVersion}" == docName);
                 });
@@ -51,7 +58,7 @@ namespace Easy.Fitness.Web.Extensions
         private static void LoadDocumentation(SwaggerGenOptions options)
         {
             string outputDit = Path.GetDirectoryName(typeof(Startup).GetTypeInfo().Assembly.Location);
-            List<string> files = Directory.GetFiles(outputDit, "RM.Services*.xml").ToList();
+            List<string> files = Directory.GetFiles(outputDit, "EasyFitness*.xml").ToList();
             files.ForEach(x => options.IncludeXmlComments(x));
         }
         public static void UseSwagger(this IApplicationBuilder app)

@@ -28,10 +28,12 @@ namespace Easy.Fitness.Web
             services.AddHttpContextAccessor();
             services.AddHttpClient();
             services.AddMemoryCache();
-            services.ConfigureRouteOptions();
+            services.AddAuthorization(_configuration.AuthTokenValidation, CurrentEnvironment);
             services.ConfigureApiVersioning();
+            services.ConfigureRouteOptions();
             services.AddSwagger();
             services.ConfigureApiControllers();
+            services.AddConfiguredMvc();
             services.AddSpa();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,6 +41,7 @@ namespace Easy.Fitness.Web
             app.UseMetricServer();
             app.UseHttpMetrics();
             app.UseRouting();
+            app.UseAuthentication(_configuration.AuthTokenValidation);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
