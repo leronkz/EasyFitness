@@ -1,9 +1,13 @@
-﻿using Easy.Fitness.Application.Dtos;
-using Easy.Fitness.Application.Interfaces;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
+using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Exceptions;
+using Easy.Fitness.Application.Interfaces;
+using Easy.Fitness.Infrastructure.Exceptions;
+using Easy.Fitness.Infrastructure.Authorization;
 
 namespace Easy.Fitness.Web.Controllers.v1
 {
@@ -21,18 +25,47 @@ namespace Easy.Fitness.Web.Controllers.v1
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> CreateUserAsync([FromBody]CreateUserDto newUser)
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDto newUser, CancellationToken cancellationToken)
         {
-            UserDto result = await _userService.CreateNewUserAsync(newUser);
-            return Ok(result);
+            try
+            {
+                UserDto result = await _userService.CreateNewUserAsync(newUser, cancellationToken);
+                return Ok(result);
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(UserExistsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> AuthenticateUserAsync([FromBody]CreateUserDto user)
         {
-            string accessToken = await _userService.AuthenticateUserAsync(user);
-            return Ok(accessToken);
+            try
+            {
+                string accessToken = await _userService.AuthenticateUserAsync(user);
+                return Ok(new AccessTokenDto
+                {
+                    AccessToken = accessToken
+                });
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(InvalidCredentialsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

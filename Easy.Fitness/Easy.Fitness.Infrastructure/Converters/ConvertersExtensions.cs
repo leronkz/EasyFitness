@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Converters;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Easy.Fitness.Infrastructure.Converters
 {

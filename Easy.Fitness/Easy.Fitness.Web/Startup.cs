@@ -33,6 +33,7 @@ namespace Easy.Fitness.Web
             services.ConfigureRouteOptions();
             services.AddSwagger();
             services.ConfigureApiControllers();
+            services.AddConfiguredMvc();
             services.AddSpa();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -6,9 +6,10 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../img/assets/navbar/logo-color.svg';
 import styles from '../modules/navbar.module.css';
+import { logoutUser } from '../../api/easyFitnessApi';
 
 interface NavbarInterface {
   selected: string
@@ -33,6 +34,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Navbar({ selected }: NavbarInterface) {
+
+  const navigate = useNavigate();
+
+  const onLogoutClick = () => {
+    logoutUser();
+    navigate("/");
+  }
 
   return (
     <Drawer variant="permanent" open={true}>
@@ -79,7 +87,7 @@ export default function Navbar({ selected }: NavbarInterface) {
             <ListItemText primaryTypographyProps={{ fontFamily: 'Lexend' }}>Twoja dieta</ListItemText>
           </ListItemButton>
         </Link>
-        <ListItemButton id={styles.listItemButton}>
+        <ListItemButton id={styles.listItemButton} onClick={onLogoutClick}>
           <ListItemIcon>
             <LogoutIcon color="primary" />
           </ListItemIcon>

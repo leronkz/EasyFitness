@@ -1,9 +1,12 @@
-﻿using Easy.Fitness.Application.Dtos;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Exceptions;
+using Easy.Fitness.Application.Extensions;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
-using System;
-using System.Threading.Tasks;
 
 namespace Easy.Fitness.Application.Services
 {
@@ -17,18 +20,12 @@ namespace Easy.Fitness.Application.Services
             _tokenProvider = tokenProvider ?? throw new ArgumentNullException(nameof(tokenProvider));
         }
 
-        public async Task<UserDto> CreateNewUserAsync(CreateUserDto newUser)
+        public async Task<UserDto> CreateNewUserAsync(CreateUserDto newUser, CancellationToken cancellationToken)
         {
+            newUser.Validate();
             User user = new User(newUser.Email, HashPassword(newUser.Password));
-            await _userRepository.AddUserAsync(user);
-
-            UserDto createdUser = new UserDto
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Password = user.Password
-            };
-            return createdUser;
+            await _userRepository.AddUserAsync(user, cancellationToken);
+            return user.ToDto();
         }
         public async Task<string> AuthenticateUserAsync(CreateUserDto user)
         {
@@ -38,7 +35,7 @@ namespace Easy.Fitness.Application.Services
                 _tokenProvider.SetUserCredentials(user.Email, user.Password);
                 return _tokenProvider.GetAccessToken();
             }
-            return null;
+            throw new InvalidCredentialsException();
         }
 
         private string HashPassword(string password)

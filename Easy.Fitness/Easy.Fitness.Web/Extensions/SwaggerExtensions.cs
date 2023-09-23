@@ -1,5 +1,8 @@
-﻿using Easy.Fitness.DomainModels.Ids;
-using Easy.Fitness.Infrastructure.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -7,11 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+using Easy.Fitness.DomainModels.Ids;
 
 namespace Easy.Fitness.Web.Extensions
 {
@@ -49,7 +48,7 @@ namespace Easy.Fitness.Web.Extensions
                     return versions.Any(v => $"v{v.MajorVersion}" == docName);
                 });
                 LoadDocumentation(c);
-                //AddCustomMappings(c);
+                AddCustomMappings(c);
             });
             services.ConfigureSwaggerGen(options =>
             {
@@ -85,21 +84,21 @@ namespace Easy.Fitness.Web.Extensions
                 Type = SecuritySchemeType.ApiKey
             });
         }
-        //private static void AddCustomMappings(SwaggerGenOptions c)
-        //{
-        //    c.MapAsGuid<UserId>();
-        //    c.MapAsNumber<DateTime>("Date as UnixTimeMilliseconds");
-        //    c.MapAsNumber<DateTime?>("Date as UnixTimeMilliseconds or null");
-        //}
-        //private static void MapAsGuid<T>(this SwaggerGenOptions options)
-        //{
-        //    options.MapType<T>(() => new OpenApiSchema { Type = "string", Format = "uuid" });
-        //}
+        private static void AddCustomMappings(SwaggerGenOptions c)
+        {
+            c.MapAsGuid<UserId>();
+            c.MapAsNumber<DateTime>("Date as UnixTimeMilliseconds");
+            c.MapAsNumber<DateTime?>("Date as UnixTimeMilliseconds or null");
+        }
+        private static void MapAsGuid<T>(this SwaggerGenOptions options)
+        {
+            options.MapType<T>(() => new OpenApiSchema { Type = "string", Format = "uuid" });
+        }
 
-        //private static void MapAsNumber<T>(this SwaggerGenOptions options, string description = null)
-        //{
-        //    options.MapType<T>(() => new OpenApiSchema { Type = "number", Description = description });
-        //}
+        private static void MapAsNumber<T>(this SwaggerGenOptions options, string description = null)
+        {
+            options.MapType<T>(() => new OpenApiSchema { Type = "number", Description = description });
+        }
         private static void SetBasePath(OpenApiDocument swaggerDoc, Microsoft.AspNetCore.Http.HttpRequest req)
         {
             if (req.Headers.TryGetValue("X-Original-URI", out StringValues values))
