@@ -40,15 +40,47 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
         {
             try
             {
-                return await _context.Users.SingleAsync(x => x.Email == email);
+                return await _context.Users.SingleAsync(x => x.Email == email, cancellationToken);
             }
             catch(Exception ex)
             {
                 throw new NoUserFoundException(ex);
+            }
+        }
+
+        public async Task<User> UpdateUserAsync(User user, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User userToUpdate = await _context.Users.SingleAsync(x => x.Id == user.Id, cancellationToken);
+                userToUpdate.FirstName = user.FirstName;
+                userToUpdate.LastName = user.LastName;
+                userToUpdate.PhoneNumber = user.PhoneNumber;
+                userToUpdate.BirthDate = user.BirthDate;
+                _context.Update(userToUpdate);
+                await _context.SaveChangesAsync(cancellationToken);
+                return userToUpdate;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to save your personal data", ex);
+            }
+        }
+
+        public async Task<User> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await _context.Users.SingleAsync(x => x.Id == id, cancellationToken);
+                return user;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your personal data", ex);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Easy.Fitness.Application;
+﻿using System;
+using Easy.Fitness.Application;
 using Easy.Fitness.Infrastructure.Configuration;
 
 namespace Easy.Fitness.Infrastructure.Authorization
@@ -13,10 +14,11 @@ namespace Easy.Fitness.Infrastructure.Authorization
             _tokensClient = new TokensClient(authConfig);
         }
 
-        public void SetUserCredentials(string email, string password)
+        public void SetUserCredentials(Guid id, string email, string password)
         {
             _userCredentials = new UserCredentials()
             {
+                Id = id.ToString(),
                 Email = email,
                 Password = password
             };

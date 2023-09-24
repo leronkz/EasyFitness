@@ -33,5 +33,13 @@ namespace Easy.Fitness.DomainModels.Models
             PhoneNumber = phoneNumber;
             BirthDate = birthDate;
         }
+        
+        public User(Guid id, string firstName, string lastName, string phoneNumber, string birthdate) : base(id)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            PhoneNumber = phoneNumber;
+            BirthDate = birthdate;
+        }
     }
 }

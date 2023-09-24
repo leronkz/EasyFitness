@@ -15,8 +15,42 @@ namespace Easy.Fitness.Application.Extensions
             {
                 Id = user.Id,
                 Email = user.Email,
-                Password = user.Password
+                Password = user.Password,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                BirthDate = user.BirthDate,
             };
+        }
+        public static UserInfoDto toDto(this User user)
+        {
+            if(user == null)
+            {
+                return null;
+            }
+            return new UserInfoDto()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                BirthDate = user.BirthDate,
+            };
+        }
+        public static User ToEntity(this UserInfoDto dto)
+        {
+            if(dto == null)
+            {
+                return null;
+            }
+            return new User
+            (
+                dto.Id,
+                dto.FirstName,
+                dto.LastName,
+                dto.PhoneNumber,
+                dto.BirthDate
+            );
         }
     }
 }

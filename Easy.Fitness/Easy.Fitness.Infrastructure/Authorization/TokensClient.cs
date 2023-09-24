@@ -1,10 +1,9 @@
-﻿using Easy.Fitness.Infrastructure.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using Microsoft.IdentityModel.Tokens;
+using Easy.Fitness.Infrastructure.Configuration;
 namespace Easy.Fitness.Infrastructure.Authorization
 {
     internal class TokensClient
@@ -21,7 +20,7 @@ namespace Easy.Fitness.Infrastructure.Authorization
             SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
             JwtSecurityToken token = new(
                 _authConfig.Issuer,

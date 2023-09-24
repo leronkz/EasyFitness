@@ -1,8 +1,10 @@
-﻿namespace Easy.Fitness.Application
+﻿using System;
+
+namespace Easy.Fitness.Application
 {
     public interface IUserTokenProvider
     {
-        void SetUserCredentials(string email, string password);
+        void SetUserCredentials(Guid id, string email, string password);
         string GetAccessToken();
     }
 }
