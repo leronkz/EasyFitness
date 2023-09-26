@@ -4,6 +4,17 @@ axios.defaults.baseURL = process.env.PUBLIC_URL;
 
 export const isCancel = (error: any) => axios.isCancel(error);
 
+const authorizationHeaderInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+  const token = localStorage.getItem("token");
+  config.headers = {
+    ...config.headers,
+    Authorization: 'Bearer ' + token
+  };
+  return config;
+};
+
+axios.interceptors.request.use(authorizationHeaderInterceptor);
+
 export const get = async <T>(url: string, config?: AxiosRequestConfig): Promise<T> => {
   const { data } = await axios.get<T>(url, config);
   return data;

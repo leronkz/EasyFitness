@@ -25,7 +25,7 @@ namespace Easy.Fitness.Web.Controllers.v1
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDto newUser, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto newUser, CancellationToken cancellationToken)
         {
             try
             {
@@ -48,11 +48,11 @@ namespace Easy.Fitness.Web.Controllers.v1
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> AuthenticateUserAsync([FromBody]CreateUserDto user)
+        public async Task<IActionResult> AuthenticateUser([FromBody]CreateUserDto user, CancellationToken cancellationToken)
         {
             try
             {
-                string accessToken = await _userService.AuthenticateUserAsync(user);
+                string accessToken = await _userService.AuthenticateUserAsync(user, cancellationToken);
                 return Ok(new AccessTokenDto
                 {
                     AccessToken = accessToken
@@ -63,6 +63,72 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
             catch(InvalidCredentialsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("user")]
+        public async Task<IActionResult> UpdateUser([FromBody]UserInfoDto userData, CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserInfoDto updatedUser = await _userService.UpdateUserAsync(userData, cancellationToken);
+                return Ok(updatedUser);
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("user/password")]
+        public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordDto passwordDto, CancellationToken cancellationToken) 
+        {
+            try
+            {
+                await _userService.ChangeUserPasswordAsync(passwordDto, cancellationToken);
+                return Ok();
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(InvalidCredentialsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUserInfo(CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserInfoDto result = await _userService.GetUserInfoByIdAsync(cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
