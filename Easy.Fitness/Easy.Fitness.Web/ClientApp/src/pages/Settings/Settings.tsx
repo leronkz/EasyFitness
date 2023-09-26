@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline, OutlinedInput, Button, Toolbar, FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Box, InputAdornment, Container, CssBaseline, OutlinedInput, Button, Toolbar, FormControl, Select, MenuItem, SelectChangeEvent, IconButton } from '@mui/material';
 import Navbar from '../../public/components/Navbar';
 import Header from '../../public/components/Header';
 import styles from '../../public/modules/settings.module.css';
@@ -6,13 +6,14 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import KeyIcon from '@mui/icons-material/Key';
 import TranslateIcon from '@mui/icons-material/Translate';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MouseEvent } from 'react';
 import { ChangePasswordDto, Error, UserInfoDto, changePassword, getUserInfo, updateUser } from '../../api/easyFitnessApi';
 import { isCancel } from '../../api/axiosSource';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import CustomizedSnackbar, { SnackbarInterface } from '../../public/components/CustomizedSnackbar';
 import CustomizedProgress from '../../public/components/CustomizedProgress';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface ValidFormInterface {
   isFirstNameValid: boolean;
@@ -52,8 +53,14 @@ export default function Settings() {
   const [isSubmittingUserInfo, setIsSubmittingUserInfo] = useState<boolean>(false);
   const [password, setPassword] = useState<ChangePasswordDto>({ currentPassword: '', newPassword: '' });
   const [isSubmittingPassword, setIsSubmittingPassword] = useState<boolean>(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
 
   const cancellation = useCancellationToken();
+
+  const handleMouseDownPassword = (event: MouseEvent) => {
+    event.preventDefault();
+  };
 
   const validateUserInfoForm = (formData: UserInfoDto) => {
     let isValid = true;
@@ -363,18 +370,40 @@ export default function Settings() {
                   <p id={styles.passwordEditFormText}>Obecne hasło</p>
                   <OutlinedInput
                     className={styles.settingInput}
-                    type='password'
+                    type={showCurrentPassword ? 'text' : 'password'}
                     placeholder='******'
                     onChange={handleChangeCurrentPassword}
                     error={!isFormValid.isCurrentPasswordValid}
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
                   />
                   <p id={styles.passwordEditFormText}>Nowe hasło</p>
                   <OutlinedInput
                     className={styles.settingInput}
-                    type='password'
+                    type={showNewPassword ? 'text' : 'password'}
                     placeholder='******'
                     onChange={handleChangeNewPassword}
                     error={!isFormValid.isNewPasswordValid}
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
                   />
                   {!isFormValid.isNewPasswordValid && (
                     <span id={styles.passwordHelperText}>The password must be 8 or more characters long and contain one uppercase letter, one lowercase letter and a number</span>

@@ -54,7 +54,7 @@ export default function SignUp() {
 
   const handleMouseDownPassword = (event: MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   const handleChangeEmail = (e: any) => {
     setSignUpForm(prev => ({
