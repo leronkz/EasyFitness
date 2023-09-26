@@ -8,6 +8,7 @@ namespace Easy.Fitness.Application.Extensions
     {
         private static CreateUserDtoValidator _createUserDtoValidator = new CreateUserDtoValidator();
         private static UserInfoDtoValidator _userInfoDtoValidator = new UserInfoDtoValidator();
+        private static ChangePasswordDtoValidator _passwordDtoValidator = new ChangePasswordDtoValidator();
         public static void Validate(this CreateUserDto dto)
         {
             if(dto == null)
@@ -23,6 +24,14 @@ namespace Easy.Fitness.Application.Extensions
                 throw new Exceptions.ValidationException();
             }
             _userInfoDtoValidator.ValidateAndThrow(dto);
+        }
+        public static void Validate(this ChangePasswordDto dto)
+        {
+            if(dto == null)
+            {
+                throw new Exceptions.ValidationException();
+            }
+            _passwordDtoValidator.ValidateAndThrow(dto);
         }
     }
 }

@@ -11,5 +11,6 @@ namespace Easy.Fitness.DomainModels.Interfaces
         Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
         Task<User> UpdateUserAsync(User user, CancellationToken cancellationToken);
         Task<User> GetUserByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task UpdateUserPasswordAsync(Guid id, string newPassword, CancellationToken cancellationToken);
     }
 }

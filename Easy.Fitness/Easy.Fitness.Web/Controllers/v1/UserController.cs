@@ -89,6 +89,33 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("user/password")]
+        public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordDto passwordDto, CancellationToken cancellationToken) 
+        {
+            try
+            {
+                await _userService.ChangeUserPasswordAsync(passwordDto, cancellationToken);
+                return Ok();
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(InvalidCredentialsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("user")]
         public async Task<IActionResult> GetUserInfo(CancellationToken cancellationToken)
         {

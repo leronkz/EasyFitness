@@ -7,7 +7,7 @@ import KeyIcon from '@mui/icons-material/Key';
 import TranslateIcon from '@mui/icons-material/Translate';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { useState, useEffect } from 'react';
-import { Error, UserInfoDto, getUserInfo, updateUser } from '../../api/easyFitnessApi';
+import { ChangePasswordDto, Error, UserInfoDto, changePassword, getUserInfo, updateUser } from '../../api/easyFitnessApi';
 import { isCancel } from '../../api/axiosSource';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
 import { isValidPhoneNumber } from 'libphonenumber-js';
@@ -19,7 +19,11 @@ interface ValidFormInterface {
   isLastNameValid: boolean;
   isPhoneNumberValid: boolean;
   isBirthdateValid: boolean;
+  isCurrentPasswordValid: boolean;
+  isNewPasswordValid: boolean;
 }
+
+const minPasswordLength = 8;
 
 function isNullOrEmptyOrUndefinied(value: string) {
   if (value === null || value === undefined || value === '') {
@@ -28,24 +32,38 @@ function isNullOrEmptyOrUndefinied(value: string) {
   return false;
 };
 
+function isPassword(password: string) {
+  let upperCase = /[A-Z]/g;
+  let lowerCase = /[a-z]/g;
+  let number = /\d/g;
+  if (password.match(upperCase) && password.match(lowerCase) && password.match(number) && password.length >= minPasswordLength
+    && password !== null && password !== undefined && password !== '') {
+    return true;
+  }
+  return false;
+}
 
 export default function Settings() {
 
   const [language, setLanguage] = useState<string>('pl');
   const [userInfo, setUserInfo] = useState<UserInfoDto>({ id: undefined, firstName: undefined, lastName: undefined, phoneNumber: undefined, birthDate: undefined });
-  const [isFormValid, setIsFormValid] = useState<ValidFormInterface>({ isFirstNameValid: true, isLastNameValid: true, isPhoneNumberValid: true, isBirthdateValid: true });
+  const [isFormValid, setIsFormValid] = useState<ValidFormInterface>({ isFirstNameValid: true, isLastNameValid: true, isPhoneNumberValid: true, isBirthdateValid: true, isCurrentPasswordValid: true, isNewPasswordValid: true });
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmittingUserInfo, setIsSubmittingUserInfo] = useState<boolean>(false);
+  const [password, setPassword] = useState<ChangePasswordDto>({ currentPassword: '', newPassword: '' });
+  const [isSubmittingPassword, setIsSubmittingPassword] = useState<boolean>(false);
 
   const cancellation = useCancellationToken();
 
-  const validateForm = (formData: UserInfoDto) => {
+  const validateUserInfoForm = (formData: UserInfoDto) => {
     let isValid = true;
     setIsFormValid({
       isFirstNameValid: true,
       isLastNameValid: true,
       isPhoneNumberValid: true,
-      isBirthdateValid: true
+      isBirthdateValid: true,
+      isCurrentPasswordValid: true,
+      isNewPasswordValid: true,
     });
     if (isNullOrEmptyOrUndefinied(formData.firstName!)) {
       isValid = false;
@@ -74,6 +92,34 @@ export default function Settings() {
         ...prev,
         isBirthdateValid: false
       }));
+    }
+    return isValid;
+  };
+
+  const validatePasswordFrom = (formData: ChangePasswordDto) => {
+    let isValid = true;
+    setIsFormValid({
+      isFirstNameValid: true,
+      isLastNameValid: true,
+      isPhoneNumberValid: true,
+      isBirthdateValid: true,
+      isCurrentPasswordValid: true,
+      isNewPasswordValid: true,
+    });
+    if (isNullOrEmptyOrUndefinied(formData.currentPassword)) {
+      setIsFormValid(prev => ({
+        ...prev,
+        isCurrentPasswordValid: false
+      }));
+      isValid = false;
+    }
+
+    if (!isPassword(formData.newPassword)) {
+      setIsFormValid(prev => ({
+        ...prev,
+        isNewPasswordValid: false
+      }));
+      isValid = false;
     }
     return isValid;
   };
@@ -110,8 +156,22 @@ export default function Settings() {
     }));
   };
 
-  const updateUserInfoAction = async (cancelToken: any) => {   
-    setIsSubmitting(true);
+  const handleChangeCurrentPassword = (e: any) => {
+    setPassword(prev => ({
+      ...prev!,
+      currentPassword: e.target.value
+    }));
+  };
+
+  const handleChangeNewPassword = (e: any) => {
+    setPassword(prev => ({
+      ...prev!,
+      newPassword: e.target.value
+    }));
+  };
+
+  const updateUserInfoAction = async (cancelToken: any) => {
+    setIsSubmittingUserInfo(true);
     return updateUser(
       userInfo!,
       cancelToken
@@ -123,7 +183,7 @@ export default function Settings() {
           type: "success",
           message: "Your data has been saved successfully"
         });
-        setIsSubmitting(false);
+        setIsSubmittingUserInfo(false);
       })
       .catch((e: Error) => {
         if (!isCancel(e)) {
@@ -133,7 +193,33 @@ export default function Settings() {
             message: e.response.data
           });
         }
-        setIsSubmitting(false);
+        setIsSubmittingUserInfo(false);
+      });
+  };
+
+  const changeUserPasswordAction = async (cancelToken: any) => {
+    setIsSubmittingPassword(true);
+    return changePassword(
+      password,
+      cancelToken
+    )
+      .then(() => {
+        setSnackbar({
+          open: true,
+          type: "success",
+          message: "Password has been sucessfully changed"
+        });
+        setIsSubmittingPassword(false);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+        setIsSubmittingPassword(false);
       });
   };
 
@@ -156,9 +242,24 @@ export default function Settings() {
   };
 
   const onUpdateUserInfoClick = async () => {
-    if (validateForm(userInfo!)) {
+    if (validateUserInfoForm(userInfo!)) {
       cancellation((cancelToken) => {
         updateUserInfoAction(cancelToken);
+      });
+    }
+    else {
+      setSnackbar({
+        open: true,
+        type: "error",
+        message: "Complete all required fields correctly"
+      });
+    }
+  };
+
+  const onChangePasswordClick = async () => {
+    if (validatePasswordFrom(password!)) {
+      cancellation((cancelToken) => {
+        changeUserPasswordAction(cancelToken);
       });
     }
     else {
@@ -245,7 +346,7 @@ export default function Settings() {
                   value={userInfo?.birthDate}
                   error={!isFormValid.isBirthdateValid}
                 />
-                {!isSubmitting ? (
+                {!isSubmittingUserInfo ? (
                   <Button id={styles.saveButton} onClick={onUpdateUserInfoClick}>Zastosuj zmiany</Button>
                 ) : (
                   <CustomizedProgress />
@@ -264,14 +365,25 @@ export default function Settings() {
                     className={styles.settingInput}
                     type='password'
                     placeholder='******'
+                    onChange={handleChangeCurrentPassword}
+                    error={!isFormValid.isCurrentPasswordValid}
                   />
                   <p id={styles.passwordEditFormText}>Nowe hasło</p>
                   <OutlinedInput
                     className={styles.settingInput}
                     type='password'
                     placeholder='******'
+                    onChange={handleChangeNewPassword}
+                    error={!isFormValid.isNewPasswordValid}
                   />
-                  <Button id={styles.saveButton}>Zastosuj zmiany</Button>
+                  {!isFormValid.isNewPasswordValid && (
+                    <span id={styles.passwordHelperText}>The password must be 8 or more characters long and contain one uppercase letter, one lowercase letter and a number</span>
+                  )}
+                  {!isSubmittingPassword ? (
+                    <Button id={styles.saveButton} onClick={onChangePasswordClick}>Zastosuj zmiany</Button>
+                  ) : (
+                    <CustomizedProgress />
+                  )}
                 </Box>
               </Box>
               <Box className={styles.languageEditPanel}>

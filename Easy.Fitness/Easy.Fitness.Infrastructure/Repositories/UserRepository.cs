@@ -83,5 +83,24 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to load your personal data", ex);
             }
         }
+
+        public async Task UpdateUserPasswordAsync(Guid id, string newPassword, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await GetUserByIdAsync(id, cancellationToken);
+                user.Password = newPassword;
+                _context.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch(NoUserFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to change password", ex);
+            }
+        }
     }
 }

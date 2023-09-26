@@ -26,7 +26,7 @@ namespace Easy.Fitness.Application.Services
         public async Task<UserDto> CreateNewUserAsync(CreateUserDto newUser, CancellationToken cancellationToken)
         {
             newUser.Validate();
-            User user = new User(newUser.Email, HashPassword(newUser.Password), _userContext.CurrentUserId);
+            User user = new User(newUser.Email, HashPassword(newUser.Password));
             await _userRepository.AddUserAsync(user, cancellationToken);
             return user.ToDto();
         }
@@ -55,6 +55,19 @@ namespace Easy.Fitness.Application.Services
         {
             User user = await _userRepository.GetUserByIdAsync(_userContext.CurrentUserId, cancellationToken);
             return user.toDto();
+        }
+        
+        public async Task ChangeUserPasswordAsync(ChangePasswordDto passwordDto, CancellationToken cancellationToken)
+        {
+            passwordDto.Validate();
+            User user = await _userRepository.GetUserByIdAsync(_userContext.CurrentUserId, cancellationToken);
+            if(VerifyPassword(passwordDto.CurrentPassword, user.Password))
+            {
+                string hashedPassword = HashPassword(passwordDto.NewPassword);
+                await _userRepository.UpdateUserPasswordAsync(_userContext.CurrentUserId, hashedPassword, cancellationToken);
+                return;
+            }
+            throw new InvalidCredentialsException();
         }
 
         private string HashPassword(string password)

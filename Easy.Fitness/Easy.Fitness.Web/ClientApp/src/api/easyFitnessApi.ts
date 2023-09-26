@@ -29,12 +29,15 @@ export interface LoginDto {
 export interface TokenDto {
   accessToken: string;
 }
-
 export interface Error {
-  code: string,
+  code: string;
   response: any;
   message: string;
   status: number;
+}
+export interface ChangePasswordDto {
+  currentPassword: string;
+  newPassword: string;
 }
 
 export const registerUser = async (
@@ -72,6 +75,15 @@ export const getUserInfo = async (
   cancellationSource?: CancellationSource
 ): Promise<UserInfoDto> => {
   return get<UserInfoDto>('api/v1/user', {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const changePassword = async (
+  passwordDto: ChangePasswordDto,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return put<void>('api/v1/user/password', passwordDto, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

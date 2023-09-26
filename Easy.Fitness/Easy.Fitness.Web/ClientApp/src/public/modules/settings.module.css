@@ -93,3 +93,9 @@
   background: #82F6AD;
   color: black;
 }
+
+#passwordHelperText {
+  color: red;
+  font-family: 'Lexend';
+  font-size: 12px;
+}
