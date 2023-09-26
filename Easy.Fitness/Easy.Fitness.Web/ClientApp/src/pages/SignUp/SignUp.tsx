@@ -165,7 +165,7 @@ export default function SignUp() {
       setSnackbar({
         open: true,
         type: "error",
-        message: "Complete all required fields correctly"
+        message: "Fill all required fields correctly"
       });
     }
   };

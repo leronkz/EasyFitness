@@ -8,6 +8,7 @@ using Easy.Fitness.Application.Exceptions;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.Infrastructure.Exceptions;
 using Easy.Fitness.Infrastructure.Authorization;
+using Easy.Fitness.Application.Dtos.User;
 
 namespace Easy.Fitness.Web.Controllers.v1
 {
@@ -107,6 +108,28 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
             catch(InvalidCredentialsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("user/parameters")]
+        public async Task<IActionResult> UpdateUserParameters([FromBody] UserParametersDto userParameters, CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserParametersDto result = await _userService.UpdateUserParametersAsync(userParameters, cancellationToken);
+                return Ok(result);
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
+            catch(DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }

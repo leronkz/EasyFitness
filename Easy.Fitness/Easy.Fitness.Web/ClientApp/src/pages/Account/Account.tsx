@@ -1,5 +1,5 @@
 import styles from '../../public/modules/account.module.css';
-import { Box, Button, Container, CssBaseline, Divider, Fade, IconButton, OutlinedInput, Toolbar, Tooltip } from '@mui/material';
+import { Box, Button, Container, CssBaseline, IconButton, OutlinedInput, Toolbar } from '@mui/material';
 import Navbar from '../../public/components/Navbar';
 import Header from '../../public/components/Header';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -13,20 +13,78 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import { useCancellationToken } from '../../hooks/useCancellationToken';
+import { Error, UserParametersDto, updateUserParameters } from '../../api/easyFitnessApi';
+import { SnackbarInterface } from '../../public/components/CustomizedSnackbar';
+import { isCancel } from '../../api/axiosSource';
+import CustomizedProgress from '../../public/components/CustomizedProgress';
+import CustomizedSnackbar from '../../public/components/CustomizedSnackbar';
+
+interface ValidFormInterface {
+  isWeightValid: boolean;
+  isHeightValid: boolean;
+}
+
+function isNullOrNegativeOrUndefinied(value: number) {
+  if (value === null || value === undefined || value < 0) {
+    return true;
+  }
+  return false;
+};
 
 export default function Account() {
 
   const [photoUrl, setPhotoUrl] = useState<string | ArrayBuffer | null>(DefaultProfilePicture);
   const [image, setImage] = useState<any | null>(null);
   const [isPhotoChanging, setIsPhotoChanging] = useState<boolean>(false);
-  const [height, setHeight] = useState<number | null>(null);
-  const [weight, setWeight] = useState<number | null>(null);
+  const [userParameters, setUserParameters] = useState<UserParametersDto>({ weight: undefined, height: undefined });
+  const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
+  const [isSubmittingParameters, setIsSubmittingParameters] = useState<boolean>(false);
+  const [isFormValid, setIsFormValid] = useState<ValidFormInterface>({ isHeightValid: true, isWeightValid: true });
+  const cancellation = useCancellationToken();
 
   const changePhotoRef = useRef<any | null>(null);
+
+  const handleChangeWeight = (e: any) => {
+    setUserParameters(prev => ({
+      ...prev!,
+      weight: e.target.value
+    }));
+  };
+
+  const handleChangeHeight = (e: any) => {
+    setUserParameters(prev => ({
+      ...prev!,
+      height: e.target.value
+    }));
+  };
 
   const onPhotoClick = () => {
     changePhotoRef.current.click();
   };
+
+  const validateParametersForm = (formData: UserParametersDto) => {
+    let isValid = true;
+    setIsFormValid({
+      isHeightValid: true,
+      isWeightValid: true
+    });
+    if (isNullOrNegativeOrUndefinied(formData.height!)) {
+      isValid = false;
+      setIsFormValid(prev => ({
+        ...prev,
+        isHeightValid: false
+      }));
+    }
+    if (isNullOrNegativeOrUndefinied(formData.weight!)) {
+      isValid = false;
+      setIsFormValid(prev => ({
+        ...prev,
+        isWeightValid: false
+      }));
+    }
+    return isValid;
+  }
 
   const previewPhoto = (event: any) => {
     const choseFile: any = event.target.files[0];
@@ -39,6 +97,55 @@ export default function Account() {
       });
       reader.readAsDataURL(choseFile);
     }
+  };
+
+  const updateUserParametersAction = async (cancelToken: any) => {
+    setIsSubmittingParameters(true);
+    return updateUserParameters(
+      userParameters,
+      cancelToken
+    )
+      .then((parameters) => {
+        setUserParameters(parameters);
+        setSnackbar({
+          open: true,
+          type: "success",
+          message: "Your parameters has been saved successfully"
+        });
+        setIsSubmittingParameters(false);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+        setIsSubmittingParameters(false);
+      })
+  }
+
+  const onUpdateUserParametersClick = async () => {
+    if (validateParametersForm(userParameters)) {
+      cancellation((cancelToken) => {
+        updateUserParametersAction(cancelToken);
+      });
+    }
+    else {
+      setSnackbar({
+        open: true,
+        type: "error",
+        message: "Fill all required fileds correctly"
+      });
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({
+      ...prev,
+      open: false
+    }));
   };
 
   return (
@@ -61,6 +168,7 @@ export default function Account() {
         <Header title={"Twój profil"} />
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackbar} />
           <Box className={styles.accountPanel}>
             <Box className={styles.profilePicturePanel}>
               <Box sx={{ display: 'flex' }}>
@@ -113,8 +221,11 @@ export default function Account() {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <OutlinedInput
                       className={styles.profileInput}
-                      placeholder='100'
+                      placeholder='-'
                       type='number'
+                      onChange={handleChangeWeight}
+                      value={userParameters.weight}
+                      error={!isFormValid.isWeightValid}
                     />
                     <p style={{ marginLeft: '1ch' }}>kg</p>
                   </Box>
@@ -122,12 +233,19 @@ export default function Account() {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <OutlinedInput
                       className={styles.profileInput}
-                      placeholder='180'
+                      placeholder='-'
                       type='number'
+                      onChange={handleChangeHeight}
+                      value={userParameters.height}
+                      error={!isFormValid.isHeightValid}
                     />
                     <p style={{ marginLeft: '1ch' }}>cm</p>
                   </Box>
-                  <Button id={styles.saveButton}>Zastosuj zmiany</Button>
+                  {!isSubmittingParameters ? (
+                    <Button id={styles.saveButton} onClick={onUpdateUserParametersClick}>Zastosuj zmiany</Button>
+                  ) : (
+                    <CustomizedProgress />
+                  )}
                 </Box>
               </Box>
               <Box className={styles.profileSummaryPanel}>

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.Application.Exceptions;
 using Easy.Fitness.Application.Extensions;
 using Easy.Fitness.Application.Interfaces;
@@ -68,6 +69,13 @@ namespace Easy.Fitness.Application.Services
                 return;
             }
             throw new InvalidCredentialsException();
+        }
+        public async Task<UserParametersDto> UpdateUserParametersAsync(UserParametersDto userParametersDto, CancellationToken cancellationToken)
+        {
+            userParametersDto.Validate();
+            UserParameters parameters = new UserParameters(userParametersDto.Weight, userParametersDto.Height, _userContext.CurrentUserId);
+            UserParameters result = await _userRepository.UpdateUserParametersAsync(_userContext.CurrentUserId, parameters, cancellationToken);
+            return result.ToDto();
         }
 
         private string HashPassword(string password)

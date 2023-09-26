@@ -75,7 +75,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
         {
             try
             {
-                User user = await _context.Users.SingleAsync(x => x.Id == id, cancellationToken);
+                User user = await _context.Users.Include(x => x.Parameters).SingleAsync(x => x.Id == id, cancellationToken);
                 return user;
             }
             catch(Exception ex)
@@ -100,6 +100,34 @@ namespace Easy.Fitness.Infrastructure.Repositories
             catch(Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to change password", ex);
+            }
+        }
+
+        public async Task<UserParameters> UpdateUserParametersAsync(Guid id, UserParameters parameters, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await GetUserByIdAsync(id, cancellationToken);
+                if(user.Parameters == null)
+                {
+                    user.Parameters = parameters;
+                }
+                else
+                {
+                    user.Parameters.Weight = parameters.Weight;
+                    user.Parameters.Height = parameters.Height;
+                }
+                _context.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+                return parameters;
+            }
+            catch(NoUserFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to update your parameters", ex);
             }
         }
     }

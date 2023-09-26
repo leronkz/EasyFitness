@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Dtos.User;
 
 namespace Easy.Fitness.Application.Interfaces
 {
@@ -11,5 +12,6 @@ namespace Easy.Fitness.Application.Interfaces
         Task<UserInfoDto> UpdateUserAsync(UserInfoDto userData, CancellationToken cancellationToken);
         Task<UserInfoDto> GetUserInfoByIdAsync(CancellationToken cancellationToken);
         Task ChangeUserPasswordAsync(ChangePasswordDto passwordDto, CancellationToken cancellationToken);
+        Task<UserParametersDto> UpdateUserParametersAsync(UserParametersDto userParametersDto, CancellationToken cancellationToken);
     }
 }

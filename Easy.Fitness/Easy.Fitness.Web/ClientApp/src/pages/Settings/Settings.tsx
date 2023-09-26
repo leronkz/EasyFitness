@@ -258,7 +258,7 @@ export default function Settings() {
       setSnackbar({
         open: true,
         type: "error",
-        message: "Complete all required fields correctly"
+        message: "Fill all required fields correctly"
       });
     }
   };
@@ -273,7 +273,7 @@ export default function Settings() {
       setSnackbar({
         open: true,
         type: "error",
-        message: "Complete all required fields correctly"
+        message: "Fill all required fields correctly"
       });
     }
   };

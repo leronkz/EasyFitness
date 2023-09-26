@@ -13,8 +13,9 @@ namespace Easy.Fitness.Infrastructure
     public class AppDbContext : DbContext
     {
         private readonly IUserContext _userContext;
-
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserParameters> UserParameters { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options, IUserContext userContext = null) 
             : base(options) 
         { 
@@ -31,6 +32,7 @@ namespace Easy.Fitness.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
             ConfigureUserTable(modelBuilder);
+            ConfigureUserParametersTable(modelBuilder);
         }
 
         private void AddAuditInfo()
@@ -68,6 +70,26 @@ namespace Easy.Fitness.Infrastructure
                 v => (Guid)v,
                 v => (UserId)v);
             modelBuilder.Entity<User>().Property(x => x.ModifiedBy).HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+
+            modelBuilder.Entity<User>().HasOne(x => x.Parameters)
+                .WithOne(u => u.User)
+                .HasForeignKey<UserParameters>(u => u.UserId)
+                .IsRequired();
+        }
+
+        private void ConfigureUserParametersTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserParameters>().ToTable("UserParameters");
+            modelBuilder.Entity<UserParameters>().Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<UserParameters>().Property(x => x.CreatedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+            modelBuilder.Entity<UserParameters>().Property(x => x.ModifiedBy)
+                .HasConversion(
                 v => (Guid)v,
                 v => (UserId)v);
         }

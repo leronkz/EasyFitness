@@ -1,4 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.DomainModels.Models;
 
 namespace Easy.Fitness.Application.Extensions
@@ -51,6 +52,18 @@ namespace Easy.Fitness.Application.Extensions
                 dto.PhoneNumber,
                 dto.BirthDate
             );
+        }
+        public static UserParametersDto ToDto(this UserParameters entity)
+        {
+            if(entity == null)
+            {
+                return null;
+            }
+            return new UserParametersDto
+            {
+                Weight = entity.Weight,
+                Height = entity.Height,
+            };
         }
     }
 }

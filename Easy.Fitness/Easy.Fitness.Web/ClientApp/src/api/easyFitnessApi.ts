@@ -39,6 +39,10 @@ export interface ChangePasswordDto {
   currentPassword: string;
   newPassword: string;
 }
+export interface UserParametersDto {
+  weight?: number;
+  height?: number;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -84,6 +88,15 @@ export const changePassword = async (
   cancellationSource?: CancellationSource
 ): Promise<void> => {
   return put<void>('api/v1/user/password', passwordDto, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const updateUserParameters = async (
+  userParameters: UserParametersDto,
+  cancellationSource?: CancellationSource
+): Promise<UserParametersDto> => {
+  return put<UserParametersDto>('api/v1/user/parameters', userParameters, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
