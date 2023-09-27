@@ -64,7 +64,7 @@ export default function Navbar({ selected }: NavbarInterface) {
           </ListItemButton>
         </Link>
         <Link to="/activity" style={{ textDecoration: 'none', color: 'black' }}>
-          <ListItemButton id={selected === 'activity' ? styles.listItemButton : styles.listItemButton}>
+          <ListItemButton id={selected === 'activity' ? styles.listItemButtonSelected : styles.listItemButton}>
             <ListItemIcon>
               <FitnessCenterIcon color={selected === 'activity' ? "error" : "primary"} />
             </ListItemIcon>
@@ -72,7 +72,7 @@ export default function Navbar({ selected }: NavbarInterface) {
           </ListItemButton>
         </Link>
         <Link to="/schedule" style={{ textDecoration: 'none', color: 'black' }}>
-          <ListItemButton id={selected === 'schedule' ? styles.listItemButton : styles.listItemButton}>
+          <ListItemButton id={selected === 'schedule' ? styles.listItemButtonSelected : styles.listItemButton}>
             <ListItemIcon>
               <CalendarMonthIcon color={selected === 'schedule' ? "error" : "primary"} />
             </ListItemIcon>
@@ -80,7 +80,7 @@ export default function Navbar({ selected }: NavbarInterface) {
           </ListItemButton>
         </Link>
         <Link to="/diet" style={{ textDecoration: 'none', color: 'black' }}>
-          <ListItemButton id={selected === 'diet' ? styles.listItemButton : styles.listItemButton}>
+          <ListItemButton id={selected === 'diet' ? styles.listItemButtonSelected : styles.listItemButton}>
             <ListItemIcon>
               <RestaurantIcon color={selected === 'diet' ? "error" : "primary"} />
             </ListItemIcon>
