@@ -5,10 +5,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Easy.Fitness.Infrastructure.Migrations
 {
-    public partial class CreateUserParametersTable : Migration
+    public partial class CreateUserParametersAndImageTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "Image",
+                table: "User",
+                type: "text",
+                nullable: true);
+
             migrationBuilder.CreateTable(
                 name: "UserParameters",
                 columns: table => new
@@ -44,6 +50,10 @@ namespace Easy.Fitness.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "UserParameters");
+
+            migrationBuilder.DropColumn(
+                name: "Image",
+                table: "User");
         }
     }
 }

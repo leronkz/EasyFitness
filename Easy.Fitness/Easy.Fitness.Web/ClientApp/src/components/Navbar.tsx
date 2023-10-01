@@ -9,7 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../img/assets/navbar/logo-color.svg';
 import styles from '../modules/navbar.module.css';
-import { logoutUser } from '../../api/easyFitnessApi';
+import { logoutUser } from '../api/easyFitnessApi';
 
 interface NavbarInterface {
   selected: string

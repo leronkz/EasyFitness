@@ -130,5 +130,58 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to update your parameters", ex);
             }
         }
+
+        public async Task SaveUserImageAsync(Guid id, string fileName, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await GetUserByIdAsync(id, cancellationToken);
+                user.Image = fileName;
+                _context.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch(NoUserFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to save your photo", ex);
+            }
+        }
+
+        public async Task<string> GetUserImageAsync(Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await GetUserByIdAsync(id, cancellationToken);
+                return user.Image;
+            }
+            catch(NoUserFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your photo", ex);
+            }
+        }
+
+        public async Task<UserParameters> GetUserParametersByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await GetUserByIdAsync(id, cancellationToken);
+                return user.Parameters;
+            }
+            catch(NoUserFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your parameters", ex);
+            }
+        }
     }
 }

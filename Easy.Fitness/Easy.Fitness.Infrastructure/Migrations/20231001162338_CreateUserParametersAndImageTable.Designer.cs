@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Easy.Fitness.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230926195959_CreateUserParametersTable")]
-    partial class CreateUserParametersTable
+    [Migration("20231001162338_CreateUserParametersAndImageTable")]
+    partial class CreateUserParametersAndImageTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,9 @@ namespace Easy.Fitness.Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100)

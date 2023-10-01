@@ -43,6 +43,9 @@ export interface UserParametersDto {
   weight?: number;
   height?: number;
 }
+export interface UserImageDto {
+  fileBytes: string;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -97,6 +100,35 @@ export const updateUserParameters = async (
   cancellationSource?: CancellationSource
 ): Promise<UserParametersDto> => {
   return put<UserParametersDto>('api/v1/user/parameters', userParameters, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getUserParameters = async (
+  cancellationSource?: CancellationSource
+): Promise<UserParametersDto> => {
+  return get<UserParametersDto>('api/v1/user/parameters', {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const changeUserPicture = async (
+  formData: FormData,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    cancelToken: cancellationSource?.tokenSource.token
+  };
+  return put<void>('api/v1/user/image', formData, config);
+};
+
+export const getUserPicture = async (
+  cancellationSource?: CancellationSource
+): Promise<UserImageDto> => {
+  return get<UserImageDto>('api/v1/user/image', {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

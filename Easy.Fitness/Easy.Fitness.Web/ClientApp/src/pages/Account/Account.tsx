@@ -1,24 +1,24 @@
-import styles from '../../public/modules/account.module.css';
+import styles from '../../modules/account.module.css';
 import { Box, Button, Container, CssBaseline, IconButton, OutlinedInput, Toolbar } from '@mui/material';
-import Navbar from '../../public/components/Navbar';
-import Header from '../../public/components/Header';
+import Navbar from '../../components/Navbar';
+import Header from '../../components/Header';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import DefaultProfilePicture from '../../public/img/assets/account/default.svg';
-import { useState, useRef } from 'react';
+import DefaultProfilePicture from '../../img/assets/account/default.svg';
+import { useState, useRef, useEffect } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { StyledTooltip } from '../../public/components/StyledTooltip';
+import { StyledTooltip } from '../../components/StyledTooltip';
 import HeightIcon from '@mui/icons-material/Height';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
-import { Error, UserParametersDto, updateUserParameters } from '../../api/easyFitnessApi';
-import { SnackbarInterface } from '../../public/components/CustomizedSnackbar';
+import { Error, UserParametersDto, changeUserPicture, getUserParameters, getUserPicture, updateUserParameters } from '../../api/easyFitnessApi';
+import { SnackbarInterface } from '../../components/CustomizedSnackbar';
 import { isCancel } from '../../api/axiosSource';
-import CustomizedProgress from '../../public/components/CustomizedProgress';
-import CustomizedSnackbar from '../../public/components/CustomizedSnackbar';
+import CustomizedProgress from '../../components/CustomizedProgress';
+import CustomizedSnackbar from '../../components/CustomizedSnackbar';
 
 interface ValidFormInterface {
   isWeightValid: boolean;
@@ -41,6 +41,8 @@ export default function Account() {
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [isSubmittingParameters, setIsSubmittingParameters] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<ValidFormInterface>({ isHeightValid: true, isWeightValid: true });
+  const [isSubmittingPhoto, setIsSubmittingPhoto] = useState<boolean>(false);
+
   const cancellation = useCancellationToken();
 
   const changePhotoRef = useRef<any | null>(null);
@@ -123,8 +125,84 @@ export default function Account() {
           });
         }
         setIsSubmittingParameters(false);
-      })
-  }
+      });
+  };
+  
+  const getUserParametersAction = async (cancelToken: any) => {
+    return getUserParameters(
+      cancelToken
+    )
+    .then((parameters) => {
+      setUserParameters(parameters);
+    })
+    .catch((e: Error) => {
+      if(!isCancel(e)) {
+        setSnackbar({
+          open: true,
+          type: "error",
+          message: e.response.data
+        });
+      }
+    });
+  };
+
+  const changeUserProfilePicture = async (cancelToken: any) =>{
+    setIsSubmittingPhoto(true);
+    const formData = new FormData();
+    formData.append('image', image);
+    return changeUserPicture(
+      formData,
+      cancelToken
+    )
+    .then(() => {
+      setSnackbar({
+        open: true,
+        type: "success",
+        message: "Your photo has been changed sucessfully"
+      });
+      setIsSubmittingPhoto(false);
+    })
+    .catch((e: Error) => {
+      if(!isCancel(e)) {
+        setSnackbar({
+          open: true,
+          type: "error",
+          message: e.response.data
+        });
+      }
+      setIsSubmittingPhoto(false);
+    });
+  };
+
+  const getUserProfilePictureAction = async (cancelToken: any) => {
+    return getUserPicture(
+      cancelToken
+    )
+    .then((img) => {
+      const byteChars = atob(img.fileBytes);
+      const byteNums = new Array(byteChars.length);
+      for(let i=0; i<byteChars.length; i++){
+        byteNums[i] = byteChars.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNums);
+      const blob = new Blob([byteArray], {type: 'image/jpg'});
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhotoUrl(e.target!.result);
+      }
+      reader.readAsDataURL(blob);
+    })
+    .catch((e: Error) => {
+      if(!isCancel(e)) {
+        setSnackbar({
+          open: true,
+          type: "error",
+          message: e.response.data
+        });
+      }
+    });
+  };
 
   const onUpdateUserParametersClick = async () => {
     if (validateParametersForm(userParameters)) {
@@ -140,6 +218,12 @@ export default function Account() {
       });
     }
   };
+  
+  const onChangeUserProfilePictureClick = async () => {
+    cancellation((cancelToken) => {
+      changeUserProfilePicture(cancelToken);
+    });
+  };
 
   const handleCloseSnackbar = () => {
     setSnackbar(prev => ({
@@ -147,6 +231,13 @@ export default function Account() {
       open: false
     }));
   };
+
+  useEffect(() => {
+    cancellation((cancelToken) => {
+      getUserParametersAction(cancelToken);
+      getUserProfilePictureAction(cancelToken);
+    });
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -175,7 +266,7 @@ export default function Account() {
                 <AccountCircleIcon color="error" sx={{ mr: '1ch' }} />
                 <p>Twój profil</p>
               </Box>
-              <Box className={styles.profilePictureContainer}>
+              <form className={styles.profilePictureContainer} encType='multipart/form-data'>
                 <input ref={changePhotoRef} hidden accept="image/*" type="file" multiple={false} onChange={previewPhoto} name="picture" />
                 <Box sx={{ display: 'flex' }}>
                   <StyledTooltip title={"Zmień zdjęcie profilowe"}>
@@ -185,6 +276,7 @@ export default function Account() {
                         alignSelf: 'flex-start',
                         visibility: (isPhotoChanging || photoUrl !== DefaultProfilePicture ? 'visible' : 'hidden')
                       }}
+                      onClick={onChangeUserProfilePictureClick}
                     >
                       <CheckIcon color="success" />
                     </IconButton>
@@ -208,7 +300,7 @@ export default function Account() {
                 </Box>
                 <p id={styles.profilePictureText}>Imie Nazwisko</p>
                 <p id={styles.profilePictureText}>Data urodzenia</p>
-              </Box>
+              </form>
             </Box>
             <Box className={styles.profileInfoPanel}>
               <Box className={styles.profileParametersPanel}>
