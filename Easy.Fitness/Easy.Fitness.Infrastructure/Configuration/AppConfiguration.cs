@@ -12,5 +12,8 @@ namespace Easy.Fitness.Infrastructure.Configuration
 
         [JsonRequired]
         public AuthConfiguration AuthTokenValidation { get; set; }
+
+        [JsonRequired]
+        public StorageConfig Storage { get; set; }
     }
 }

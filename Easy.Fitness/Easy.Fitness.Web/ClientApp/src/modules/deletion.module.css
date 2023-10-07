@@ -1,0 +1,22 @@
+.confirmation_modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    background:white;
+    border: 1px solid #000;
+    border-radius:15px;
+    padding: 1em 1em;
+}
+.text{
+    font-family: Lexend;
+    font-style : normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: black;
+}
+.secondary_text{
+    font-family: Lexend;
+    color: rgb(236, 61, 61);
+}

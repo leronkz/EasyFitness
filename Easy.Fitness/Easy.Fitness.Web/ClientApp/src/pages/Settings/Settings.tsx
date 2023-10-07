@@ -1,7 +1,7 @@
 import { Box, InputAdornment, Container, CssBaseline, OutlinedInput, Button, Toolbar, FormControl, Select, MenuItem, SelectChangeEvent, IconButton } from '@mui/material';
-import Navbar from '../../public/components/Navbar';
-import Header from '../../public/components/Header';
-import styles from '../../public/modules/settings.module.css';
+import Navbar from '../../components/Navbar';
+import Header from '../../components/Header';
+import styles from '../../modules/settings.module.css';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import KeyIcon from '@mui/icons-material/Key';
 import TranslateIcon from '@mui/icons-material/Translate';
@@ -11,8 +11,8 @@ import { ChangePasswordDto, Error, UserInfoDto, changePassword, getUserInfo, upd
 import { isCancel } from '../../api/axiosSource';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import CustomizedSnackbar, { SnackbarInterface } from '../../public/components/CustomizedSnackbar';
-import CustomizedProgress from '../../public/components/CustomizedProgress';
+import CustomizedSnackbar, { SnackbarInterface } from '../../components/CustomizedSnackbar';
+import CustomizedProgress from '../../components/CustomizedProgress';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface ValidFormInterface {
@@ -258,7 +258,7 @@ export default function Settings() {
       setSnackbar({
         open: true,
         type: "error",
-        message: "Complete all required fields correctly"
+        message: "Fill all required fields correctly"
       });
     }
   };
@@ -273,7 +273,7 @@ export default function Settings() {
       setSnackbar({
         open: true,
         type: "error",
-        message: "Complete all required fields correctly"
+        message: "Fill all required fields correctly"
       });
     }
   };
@@ -356,7 +356,7 @@ export default function Settings() {
                 {!isSubmittingUserInfo ? (
                   <Button id={styles.saveButton} onClick={onUpdateUserInfoClick}>Zastosuj zmiany</Button>
                 ) : (
-                  <CustomizedProgress />
+                  <CustomizedProgress position='flex-end'/>
                 )}
               </Box>
             </Box>
@@ -411,7 +411,7 @@ export default function Settings() {
                   {!isSubmittingPassword ? (
                     <Button id={styles.saveButton} onClick={onChangePasswordClick}>Zastosuj zmiany</Button>
                   ) : (
-                    <CustomizedProgress />
+                    <CustomizedProgress position='flex-end' />
                   )}
                 </Box>
               </Box>

@@ -2,16 +2,16 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box, Button, Divider, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import { Link } from 'react-router-dom';
 import { MouseEvent, useState } from "react";
-import styles from '../../public/modules/signup.module.css';
-import googleIcon from '../../public/img/assets/login/google.svg';
-import appleIcon from '../../public/img/assets/login/apple.svg';
-import facebookIcon from '../../public/img/assets/login/facebook.svg';
-import { OAuthButton } from "../../public/components/StyledComponents";
+import styles from '../../modules/signup.module.css';
+import googleIcon from '../../img/assets/login/google.svg';
+import appleIcon from '../../img/assets/login/apple.svg';
+import facebookIcon from '../../img/assets/login/facebook.svg';
+import { OAuthButton } from "../../components/StyledComponents";
 import { Error, LoginDto, RegisterDto, registerUser } from "../../api/easyFitnessApi";
 import validator from "validator";
 import { isCancel } from "../../api/axiosSource";
 import { useCancellationToken } from "../../hooks/useCancellationToken";
-import CustomizedSnackbar, { SnackbarInterface } from "../../public/components/CustomizedSnackbar";
+import CustomizedSnackbar, { SnackbarInterface } from "../../components/CustomizedSnackbar";
 import { useNavigate } from "react-router-dom";
 
 interface ValidFormInterface {
@@ -165,7 +165,7 @@ export default function SignUp() {
       setSnackbar({
         open: true,
         type: "error",
-        message: "Complete all required fields correctly"
+        message: "Fill all required fields correctly"
       });
     }
   };

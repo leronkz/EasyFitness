@@ -1,16 +1,16 @@
 import { MouseEvent, useState, useEffect } from 'react';
-import styles from '../../public/modules/login.module.css';
+import styles from '../../modules/login.module.css';
 import { Box, OutlinedInput, InputAdornment, IconButton, Divider, Button } from '@mui/material'
 import { VisibilityOff, Visibility } from '@mui/icons-material'
 import { Link, useNavigate } from 'react-router-dom';
-import { OAuthButton } from '../../public/components/StyledComponents';
-import googleIcon from '../../public/img/assets/login/google.svg';
-import appleIcon from '../../public/img/assets/login/apple.svg';
-import facebookIcon from '../../public/img/assets/login/facebook.svg';
+import { OAuthButton } from '../../components/StyledComponents';
+import googleIcon from '../../img/assets/login/google.svg';
+import appleIcon from '../../img/assets/login/apple.svg';
+import facebookIcon from '../../img/assets/login/facebook.svg';
 import { Error, LoginDto, loginUser } from '../../api/easyFitnessApi';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
 import { isCancel } from '../../api/axiosSource';
-import CustomizedSnackbar, { SnackbarInterface } from '../../public/components/CustomizedSnackbar';
+import CustomizedSnackbar, { SnackbarInterface } from '../../components/CustomizedSnackbar';
 
 export default function Login() {
 

@@ -8,6 +8,8 @@ using Easy.Fitness.Application.Exceptions;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.Infrastructure.Exceptions;
 using Easy.Fitness.Infrastructure.Authorization;
+using Easy.Fitness.Application.Dtos.User;
+using Microsoft.AspNetCore.Http;
 
 namespace Easy.Fitness.Web.Controllers.v1
 {
@@ -116,12 +118,78 @@ namespace Easy.Fitness.Web.Controllers.v1
             }
         }
 
+        [HttpPut("user/parameters")]
+        public async Task<IActionResult> UpdateUserParameters([FromBody] UserParametersDto userParameters, CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserParametersDto result = await _userService.UpdateUserParametersAsync(userParameters, cancellationToken);
+                return Ok(result);
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("user/image")]
+        public async Task<IActionResult> ChangeUserProfilePicture([FromBody] IFormFile image, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _userService.ChangeUserImageAsync(image, cancellationToken);
+                return Ok();
+            }
+            catch(StorageException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("user/image")]
+        public async Task<IActionResult> DeleteUserImage(CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _userService.DeleteUserImageAsync(cancellationToken);
+                return Ok();
+            }
+            catch(StorageException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("user")]
         public async Task<IActionResult> GetUserInfo(CancellationToken cancellationToken)
         {
             try
             {
-                UserInfoDto result = await _userService.GetUserInfoByIdAsync(cancellationToken);
+                UserInfoDto result = await _userService.GetUserInfoAsync(cancellationToken);
                 return Ok(result);
             }
             catch(DatabaseException ex)
@@ -129,6 +197,68 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user/parameters")]
+        public async Task<IActionResult> GetUserParameters(CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserParametersDto result = await _userService.GetUserParametersAsync(cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user/image")]
+        public async Task<IActionResult> GetUserImage(CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserImageDto result = await _userService.GetUserImageAsync(cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(StorageException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user/account")]
+        public async Task<IActionResult> GetUserPersonalInfo(CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserAccountDto result = await _userService.GetUserPersonalInfoAsync(cancellationToken);
+                return Ok(result);
+            }
+            catch (DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }

@@ -1,4 +1,4 @@
-import { post, put, get } from "./axiosSource";
+import { post, put, get, deletion } from "./axiosSource";
 import { CancellationSource } from "./models/CancelationSource";
 
 export interface RegisterDto {
@@ -38,6 +38,13 @@ export interface Error {
 export interface ChangePasswordDto {
   currentPassword: string;
   newPassword: string;
+}
+export interface UserParametersDto {
+  weight?: number;
+  height?: number;
+}
+export interface UserImageDto {
+  fileBytes: string;
 }
 
 export const registerUser = async (
@@ -84,6 +91,60 @@ export const changePassword = async (
   cancellationSource?: CancellationSource
 ): Promise<void> => {
   return put<void>('api/v1/user/password', passwordDto, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const updateUserParameters = async (
+  userParameters: UserParametersDto,
+  cancellationSource?: CancellationSource
+): Promise<UserParametersDto> => {
+  return put<UserParametersDto>('api/v1/user/parameters', userParameters, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getUserParameters = async (
+  cancellationSource?: CancellationSource
+): Promise<UserParametersDto> => {
+  return get<UserParametersDto>('api/v1/user/parameters', {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const changeUserPicture = async (
+  formData: FormData,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    cancelToken: cancellationSource?.tokenSource.token
+  };
+  return put<void>('api/v1/user/image', formData, config);
+};
+
+export const getUserPicture = async (
+  cancellationSource?: CancellationSource
+): Promise<UserImageDto> => {
+  return get<UserImageDto>('api/v1/user/image', {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const deleteUserPicture = async (
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return deletion<void>('api/v1/user/image', {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getUserAccountInfo = async (
+  cancellationSource?: CancellationSource
+): Promise<UserInfoDto> => {
+  return get<UserInfoDto>('api/v1/user/account', {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

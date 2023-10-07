@@ -1,12 +1,11 @@
-import React from 'react';
 import { Box, CssBaseline, Toolbar, Container, Grid, Typography, Divider } from '@mui/material';
-import styles from '../../public/modules/dashboard.module.css'
-import Navbar from '../../public/components/Navbar';
-import Header from '../../public/components/Header';
+import styles from '../../modules/dashboard.module.css'
+import Navbar from '../../components/Navbar';
+import Header from '../../components/Header';
 import { Link } from 'react-router-dom';
-import nextIcon from '../../public/img/assets/dashboard/go_next.svg';
-import gymIcon from '../../public/img/assets/activity/gym.svg';
-import energyIcon from '../../public/img/assets/diet/energy.svg'
+import nextIcon from '../../img/assets/dashboard/go_next.svg';
+import gymIcon from '../../img/assets/activity/gym.svg';
+import energyIcon from '../../img/assets/diet/energy.svg'
 
 export default function Dashboard() {
 

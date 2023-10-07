@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -30,6 +31,11 @@ namespace Easy.Fitness.Web.Extensions
                     {
                         ContractResolver = new CamelCasePropertyNamesContractResolver()
                     };
+                });
+            services.AddMvc()
+                .AddMvcOptions(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new FormFileModelBinderProvider());
                 });
         }
     }

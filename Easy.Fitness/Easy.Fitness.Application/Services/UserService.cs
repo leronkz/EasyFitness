@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Easy.Fitness.Application.Calculators;
 using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.Application.Exceptions;
 using Easy.Fitness.Application.Extensions;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Easy.Fitness.Application.Services
 {
@@ -15,12 +18,18 @@ namespace Easy.Fitness.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IUserTokenProvider _tokenProvider;
         private readonly IUserContext _userContext;
+        private readonly IFileService _fileService;
 
-        public UserService(IUserRepository userRepository, IUserContext userContext, IUserTokenProvider tokenProvider)
+        public UserService(
+            IUserRepository userRepository, 
+            IUserContext userContext, 
+            IUserTokenProvider tokenProvider,
+            IFileService fileService)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _tokenProvider = tokenProvider ?? throw new ArgumentNullException(nameof(tokenProvider));
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
         }
 
         public async Task<UserDto> CreateNewUserAsync(CreateUserDto newUser, CancellationToken cancellationToken)
@@ -51,7 +60,7 @@ namespace Easy.Fitness.Application.Services
             return updatedUser.toDto();
         }
 
-        public async Task<UserInfoDto> GetUserInfoByIdAsync(CancellationToken cancellationToken)
+        public async Task<UserInfoDto> GetUserInfoAsync(CancellationToken cancellationToken)
         {
             User user = await _userRepository.GetUserByIdAsync(_userContext.CurrentUserId, cancellationToken);
             return user.toDto();
@@ -69,12 +78,70 @@ namespace Easy.Fitness.Application.Services
             }
             throw new InvalidCredentialsException();
         }
+        public async Task<UserParametersDto> UpdateUserParametersAsync(UserParametersDto userParametersDto, CancellationToken cancellationToken)
+        {
+            userParametersDto.Validate();
+            UserParameters parameters = new UserParameters(userParametersDto.Weight, userParametersDto.Height, _userContext.CurrentUserId);
+            UserParameters result = await _userRepository.UpdateUserParametersAsync(_userContext.CurrentUserId, parameters, cancellationToken);
+            return result.ToDto();
+        }
 
-        private string HashPassword(string password)
+        public async Task ChangeUserImageAsync(IFormFile image, CancellationToken cancellationToken)
+        {
+            string fileName = await _userRepository.GetUserImageAsync(_userContext.CurrentUserId, cancellationToken);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                await _fileService.RemoveFileAsync(fileName, cancellationToken);
+            }
+            string hashedFileName = FileNameCalculator.Calculate(image.FileName);
+            UserImage userImage = new UserImage
+            (
+                image.OpenReadStream(),
+                hashedFileName,
+                image.Length
+            );
+            await _userRepository.SaveUserImageAsync(_userContext.CurrentUserId, hashedFileName, cancellationToken);
+            await _fileService.SaveFileAsync(userImage, cancellationToken);
+        }
+        public async Task<UserParametersDto> GetUserParametersAsync(CancellationToken cancellationToken)
+        {
+            UserParameters parameters = await _userRepository.GetUserParametersByIdAsync(_userContext.CurrentUserId, cancellationToken);
+            return parameters.ToDto();
+        }
+
+        public async Task<UserImageDto> GetUserImageAsync(CancellationToken cancellationToken)
+        {
+            string fileName = await _userRepository.GetUserImageAsync(_userContext.CurrentUserId, cancellationToken);
+            string userImage = await _fileService.GetFileAsync(fileName, cancellationToken);
+            return new UserImageDto
+            {
+                FileBytes = userImage
+            };
+        }
+
+        public async Task DeleteUserImageAsync(CancellationToken cancellationToken)
+        {
+            string fileName = await _userRepository.GetUserImageAsync(_userContext.CurrentUserId, cancellationToken);
+            await _fileService.RemoveFileAsync(fileName, cancellationToken);
+            await _userRepository.DeleteUserImageAsync(_userContext.CurrentUserId, cancellationToken);
+        }
+
+        public async Task<UserAccountDto> GetUserPersonalInfoAsync(CancellationToken cancellationToken)
+        {
+            User user = await _userRepository.GetUserByIdAsync(_userContext.CurrentUserId, cancellationToken);
+            return new UserAccountDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate
+            };
+        }
+
+        private static string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
-        private bool VerifyPassword(string password, string hashedPassword)
+        private static bool VerifyPassword(string password, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
