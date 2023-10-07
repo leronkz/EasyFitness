@@ -8,7 +8,7 @@ using Easy.Fitness.Infrastructure.Repositories;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.Application.Services;
 using Easy.Fitness.Infrastructure.Authorization;
-using Easy.Fitness.Infrastructure.Files;
+using Easy.Fitness.Infrastructure.Storage;
 
 namespace Easy.Fitness.Web.Bootstrappers
 {

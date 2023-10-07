@@ -53,13 +53,15 @@ namespace Easy.Fitness.Application.Extensions
                 dto.BirthDate
             );
         }
+
         public static UserParametersDto ToDto(this UserParameters entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 return null;
             }
-            return new UserParametersDto
+
+            return new UserParametersDto()
             {
                 Weight = entity.Weight,
                 Height = entity.Height,

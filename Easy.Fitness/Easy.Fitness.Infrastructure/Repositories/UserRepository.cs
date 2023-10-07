@@ -183,5 +183,24 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to load your parameters", ex);
             }
         }
+
+        public async Task DeleteUserImageAsync(Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await GetUserByIdAsync(id, cancellationToken);
+                user.Image = null;
+                _context.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (NoUserFoundException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to delete your photo", ex);
+            }
+        }
     }
 }

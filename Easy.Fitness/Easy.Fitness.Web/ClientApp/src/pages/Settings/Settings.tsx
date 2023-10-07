@@ -356,7 +356,7 @@ export default function Settings() {
                 {!isSubmittingUserInfo ? (
                   <Button id={styles.saveButton} onClick={onUpdateUserInfoClick}>Zastosuj zmiany</Button>
                 ) : (
-                  <CustomizedProgress />
+                  <CustomizedProgress position='flex-end'/>
                 )}
               </Box>
             </Box>
@@ -411,7 +411,7 @@ export default function Settings() {
                   {!isSubmittingPassword ? (
                     <Button id={styles.saveButton} onClick={onChangePasswordClick}>Zastosuj zmiany</Button>
                   ) : (
-                    <CustomizedProgress />
+                    <CustomizedProgress position='flex-end' />
                   )}
                 </Box>
               </Box>

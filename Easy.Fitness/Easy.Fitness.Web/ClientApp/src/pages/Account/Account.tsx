@@ -14,11 +14,12 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
-import { Error, UserParametersDto, changeUserPicture, getUserParameters, getUserPicture, updateUserParameters } from '../../api/easyFitnessApi';
+import { Error, UserInfoDto, UserParametersDto, changeUserPicture, deleteUserPicture, getUserAccountInfo, getUserParameters, getUserPicture, updateUserParameters } from '../../api/easyFitnessApi';
 import { SnackbarInterface } from '../../components/CustomizedSnackbar';
 import { isCancel } from '../../api/axiosSource';
 import CustomizedProgress from '../../components/CustomizedProgress';
 import CustomizedSnackbar from '../../components/CustomizedSnackbar';
+import Deletion from '../../components/Deletion';
 
 interface ValidFormInterface {
   isWeightValid: boolean;
@@ -42,6 +43,9 @@ export default function Account() {
   const [isSubmittingParameters, setIsSubmittingParameters] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<ValidFormInterface>({ isHeightValid: true, isWeightValid: true });
   const [isSubmittingPhoto, setIsSubmittingPhoto] = useState<boolean>(false);
+  const [isDeletingPhoto, setIsDeletingPhoto] = useState<boolean>(false);
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState<boolean>(false);
+  const [userAccountInfo, setUserAccountInfo] = useState<UserInfoDto>({ firstName: undefined, lastName: undefined, birthDate: undefined });
 
   const cancellation = useCancellationToken();
 
@@ -127,26 +131,26 @@ export default function Account() {
         setIsSubmittingParameters(false);
       });
   };
-  
+
   const getUserParametersAction = async (cancelToken: any) => {
     return getUserParameters(
       cancelToken
     )
-    .then((parameters) => {
-      setUserParameters(parameters);
-    })
-    .catch((e: Error) => {
-      if(!isCancel(e)) {
-        setSnackbar({
-          open: true,
-          type: "error",
-          message: e.response.data
-        });
-      }
-    });
+      .then((parameters) => {
+        setUserParameters(parameters);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+      });
   };
 
-  const changeUserProfilePicture = async (cancelToken: any) =>{
+  const changeUserProfilePictureAction = async (cancelToken: any) => {
     setIsSubmittingPhoto(true);
     const formData = new FormData();
     formData.append('image', image);
@@ -154,55 +158,95 @@ export default function Account() {
       formData,
       cancelToken
     )
-    .then(() => {
-      setSnackbar({
-        open: true,
-        type: "success",
-        message: "Your photo has been changed sucessfully"
-      });
-      setIsSubmittingPhoto(false);
-    })
-    .catch((e: Error) => {
-      if(!isCancel(e)) {
+      .then(() => {
         setSnackbar({
           open: true,
-          type: "error",
-          message: e.response.data
+          type: "success",
+          message: "Your photo has been changed sucessfully"
         });
-      }
-      setIsSubmittingPhoto(false);
-    });
+        setIsSubmittingPhoto(false);
+        setIsPhotoChanging(false);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+        setIsSubmittingPhoto(false);
+      });
   };
 
   const getUserProfilePictureAction = async (cancelToken: any) => {
     return getUserPicture(
       cancelToken
     )
-    .then((img) => {
-      const byteChars = atob(img.fileBytes);
-      const byteNums = new Array(byteChars.length);
-      for(let i=0; i<byteChars.length; i++){
-        byteNums[i] = byteChars.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNums);
-      const blob = new Blob([byteArray], {type: 'image/jpg'});
+      .then((img) => {
+        const byteChars = atob(img.fileBytes);
+        const byteNums = new Array(byteChars.length);
+        for (let i = 0; i < byteChars.length; i++) {
+          byteNums[i] = byteChars.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNums);
+        const blob = new Blob([byteArray], { type: 'image/jpg' });
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPhotoUrl(e.target!.result);
-      }
-      reader.readAsDataURL(blob);
-    })
-    .catch((e: Error) => {
-      if(!isCancel(e)) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setPhotoUrl(e.target!.result);
+        }
+        reader.readAsDataURL(blob);
+      })
+      .catch((e: Error) => {
+      });
+  };
+
+  const deleteUserProfilePictureAction = async (cancelToken: any) => {
+    setIsDeletingPhoto(true);
+    return deleteUserPicture(
+      cancelToken
+    )
+      .then(() => {
         setSnackbar({
           open: true,
-          type: "error",
-          message: e.response.data
+          type: "success",
+          message: "Your profile picture has been deleted successfully"
         });
-      }
-    });
+        setImage(null);
+        setPhotoUrl(DefaultProfilePicture);
+        setIsDeletingPhoto(false);
+        setOpenDeleteConfirmation(false);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+          setIsDeletingPhoto(false);
+        }
+      });
   };
+
+  const getUserAccountInfoAction = async (cancelToken: any) => {
+    return getUserAccountInfo(
+      cancelToken
+    )
+      .then((user) => {
+        setUserAccountInfo(user);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+      });
+  }
 
   const onUpdateUserParametersClick = async () => {
     if (validateParametersForm(userParameters)) {
@@ -218,11 +262,17 @@ export default function Account() {
       });
     }
   };
-  
+
   const onChangeUserProfilePictureClick = async () => {
     cancellation((cancelToken) => {
-      changeUserProfilePicture(cancelToken);
+      changeUserProfilePictureAction(cancelToken);
     });
+  };
+
+  const onDeleteUserProfilePictureClick = async () => {
+    cancellation((cancelToken) => {
+      deleteUserProfilePictureAction(cancelToken);
+    })
   };
 
   const handleCloseSnackbar = () => {
@@ -236,6 +286,7 @@ export default function Account() {
     cancellation((cancelToken) => {
       getUserParametersAction(cancelToken);
       getUserProfilePictureAction(cancelToken);
+      getUserAccountInfoAction(cancelToken);
     });
   }, []);
 
@@ -260,6 +311,7 @@ export default function Account() {
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackbar} />
+          <Deletion open={openDeleteConfirmation} onClose={() => setOpenDeleteConfirmation(false)} handleDelete={onDeleteUserProfilePictureClick} isDeleting={isDeletingPhoto} />
           <Box className={styles.accountPanel}>
             <Box className={styles.profilePicturePanel}>
               <Box sx={{ display: 'flex' }}>
@@ -269,18 +321,20 @@ export default function Account() {
               <form className={styles.profilePictureContainer} encType='multipart/form-data'>
                 <input ref={changePhotoRef} hidden accept="image/*" type="file" multiple={false} onChange={previewPhoto} name="picture" />
                 <Box sx={{ display: 'flex' }}>
-                  <StyledTooltip title={"Zmień zdjęcie profilowe"}>
+                  {!isSubmittingPhoto ? (<StyledTooltip title={"Zmień zdjęcie profilowe"}>
                     <IconButton
                       size="small"
                       sx={{
                         alignSelf: 'flex-start',
-                        visibility: (isPhotoChanging || photoUrl !== DefaultProfilePicture ? 'visible' : 'hidden')
+                        visibility: (isPhotoChanging ? 'visible' : 'hidden')
                       }}
                       onClick={onChangeUserProfilePictureClick}
                     >
                       <CheckIcon color="success" />
                     </IconButton>
-                  </StyledTooltip>
+                  </StyledTooltip>) : (
+                    <CustomizedProgress position='flex-start' />
+                  )}
                   <StyledTooltip
                     title={"Kliknij aby zmienić zdjęcie profilowe"}
                   >
@@ -291,15 +345,16 @@ export default function Account() {
                       size="small"
                       sx={{
                         alignSelf: 'flex-start',
-                        visibility: (isPhotoChanging ? 'visible' : 'hidden')
+                        visibility: (isPhotoChanging || photoUrl !== DefaultProfilePicture ? 'visible' : 'hidden')
                       }}
+                      onClick={() => setOpenDeleteConfirmation(true)}
                     >
                       <DeleteIcon color="error" />
                     </IconButton>
                   </StyledTooltip>
                 </Box>
-                <p id={styles.profilePictureText}>Imie Nazwisko</p>
-                <p id={styles.profilePictureText}>Data urodzenia</p>
+                <p id={styles.profilePictureText}>{userAccountInfo.firstName && userAccountInfo.lastName ? userAccountInfo.firstName + ' ' + userAccountInfo.lastName : "-"}</p>
+                <p id={styles.profilePictureText}>{userAccountInfo.birthDate ?? "-"}</p>
               </form>
             </Box>
             <Box className={styles.profileInfoPanel}>
@@ -336,7 +391,7 @@ export default function Account() {
                   {!isSubmittingParameters ? (
                     <Button id={styles.saveButton} onClick={onUpdateUserParametersClick}>Zastosuj zmiany</Button>
                   ) : (
-                    <CustomizedProgress />
+                    <CustomizedProgress position='flex-end' />
                   )}
                 </Box>
               </Box>

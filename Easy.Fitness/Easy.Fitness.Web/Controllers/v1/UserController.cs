@@ -10,7 +10,6 @@ using Easy.Fitness.Infrastructure.Exceptions;
 using Easy.Fitness.Infrastructure.Authorization;
 using Easy.Fitness.Application.Dtos.User;
 using Microsoft.AspNetCore.Http;
-using Easy.Fitness.DomainModels.Models;
 
 namespace Easy.Fitness.Web.Controllers.v1
 {
@@ -163,6 +162,28 @@ namespace Easy.Fitness.Web.Controllers.v1
             }
         }
 
+        [HttpDelete("user/image")]
+        public async Task<IActionResult> DeleteUserImage(CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _userService.DeleteUserImageAsync(cancellationToken);
+                return Ok();
+            }
+            catch(StorageException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("user")]
         public async Task<IActionResult> GetUserInfo(CancellationToken cancellationToken)
         {
@@ -220,6 +241,24 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
             catch(StorageException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user/account")]
+        public async Task<IActionResult> GetUserPersonalInfo(CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserAccountDto result = await _userService.GetUserPersonalInfoAsync(cancellationToken);
+                return Ok(result);
+            }
+            catch (DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }

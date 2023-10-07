@@ -9,7 +9,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Easy.Fitness.Infrastructure.Files
+namespace Easy.Fitness.Infrastructure.Storage
 {
     public class FileService : IFileService
     {
@@ -56,7 +56,7 @@ namespace Easy.Fitness.Infrastructure.Files
                                              {
                                                  stream.CopyTo(resultStream);
                                              });
-                    var result = await _minio.GetObjectAsync(args, cancellationToken);
+                    await _minio.GetObjectAsync(args, cancellationToken);
                     resultStream.Seek(0, SeekOrigin.Begin);
                     byte[] data = resultStream.ToArray();
 
@@ -66,6 +66,21 @@ namespace Easy.Fitness.Infrastructure.Files
             catch(Exception ex)
             {
                 throw new StorageException("An error occurred while trying to load your profile picture", ex);
+            }
+        }
+
+        public async Task RemoveFileAsync(string fileName, CancellationToken cancellationToken)
+        {
+            try
+            {
+                RemoveObjectArgs args = new RemoveObjectArgs()
+                                            .WithBucket(_config.Storage.Minio.BucketName)
+                                            .WithObject(fileName);
+                await _minio.RemoveObjectAsync(args, cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw new StorageException("An error occurred while trying to delete your profile picture", ex);
             }
         }
     }

@@ -8,5 +8,6 @@ namespace Easy.Fitness.DomainModels.Interfaces
     {
         Task SaveFileAsync(UserImage file, CancellationToken cancellationToken);
         Task<string> GetFileAsync(string fileName, CancellationToken cancellationToken);
+        Task RemoveFileAsync(string fileName, CancellationToken cancellationToken);
     }
 }

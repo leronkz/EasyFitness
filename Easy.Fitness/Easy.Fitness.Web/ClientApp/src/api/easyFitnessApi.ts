@@ -1,4 +1,4 @@
-import { post, put, get } from "./axiosSource";
+import { post, put, get, deletion } from "./axiosSource";
 import { CancellationSource } from "./models/CancelationSource";
 
 export interface RegisterDto {
@@ -129,6 +129,22 @@ export const getUserPicture = async (
   cancellationSource?: CancellationSource
 ): Promise<UserImageDto> => {
   return get<UserImageDto>('api/v1/user/image', {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const deleteUserPicture = async (
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return deletion<void>('api/v1/user/image', {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getUserAccountInfo = async (
+  cancellationSource?: CancellationSource
+): Promise<UserInfoDto> => {
+  return get<UserInfoDto>('api/v1/user/account', {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

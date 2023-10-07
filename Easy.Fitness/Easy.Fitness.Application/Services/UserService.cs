@@ -88,6 +88,11 @@ namespace Easy.Fitness.Application.Services
 
         public async Task ChangeUserImageAsync(IFormFile image, CancellationToken cancellationToken)
         {
+            string fileName = await _userRepository.GetUserImageAsync(_userContext.CurrentUserId, cancellationToken);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                await _fileService.RemoveFileAsync(fileName, cancellationToken);
+            }
             string hashedFileName = FileNameCalculator.Calculate(image.FileName);
             UserImage userImage = new UserImage
             (
@@ -111,6 +116,24 @@ namespace Easy.Fitness.Application.Services
             return new UserImageDto
             {
                 FileBytes = userImage
+            };
+        }
+
+        public async Task DeleteUserImageAsync(CancellationToken cancellationToken)
+        {
+            string fileName = await _userRepository.GetUserImageAsync(_userContext.CurrentUserId, cancellationToken);
+            await _fileService.RemoveFileAsync(fileName, cancellationToken);
+            await _userRepository.DeleteUserImageAsync(_userContext.CurrentUserId, cancellationToken);
+        }
+
+        public async Task<UserAccountDto> GetUserPersonalInfoAsync(CancellationToken cancellationToken)
+        {
+            User user = await _userRepository.GetUserByIdAsync(_userContext.CurrentUserId, cancellationToken);
+            return new UserAccountDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate
             };
         }
 
