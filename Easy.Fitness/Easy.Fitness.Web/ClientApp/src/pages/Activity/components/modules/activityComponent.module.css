@@ -1,0 +1,15 @@
+.activityWrapper {
+  display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	padding: 0.5ch;
+	width: 100%;
+	font-family: 'Lexend';
+	align-items: center;
+}
+.activityText {
+	text-align: center;
+}
+.activityActions {
+	display: flex;
+	justify-content: center;
+}
