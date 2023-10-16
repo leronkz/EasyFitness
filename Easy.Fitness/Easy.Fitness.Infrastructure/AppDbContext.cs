@@ -15,6 +15,7 @@ namespace Easy.Fitness.Infrastructure
         private readonly IUserContext _userContext;
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserParameters> UserParameters { get; set; }
+        public virtual DbSet<Activity> Activities { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options, IUserContext userContext = null) 
             : base(options) 
@@ -33,6 +34,7 @@ namespace Easy.Fitness.Infrastructure
             base.OnModelCreating(modelBuilder);
             ConfigureUserTable(modelBuilder);
             ConfigureUserParametersTable(modelBuilder);
+            ConfigureActivitesTable(modelBuilder);
         }
 
         private void AddAuditInfo()
@@ -77,6 +79,11 @@ namespace Easy.Fitness.Infrastructure
                 .WithOne(u => u.User)
                 .HasForeignKey<UserParameters>(u => u.UserId)
                 .IsRequired();
+
+            modelBuilder.Entity<User>().HasMany(x => x.Activities)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId)
+                .IsRequired();
         }
 
         private void ConfigureUserParametersTable(ModelBuilder modelBuilder)
@@ -89,6 +96,31 @@ namespace Easy.Fitness.Infrastructure
                 v => (Guid)v,
                 v => (UserId)v);
             modelBuilder.Entity<UserParameters>().Property(x => x.ModifiedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+        }
+
+        private void ConfigureActivitesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Activity>().ToTable("Activity");
+            modelBuilder.Entity<Activity>().Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Activity>().Property(x => x.Date)
+                .HasMaxLength(20);
+            modelBuilder.Entity<Activity>().Property(x => x.Type)
+                .HasMaxLength(50);
+            modelBuilder.Entity<Activity>().Property(x => x.Name)
+                .HasMaxLength(100);
+            modelBuilder.Entity<Activity>().Property(x => x.Calories)
+                .HasMaxLength(50);
+            modelBuilder.Entity<Activity>().Property(x => x.Duration)
+                .HasMaxLength(20);
+            modelBuilder.Entity<Activity>().Property(x => x.CreatedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+            modelBuilder.Entity<Activity>().Property(x => x.ModifiedBy)
                 .HasConversion(
                 v => (Guid)v,
                 v => (UserId)v);

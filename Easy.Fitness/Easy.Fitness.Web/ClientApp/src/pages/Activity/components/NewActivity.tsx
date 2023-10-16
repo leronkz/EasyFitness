@@ -22,7 +22,7 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
 
   const [type, setType] = useState<string>('');
   const [duration, setDuration] = useState<DurationInterface>({ hours: 0, minutes: 0, seconds: 0 });
-  const [newActivity, setNewActivity] = useState<ActivityDto>({ id: '0000', date: '', type: '', name: '0', calories: 0, duration: '' });
+  const [newActivity, setNewActivity] = useState<ActivityDto>({ date: '', type: '', name: '0', calories: 0, duration: '' });
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [isSubmittingActivity, setIsSubmittingActivity] = useState<boolean>(false);
 
@@ -66,7 +66,7 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
   const handleCaloriesChange = (e: any) => {
     setNewActivity(prev => ({
       ...prev,
-      calories: e.target.value
+      calories: e.target.value as number
     }));
   };
 
@@ -90,6 +90,13 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
           message: "New activity has been saved successfully"
         });
         setIsSubmittingActivity(false);
+        setTimeout(() => {
+          setSnackbar(prev => ({
+            ...prev,
+            open: false
+          }));
+          onClose();
+        }, 2000);
       })
       .catch((e: Error) => {
         if (!isCancel(e)) {

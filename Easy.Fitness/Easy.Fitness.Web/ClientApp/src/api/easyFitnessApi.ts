@@ -165,7 +165,8 @@ export const addNewActivity = async (
   newActivity: ActivityDto,
   cancellationSource?: CancellationSource
 ): Promise<ActivityDto> => {
+  console.log(newActivity);
   return post<ActivityDto>('api/v1/activity', newActivity, {
     cancelToken: cancellationSource?.tokenSource.token
   });
-}
+};

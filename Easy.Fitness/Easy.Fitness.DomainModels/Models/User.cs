@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Easy.Fitness.DomainModels.Ids;
 
 namespace Easy.Fitness.DomainModels.Models
@@ -12,6 +13,7 @@ namespace Easy.Fitness.DomainModels.Models
         public string PhoneNumber { get; set; }
         public string BirthDate { get; set; }
         public UserParameters Parameters { get; set; }
+        public ICollection<Activity> Activities { get; set; }
         public string Image { get; set; }
         
         public User(string email, string password)

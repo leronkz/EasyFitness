@@ -1,4 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Dtos.Activity;
 using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.DomainModels.Models;
 
@@ -65,6 +66,38 @@ namespace Easy.Fitness.Application.Extensions
             {
                 Weight = entity.Weight,
                 Height = entity.Height,
+            };
+        }
+
+        public static Activity ToEntity(this ActivityDto dto)
+        {
+            if(dto == null)
+            {
+                return null;
+            }
+            return new Activity
+            (
+                dto.Date,
+                dto.Type,
+                dto.Name,
+                dto.Calories,
+                dto.Duration
+            );
+        }
+        public static ActivityDto ToDto(this Activity entity)
+        {
+            if(entity == null)
+            {
+                return null;
+            }
+            return new ActivityDto
+            {
+                Id = entity.Id,
+                Date = entity.Date,
+                Type = entity.Type,
+                Name = entity.Name,
+                Calories = entity.Calories,
+                Duration = entity.Duration
             };
         }
     }
