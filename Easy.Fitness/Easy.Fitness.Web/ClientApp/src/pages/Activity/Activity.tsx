@@ -10,11 +10,13 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { StyledTooltip } from '../../components/StyledTooltip';
 import { useState } from 'react';
 import ActivityComponent from './components/ActivityComponent';
+import NewActivity from './components/NewActivity';
 
 export default function Activity() {
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<string>('asc');
-  
+  const [openNewActivity, setOpenNewActivity] = useState<boolean>(false);
+
   const handleSortClick = (column: string) => {
     if (column === sortColumn) {
       setSortDirection(
@@ -60,6 +62,7 @@ export default function Activity() {
         <Header title={"Twoja aktywność"} />
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <NewActivity open={openNewActivity} onClose={() => setOpenNewActivity(false)} />
           <Box className={styles.activityPanel}>
             <Box sx={{ display: 'flex', alignSelf: 'flex-start', alignItems: 'center', justifyContent: 'space-between', width: "100%" }}>
               <Box sx={{ display: 'flex' }}>
@@ -70,6 +73,7 @@ export default function Activity() {
                 <StyledTooltip title={"Dodaj nową aktywność"}>
                   <IconButton
                     size="medium"
+                    onClick={() => setOpenNewActivity(true)}
                   >
                     <AddIcon color="success" />
                   </IconButton>

@@ -46,7 +46,19 @@ export interface UserParametersDto {
 export interface UserImageDto {
   fileBytes: string;
 }
-
+export interface ActivityDto {
+  id?: string;
+  date: string;
+  type: string;
+  name: string;
+  calories: number;
+  duration: string;
+}
+export interface DurationInterface {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
 export const registerUser = async (
   newUser: LoginDto,
   cancellationSource?: CancellationSource
@@ -148,3 +160,12 @@ export const getUserAccountInfo = async (
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
+
+export const addNewActivity = async (
+  newActivity: ActivityDto,
+  cancellationSource?: CancellationSource
+): Promise<ActivityDto> => {
+  return post<ActivityDto>('api/v1/activity', newActivity, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+}
