@@ -59,6 +59,15 @@ export interface DurationInterface {
   minutes: number;
   seconds: number;
 }
+export interface PageDto<T> {
+  items: T[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
 export const registerUser = async (
   newUser: LoginDto,
   cancellationSource?: CancellationSource
@@ -165,8 +174,20 @@ export const addNewActivity = async (
   newActivity: ActivityDto,
   cancellationSource?: CancellationSource
 ): Promise<ActivityDto> => {
-  console.log(newActivity);
   return post<ActivityDto>('api/v1/activity', newActivity, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getActivityPage = async (
+  count: number,
+  isDescending: boolean,
+  page: number,
+  sortColumn: string,
+  cancellationSource?: CancellationSource
+): Promise<PageDto<ActivityDto>> => {
+  return get<PageDto<ActivityDto>>('api/v1/activity', {
+    params: { count, isDescending, page, sortColumn },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

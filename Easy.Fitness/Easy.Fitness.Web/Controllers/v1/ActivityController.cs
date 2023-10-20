@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Easy.Fitness.Application.Dtos;
+using Easy.Fitness.Application.Dtos.Criteria;
 
 namespace Easy.Fitness.Web.Controllers.v1
 {
@@ -30,6 +32,21 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return Ok(result);
             }
             catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("activity")]
+        public async Task<IActionResult> GetActivitiesPage([FromQuery] GetActivityPageCriteria criteria,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                PageDto<ActivityDto> result = await _activityService.GetActivityPageAsync(criteria, cancellationToken);
+                return Ok(result);
+            }
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }

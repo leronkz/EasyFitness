@@ -8,14 +8,36 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { StyledTooltip } from '../../components/StyledTooltip';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ActivityComponent from './components/ActivityComponent';
 import NewActivity from './components/NewActivity';
+import { ActivityDto, Error, PageDto, getActivityPage } from '../../api/easyFitnessApi';
+import { isCancel } from '../../api/axiosSource';
+import CustomizedSnackbar, { SnackbarInterface } from '../../components/CustomizedSnackbar';
+import { useCancellationToken } from '../../hooks/useCancellationToken';
+import CustomizedProgress from '../../components/CustomizedProgress';
+
+const COUNT: number = 7;
 
 export default function Activity() {
+
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<string>('asc');
   const [openNewActivity, setOpenNewActivity] = useState<boolean>(false);
+  const [activities, setActivities] = useState<PageDto<ActivityDto> | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const cancellation = useCancellationToken();
+
+  const onNextPageClick = () => {
+    setPage(page + 1);
+  };
+
+  const onPreviousPageClick = () => {
+    setPage(page - 1);
+  };
 
   const handleSortClick = (column: string) => {
     if (column === sortColumn) {
@@ -42,6 +64,44 @@ export default function Activity() {
     return null;
   };
 
+  const getActivities = async (cancelToken: any) => {
+    setIsLoading(true);
+    return getActivityPage(
+      COUNT,
+      (sortDirection === 'asc' ? false : true),
+      page,
+      sortColumn,
+      cancelToken
+    )
+      .then((items) => {
+        setActivities(items);
+        setIsLoading(false);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+        setIsLoading(false);
+      });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({
+      ...prev,
+      open: false
+    }));
+  };
+
+  useEffect(() => {
+    cancellation((cancelToken) => {
+      getActivities(cancelToken);
+    });
+  }, [sortColumn, sortDirection, page]);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -62,6 +122,7 @@ export default function Activity() {
         <Header title={"Twoja aktywność"} />
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackbar} />
           <NewActivity open={openNewActivity} onClose={() => setOpenNewActivity(false)} />
           <Box className={styles.activityPanel}>
             <Box sx={{ display: 'flex', alignSelf: 'flex-start', alignItems: 'center', justifyContent: 'space-between', width: "100%" }}>
@@ -88,6 +149,8 @@ export default function Activity() {
                 <StyledTooltip title={"Wyświetl wcześniejsze aktywności"}>
                   <IconButton
                     size="medium"
+                    onClick={onPreviousPageClick}
+                    disabled={!activities?.hasPreviousPage ? true : false}
                   >
                     <ChevronLeftIcon color="primary" />
                   </IconButton>
@@ -95,6 +158,8 @@ export default function Activity() {
                 <StyledTooltip title={"Wyświetl kolejne aktywności"}>
                   <IconButton
                     size="medium"
+                    onClick={onNextPageClick}
+                    disabled={!activities?.hasNextPage ? true : false}
                   >
                     <ChevronRightIcon color="primary" />
                   </IconButton>
@@ -111,10 +176,18 @@ export default function Activity() {
                 <p className={styles.activityTableColumnsText}>Akcja</p>
               </Box>
               <Divider />
-              <ActivityComponent id={'a'} date={"09.10.2023"} type={"Gym"} name={"Siłownia"} duration={"2h 35min"} calories={756} />
-              <Divider />
-              <ActivityComponent id={'a'} date={"08.12.2023"} type={"Swimming"} name={"Pływanie"} duration={"1h 30min"} calories={550} />
-              <Divider />
+              {isLoading ? (
+                <CustomizedProgress position={'center'} />
+              ) : (
+                activities?.items.map((activity) => {
+                  return (
+                    <React.Fragment key={activity.id}>
+                      <ActivityComponent key={activity.id} id={activity.id!} date={activity.date} type={activity.type} name={activity.name} duration={activity.duration} calories={activity.calories} />
+                      <Divider />
+                    </React.Fragment>
+                  )
+                })
+              )}
             </Box>
           </Box>
         </Container>
