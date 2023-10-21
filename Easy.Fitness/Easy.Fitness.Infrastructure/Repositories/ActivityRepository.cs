@@ -81,6 +81,23 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to count your activities", ex);
             }
         }
+
+        public async Task DeleteActivityAsync(Guid activityId,  CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = _context.Users
+                    .Include(u => u.Activities)
+                    .Single(u => u.Id == _userContext.CurrentUserId);
+                Activity activityToDelete = user.Activities.First(a => a.Id == activityId);
+                user.Activities.Remove(activityToDelete);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to delete your activity", ex);
+            }
+        }
         
         private static Expression<Func<Activity, object>> GetSortProperty(string sortColumn)
         {

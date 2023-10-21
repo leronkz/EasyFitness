@@ -2,6 +2,7 @@
 using Easy.Fitness.DomainModels.Models;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace Easy.Fitness.DomainModels.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Easy.Fitness.DomainModels.Interfaces
         Task<Activity> SaveNewActivityAsync(Activity activity, CancellationToken cancellationToken);
         Task<IEnumerable<Activity>> GetActivitiesAsync(int page, string sortColumn, bool isDescending, CancellationToken cancellationToken);
         Task<int> GetTotalCountAsync(CancellationToken cancellationToken);
+        Task DeleteActivityAsync(Guid id,  CancellationToken cancellationToken);
     }
 }

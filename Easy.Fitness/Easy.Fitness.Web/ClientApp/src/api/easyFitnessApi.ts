@@ -191,3 +191,12 @@ export const getActivityPage = async (
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
+
+export const deleteActivity = async (
+  id: string,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return deletion<void>(`api/v1/activity/${id}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};

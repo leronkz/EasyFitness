@@ -51,5 +51,19 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("activity/{id}")]
+        public async Task<IActionResult> DeleteActivity([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _activityService.DeleteActivityAsync(id, cancellationToken);
+                return Ok();
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

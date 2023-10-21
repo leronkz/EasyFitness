@@ -45,5 +45,10 @@ namespace Easy.Fitness.Application.Services
             };
             return activitiesPage;
         }
+
+        public async Task DeleteActivityAsync(Guid activityId, CancellationToken cancellationToken)
+        {
+            await _activityRepository.DeleteActivityAsync(activityId, cancellationToken);
+        }
     }
 }

@@ -64,7 +64,7 @@ export default function Activity() {
     return null;
   };
 
-  const getActivities = async (cancelToken: any) => {
+  const getActivitiesAction = async (cancelToken: any) => {
     setIsLoading(true);
     return getActivityPage(
       COUNT,
@@ -98,7 +98,7 @@ export default function Activity() {
 
   useEffect(() => {
     cancellation((cancelToken) => {
-      getActivities(cancelToken);
+      getActivitiesAction(cancelToken);
     });
   }, [sortColumn, sortDirection, page]);
 
