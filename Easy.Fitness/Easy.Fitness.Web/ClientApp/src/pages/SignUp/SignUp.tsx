@@ -13,6 +13,7 @@ import { isCancel } from "../../api/axiosSource";
 import { useCancellationToken } from "../../hooks/useCancellationToken";
 import CustomizedSnackbar, { SnackbarInterface } from "../../components/CustomizedSnackbar";
 import { useNavigate } from "react-router-dom";
+import CustomizedProgress from "../../components/CustomizedProgress";
 
 interface ValidFormInterface {
   isEmailValid: boolean;
@@ -48,6 +49,7 @@ export default function SignUp() {
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [isInvalidPassword, setIsInvalidPassword] = useState<boolean>(false);
+  const [isRequest, setIsRequest] = useState<boolean>(false);
 
   const cancellation = useCancellationToken();
   const navigate = useNavigate();
@@ -126,6 +128,7 @@ export default function SignUp() {
   };
 
   const registerUserAction = async (cancelToken: any) => {
+    setIsRequest(true);
     const loginDto: LoginDto = {
       email: signUpForm.email,
       password: signUpForm.password
@@ -135,6 +138,7 @@ export default function SignUp() {
       cancelToken
     )
       .then(() => {
+        setIsRequest(false);
         setSnackbar({
           open: true,
           type: "success",
@@ -152,6 +156,7 @@ export default function SignUp() {
             message: e.response.data
           });
         }
+        setIsRequest(false);
       });
   };
 
@@ -224,7 +229,11 @@ export default function SignUp() {
             }
             placeholder="repeat password"
           />
-          <Button id={styles.signUpButton} onClick={onRegisterClick}>Sign up</Button>
+          {!isRequest ? (
+            <Button id={styles.signUpButton} onClick={onRegisterClick}>Sign up</Button>
+          ) : (
+            <CustomizedProgress position={'center'} />
+          )}
         </Box>
         <Box className={styles.registerFooter}>
           <Divider sx={{ width: "100%" }}><p className={styles.dividerText}>or Sign up with</p></Divider>
