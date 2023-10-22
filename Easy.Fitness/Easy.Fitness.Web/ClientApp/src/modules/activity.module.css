@@ -34,3 +34,7 @@
   cursor: pointer;
   text-align: center;
 }
+
+#selectOptions {
+  font-family: 'Lexend';
+}

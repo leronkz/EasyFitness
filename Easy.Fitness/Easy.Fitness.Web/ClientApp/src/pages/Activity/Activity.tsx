@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline, Divider, IconButton, Toolbar } from '@mui/material';
+import { Box, Container, CssBaseline, Divider, IconButton, NativeSelect, SelectChangeEvent, Toolbar } from '@mui/material';
 import Navbar from '../../components/Navbar';
 import Header from '../../components/Header';
 import styles from '../../modules/activity.module.css';
@@ -28,6 +28,7 @@ export default function Activity() {
   const [page, setPage] = useState<number>(1);
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [searchType, setSearchType] = useState<string>('All');
 
   const cancellation = useCancellationToken();
 
@@ -64,6 +65,10 @@ export default function Activity() {
     return null;
   };
 
+  const handleSearchTypeChange = (e: any) => {
+    setSearchType(e.target.value as string);
+  }
+
   const getActivitiesAction = async (cancelToken: any) => {
     setIsLoading(true);
     return getActivityPage(
@@ -71,6 +76,7 @@ export default function Activity() {
       (sortDirection === 'asc' ? false : true),
       page,
       sortColumn,
+      searchType,
       cancelToken
     )
       .then((items) => {
@@ -100,7 +106,7 @@ export default function Activity() {
     cancellation((cancelToken) => {
       getActivitiesAction(cancelToken);
     });
-  }, [sortColumn, sortDirection, page]);
+  }, [sortColumn, sortDirection, page, searchType]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -131,19 +137,30 @@ export default function Activity() {
                 <p>Tabela aktywności</p>
               </Box>
               <Box sx={{ display: 'flex', alignItems: "center" }}>
+                <NativeSelect
+                  value={searchType}
+                  sx={{
+                    fontFamily: 'Lexend'
+                  }}
+                  onChange={handleSearchTypeChange}
+                >
+                  <option id={styles.selectOptions} value={"All"}>Wszystkie aktywności</option>
+                  <option id={styles.selectOptions} value={"Gym"}>Siłownia</option>
+                  <option id={styles.selectOptions} value={"Swimming"}>Pływanie</option>
+                  <option id={styles.selectOptions} value={"Running"}>Bieganie</option>
+                  <option id={styles.selectOptions} value={"Cycling"}>Jazda na rowerze</option>
+                  <option id={styles.selectOptions} value={"Trekking"}>Trekking</option>
+                  <option id={styles.selectOptions} value={"Walking"}>Spacer</option>
+                  <option id={styles.selectOptions} value={"Football"}>Piłka nożna</option>
+                  <option id={styles.selectOptions} value={"Volleyball"}>Siatkówka</option>
+                  <option id={styles.selectOptions} value={"Other"}>Styl dowolny</option>
+                </NativeSelect>
                 <StyledTooltip title={"Dodaj nową aktywność"}>
                   <IconButton
                     size="medium"
                     onClick={() => setOpenNewActivity(true)}
                   >
                     <AddIcon color="success" />
-                  </IconButton>
-                </StyledTooltip>
-                <StyledTooltip title={"Wyszukaj aktywność"}>
-                  <IconButton
-                    size="medium"
-                  >
-                    <SearchIcon color="primary" />
                   </IconButton>
                 </StyledTooltip>
                 <StyledTooltip title={"Wyświetl wcześniejsze aktywności"}>

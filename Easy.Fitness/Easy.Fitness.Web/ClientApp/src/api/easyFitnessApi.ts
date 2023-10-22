@@ -184,10 +184,11 @@ export const getActivityPage = async (
   isDescending: boolean,
   page: number,
   sortColumn: string,
+  searchType?: string,
   cancellationSource?: CancellationSource
 ): Promise<PageDto<ActivityDto>> => {
   return get<PageDto<ActivityDto>>('api/v1/activity', {
-    params: { count, isDescending, page, sortColumn },
+    params: { count, isDescending, page, sortColumn, searchType },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

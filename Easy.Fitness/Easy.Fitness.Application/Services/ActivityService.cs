@@ -33,8 +33,8 @@ namespace Easy.Fitness.Application.Services
         
         public async Task<PageDto<ActivityDto>> GetActivityPageAsync(GetActivityPageCriteria criteria, CancellationToken cancellationToken)
         {
-            IEnumerable<Activity> result = await _activityRepository.GetActivitiesAsync(criteria.Page,
-                criteria.SortColumn, criteria.IsDescending, cancellationToken);
+            IEnumerable<Activity> result = await _activityRepository.GetActivitiesAsync(
+                criteria.Page, criteria.SortColumn, criteria.IsDescending, criteria.SearchType, cancellationToken);
             int totalCount = await _activityRepository.GetTotalCountAsync(cancellationToken);
             PageDto<ActivityDto> activitiesPage = new PageDto<ActivityDto>
             {
