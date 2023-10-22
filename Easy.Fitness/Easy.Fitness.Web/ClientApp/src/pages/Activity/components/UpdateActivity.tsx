@@ -137,7 +137,7 @@ export default function UpdateActivity({ open, onClose, activity }: UpdateActivi
         <Fade in={open}>
           <Box className={styles.updateActivityContainer}>
             <Typography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <p id={styles.updateActivityHeaderText}>Dodaj nową aktywność</p>
+              <p id={styles.updateActivityHeaderText}>Zaaktualizuj aktywność</p>
               <StyledTooltip title={"Zamknij okno"}>
                 <IconButton
                   size="medium"

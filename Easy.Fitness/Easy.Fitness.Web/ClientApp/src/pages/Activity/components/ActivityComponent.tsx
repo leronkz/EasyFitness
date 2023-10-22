@@ -10,6 +10,7 @@ import { Error } from '../../../api/easyFitnessApi';
 import { useCancellationToken } from '../../../hooks/useCancellationToken';
 import Deletion from '../../../components/Deletion';
 import UpdateActivity from './UpdateActivity';
+
 interface ActivityInterface {
   id: string;
   date: string;
@@ -24,7 +25,7 @@ export default function ActivityComponent({ id, date, type, name, duration, calo
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [openDeletion, setOpenDeletion] = useState<boolean>(false);
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
-  const activity: ActivityDto = {id: id, date: date, type: type, name: name, duration: duration, calories: calories};
+  const activity: ActivityDto = { id: id, date: date, type: type, name: name, duration: duration, calories: calories };
   const [isDeletingActivity, setIsDeletingActivity] = useState<boolean>(false);
   const cancellation = useCancellationToken();
 

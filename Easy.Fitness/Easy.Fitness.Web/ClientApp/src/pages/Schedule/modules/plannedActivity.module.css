@@ -1,17 +1,17 @@
-.activityWrapper {
+.plannedWrapper {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   padding: 0.5ch;
   width: 100%;
   font-family: 'Lexend';
   align-items: center;
 }
 
-.activityText {
+.plannedText {
   text-align: center;
 }
 
-.activityActions {
+.plannedActions {
   display: flex;
   justify-content: center;
 }

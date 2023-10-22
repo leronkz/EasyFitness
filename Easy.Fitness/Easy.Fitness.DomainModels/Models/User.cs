@@ -14,6 +14,7 @@ namespace Easy.Fitness.DomainModels.Models
         public string BirthDate { get; set; }
         public UserParameters Parameters { get; set; }
         public ICollection<Activity> Activities { get; set; }
+        public ICollection<PlannedActivity> PlannedActivities { get; set; }
         public string Image { get; set; }
         
         public User(string email, string password)
