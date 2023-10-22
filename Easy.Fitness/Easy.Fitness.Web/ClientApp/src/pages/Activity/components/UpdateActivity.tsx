@@ -1,11 +1,11 @@
 import { Backdrop, Box, Button, Divider, Fade, Grid, IconButton, InputLabel, MenuItem, Modal, OutlinedInput, Select, SelectChangeEvent, Typography } from '@mui/material';
-import styles from './modules/newActivity.module.css';
+import styles from './modules/updateActivity.module.css';
 import { useState } from 'react';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DurationPicker from 'react-duration-picker';
-import { ActivityDto, DurationInterface, Error, addNewActivity } from '../../../api/easyFitnessApi';
+import { ActivityDto, DurationInterface, Error, updateActivity } from '../../../api/easyFitnessApi';
 import { StyledTooltip } from '../../../components/StyledTooltip';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomizedSnackbar, { SnackbarInterface } from '../../../components/CustomizedSnackbar';
@@ -13,16 +13,17 @@ import { isCancel } from '../../../api/axiosSource';
 import { useCancellationToken } from '../../../hooks/useCancellationToken';
 import CustomizedProgress from '../../../components/CustomizedProgress';
 
-interface NewActivityProps {
+interface UpdateActivityProps {
   open: boolean;
   onClose: () => void;
+  activity: ActivityDto;
 }
 
-export default function NewActivity({ open, onClose }: NewActivityProps) {
+export default function UpdateActivity({ open, onClose, activity }: UpdateActivityProps) {
 
-  const [type, setType] = useState<string>('');
+  const [type, setType] = useState<string>(activity.type);
   const [duration, setDuration] = useState<DurationInterface>({ hours: 0, minutes: 0, seconds: 0 });
-  const [newActivity, setNewActivity] = useState<ActivityDto>({ date: '', type: '', name: '0', calories: 0, duration: '' });
+  const [newActivity, setNewActivity] = useState<ActivityDto>(activity);
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [isSubmittingActivity, setIsSubmittingActivity] = useState<boolean>(false);
 
@@ -77,9 +78,10 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
     }));
   };
 
-  const addNewActivityAction = async (cancelToken: any) => {
+  const updateActivityAction = async (cancelToken: any) => {
     setIsSubmittingActivity(true);
-    return addNewActivity(
+    return updateActivity(
+      activity.id!,
       newActivity,
       cancelToken
     )
@@ -87,9 +89,8 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
         setSnackbar({
           open: true,
           type: "success",
-          message: "New activity has been saved successfully"
+          message: "Your activity has been updated successfully"
         });
-        setIsSubmittingActivity(false);
         setTimeout(() => {
           setSnackbar(prev => ({
             ...prev,
@@ -97,9 +98,10 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
           }));
           onClose();
         }, 2000);
+        setIsSubmittingActivity(false);
       })
       .catch((e: Error) => {
-        if (!isCancel(e)) {
+        if(!isCancel(e)) {
           setSnackbar({
             open: true,
             type: "error",
@@ -107,14 +109,14 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
           });
         }
         setIsSubmittingActivity(false);
-      });
+      })
   };
 
-  const onSaveNewActivityClick = async () => {
-    cancellation((cancelToken) => {
-      addNewActivityAction(cancelToken);
-    });
-  };
+    const onUpdateActivityClick = async () => {
+      cancellation((cancelToken) => {
+        updateActivityAction(cancelToken);
+      });
+    };
 
   if (!open) {
     return null;
@@ -133,9 +135,9 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
           },
         }}>
         <Fade in={open}>
-          <Box className={styles.newActivityContainer}>
+          <Box className={styles.updateActivityContainer}>
             <Typography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <p id={styles.newActivityHeaderText}>Dodaj nową aktywność</p>
+              <p id={styles.updateActivityHeaderText}>Dodaj nową aktywność</p>
               <StyledTooltip title={"Zamknij okno"}>
                 <IconButton
                   size="medium"
@@ -146,7 +148,7 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
               </StyledTooltip>
             </Typography>
             <Divider sx={{ borderBottomWidth: 2 }} />
-            <Box className={styles.newActivityForm}>
+            <Box className={styles.updateActivityForm}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <InputLabel>
@@ -158,8 +160,9 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
                   <OutlinedInput
                     required
                     type='date'
-                    className={styles.newActivityInput}
+                    className={styles.updateActivityInput}
                     onChange={handleDateChange}
+                    value={newActivity.date}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -194,8 +197,9 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
                     required
                     fullWidth
                     placeholder='Nowa aktywność'
-                    className={styles.newActivityInput}
+                    className={styles.updateActivityInput}
                     onChange={handleNameChange}
+                    value={newActivity.name}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -209,10 +213,11 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
                     <OutlinedInput
                       required
                       placeholder='500'
-                      className={styles.newActivityInput}
+                      className={styles.updateActivityInput}
                       type='number'
                       fullWidth
                       onChange={handleCaloriesChange}
+                      value={newActivity.calories}
                     />
                     <span style={{ fontFamily: 'Lexend', marginLeft: '1ch' }}>kcal</span>
                   </Box>
@@ -232,7 +237,7 @@ export default function NewActivity({ open, onClose }: NewActivityProps) {
                 </Grid>
               </Grid>
               {!isSubmittingActivity ? (
-                <Button id={styles.saveButton} onClick={onSaveNewActivityClick}>Zapisz</Button>
+                <Button id={styles.saveButton} onClick={onUpdateActivityClick}>Zapisz</Button>
               ) : (
                 <CustomizedProgress position='flex-end' />
               )}

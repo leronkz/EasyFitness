@@ -59,6 +59,15 @@ export interface DurationInterface {
   minutes: number;
   seconds: number;
 }
+export interface PageDto<T> {
+  items: T[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
 export const registerUser = async (
   newUser: LoginDto,
   cancellationSource?: CancellationSource
@@ -168,4 +177,37 @@ export const addNewActivity = async (
   return post<ActivityDto>('api/v1/activity', newActivity, {
     cancelToken: cancellationSource?.tokenSource.token
   });
-}
+};
+
+export const getActivityPage = async (
+  count: number,
+  isDescending: boolean,
+  page: number,
+  sortColumn: string,
+  searchType?: string,
+  cancellationSource?: CancellationSource
+): Promise<PageDto<ActivityDto>> => {
+  return get<PageDto<ActivityDto>>('api/v1/activity', {
+    params: { count, isDescending, page, sortColumn, searchType },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const deleteActivity = async (
+  id: string,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return deletion<void>(`api/v1/activity/${id}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const updateActivity = async (
+  id: string,
+  activity: ActivityDto,
+  cancellationSource?: CancellationSource
+): Promise<ActivityDto> => {
+  return put<ActivityDto>(`api/v1/activity/${id}`, activity, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};

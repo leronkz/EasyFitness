@@ -17,6 +17,8 @@
   width: 90%;
   border-radius: 15px;
   height: 80%;
+  display: flex;
+  flex-direction: column;
 }
 
 .activityTableColumns {
@@ -31,4 +33,8 @@
 .activityTableColumnsText {
   cursor: pointer;
   text-align: center;
+}
+
+#selectOptions {
+  font-family: 'Lexend';
 }

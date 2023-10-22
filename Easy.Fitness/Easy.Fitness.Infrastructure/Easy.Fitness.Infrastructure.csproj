@@ -34,8 +34,4 @@
     <ProjectReference Include="..\Easy.Fitness.DomainModels\Easy.Fitness.DomainModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

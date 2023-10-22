@@ -2,12 +2,20 @@ import { Box, CssBaseline, Toolbar, Container, Grid, Typography, Divider } from 
 import styles from '../../modules/dashboard.module.css'
 import Navbar from '../../components/Navbar';
 import Header from '../../components/Header';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import nextIcon from '../../img/assets/dashboard/go_next.svg';
 import gymIcon from '../../img/assets/activity/gym.svg';
 import energyIcon from '../../img/assets/diet/energy.svg'
+import { logoutUser } from '../../api/easyFitnessApi';
 
 export default function Dashboard() {
+
+  const navigate = useNavigate();
+
+  const onLogoutClick = () => {
+    logoutUser();
+    navigate("/");
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -81,7 +89,7 @@ export default function Dashboard() {
                   </Box>
                   <Divider sx={{ mt: "1ch", borderBottomWidth: 2 }} />
                   <Box className={styles.tileBody}>
-                    <Box className={styles.tileActivity} sx={{gridTemplateColumns: "repeat(2, 1fr) !important"}}>
+                    <Box className={styles.tileActivity} sx={{ gridTemplateColumns: "repeat(2, 1fr) !important" }}>
                       <Box className={styles.activity} sx={{ background: "rgba(255, 251, 217, 1) !important" }}>
                         <img id={styles.activityIcon} alt="activity" src={energyIcon} />
                       </Box>
@@ -107,7 +115,7 @@ export default function Dashboard() {
             </Grid>
             <Grid item xs={12} md={8} lg={4}>
               <Link to="/account" id={styles.link}>
-                <Box className={styles.tile} sx={{ background: "rgba(90, 128, 226, 0.50)", height:'fit-content !important'}}>
+                <Box className={styles.tile} sx={{ background: "rgba(90, 128, 226, 0.50)", height: 'fit-content !important' }}>
                   <Box className={styles.tileHeader}>
                     <Typography id={styles.tileTextHeader}>Twój profil</Typography>
                     <img id={styles.nextIcon} alt="Go" src={nextIcon} />
@@ -117,7 +125,7 @@ export default function Dashboard() {
             </Grid>
             <Grid item xs={12} md={8} lg={4}>
               <Link to="/settings" id={styles.link}>
-                <Box className={styles.tile} sx={{ background: "rgba(203, 216, 249, 0.50)", height:'fit-content !important'}}>
+                <Box className={styles.tile} sx={{ background: "rgba(203, 216, 249, 0.50)", height: 'fit-content !important' }}>
                   <Box className={styles.tileHeader}>
                     <Typography id={styles.tileTextHeader}>Ustawienia</Typography>
                     <img id={styles.nextIcon} alt="Go" src={nextIcon} />
@@ -126,8 +134,8 @@ export default function Dashboard() {
               </Link>
             </Grid>
             <Grid item xs={12} md={8} lg={4}>
-              <Link to="/" id={styles.link}>
-                <Box className={styles.tile} sx={{ background: "rgba(203, 249, 240, 0.50)", height:'fit-content !important'}}>
+              <Link to="/" id={styles.link} onClick={onLogoutClick}>
+                <Box className={styles.tile} sx={{ background: "rgba(203, 249, 240, 0.50)", height: 'fit-content !important' }}>
                   <Box className={styles.tileHeader}>
                     <Typography id={styles.tileTextHeader}>Wyloguj się</Typography>
                     <img id={styles.nextIcon} alt="Go" src={nextIcon} />

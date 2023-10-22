@@ -356,7 +356,7 @@ export default function Settings() {
                 {!isSubmittingUserInfo ? (
                   <Button id={styles.saveButton} onClick={onUpdateUserInfoClick}>Zastosuj zmiany</Button>
                 ) : (
-                  <CustomizedProgress position='flex-end'/>
+                  <CustomizedProgress position='flex-end' />
                 )}
               </Box>
             </Box>

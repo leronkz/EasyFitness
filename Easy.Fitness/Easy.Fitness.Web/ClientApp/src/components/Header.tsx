@@ -1,9 +1,12 @@
-import {Toolbar, Typography, Menu, IconButton, Avatar, Button } from "@mui/material";
+import { Toolbar, Typography, IconButton, Avatar, Button } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import styles from '../modules/header.module.css'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TestAvatar from '../img/assets/header/test_photo.jpg';
+import { UserInfoDto, getUserInfo, getUserPicture } from "../api/easyFitnessApi";
+import { useState, useEffect } from 'react';
+import DefaultProfilePicture from '../img/assets/account/default.svg';
+import { useCancellationToken } from "../hooks/useCancellationToken";
 
 const drawerWidth: number = 240;
 
@@ -28,7 +31,56 @@ const AppBar = styled(MuiAppBar, {
 
 
 
-function Header({ title }: HeaderInterface) {
+export default function Header({ title }: HeaderInterface) {
+
+  const [photoUrl, setPhotoUrl] = useState<any>(DefaultProfilePicture);
+  const [user, setUser] = useState<UserInfoDto | null>(null);
+
+  const cancellation = useCancellationToken();
+
+  const getUserProfilePictureAction = async (cancelToken: any) => {
+    return getUserPicture(
+      cancelToken
+    )
+      .then((img) => {
+        const byteChars = atob(img.fileBytes);
+        const byteNums = new Array(byteChars.length);
+        for (let i = 0; i < byteChars.length; i++) {
+          byteNums[i] = byteChars.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNums);
+        const blob = new Blob([byteArray], { type: 'image/jpg' });
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setPhotoUrl(e.target!.result);
+        }
+        reader.readAsDataURL(blob);
+      })
+      .catch((e: Error) => {
+
+      });
+  };
+
+  const getUserInfoAction = async (cancelToken: any) => {
+    return getUserInfo(
+      cancelToken
+    )
+      .then((userInfo) => {
+        setUser(userInfo);
+      })
+      .catch((e: Error) => {
+
+      });
+  };
+
+  useEffect(() => {
+    cancellation((cancelToken) => {
+      getUserProfilePictureAction(cancelToken);
+      getUserInfoAction(cancelToken);
+    })
+  }, []);
+
   return (
     <AppBar position="absolute" open={true} sx={{ background: "white" }}>
       <Toolbar
@@ -46,11 +98,9 @@ function Header({ title }: HeaderInterface) {
         >
           {title}
         </Typography>
-        <Button className={styles.avatarBox} onClick={(e: any) => {e.stopPropagation();}}>
-          <Avatar alt="user" src={TestAvatar}>
-            
-          </Avatar>
-          <Typography sx={{ fontFamily: 'Lexend', color: "black", ml: "1ch" }}>Mateusz Owsiak</Typography>
+        <Button className={styles.avatarBox} onClick={(e: any) => { e.stopPropagation(); }}>
+          <Avatar alt="user" src={photoUrl} />
+          <Typography sx={{ fontFamily: 'Lexend', color: "black", ml: "1ch" }}>{user?.firstName && user.lastName ? (user?.firstName + " " + user?.lastName) : ("")}</Typography>
           <IconButton
             size="small"
             color="primary"
@@ -63,5 +113,3 @@ function Header({ title }: HeaderInterface) {
     </AppBar>
   )
 }
-
-export default Header;

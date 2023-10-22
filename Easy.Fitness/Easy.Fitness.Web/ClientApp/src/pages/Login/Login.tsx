@@ -11,12 +11,14 @@ import { Error, LoginDto, loginUser } from '../../api/easyFitnessApi';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
 import { isCancel } from '../../api/axiosSource';
 import CustomizedSnackbar, { SnackbarInterface } from '../../components/CustomizedSnackbar';
+import CustomizedProgress from '../../components/CustomizedProgress';
 
 export default function Login() {
 
   const [userCredentials, setUserCredentials] = useState<LoginDto>({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
+  const [isRequest, setIsRequest] = useState<boolean>(false);
 
   const cancellation = useCancellationToken();
   const navigate = useNavigate();
@@ -47,11 +49,13 @@ export default function Login() {
   }
 
   const loginUserAction = async (cancelToken: any) => {
+    setIsRequest(true);
     return loginUser(
       userCredentials,
       cancelToken
     )
       .then((accessToken) => {
+        setIsRequest(false);
         localStorage.setItem("token", accessToken.accessToken);
         setTimeout(() => {
           navigate("/dashboard")
@@ -65,6 +69,7 @@ export default function Login() {
             message: e.response.data
           });
         }
+        setIsRequest(false);
       });
   };
 
@@ -111,7 +116,11 @@ export default function Login() {
             }
             placeholder="password"
           />
-          <Button id={styles.signInButton} onClick={onLoginClick}>Sign in</Button>
+          {!isRequest ? (
+            <Button id={styles.signInButton} onClick={onLoginClick}>Sign in</Button>
+          ) : (
+            <CustomizedProgress position={'center'} />
+          )}
         </Box>
         <Box className={styles.loginFooter}>
           <Divider sx={{ width: "100%" }}>
