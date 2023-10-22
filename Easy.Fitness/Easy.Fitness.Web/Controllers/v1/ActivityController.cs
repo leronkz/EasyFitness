@@ -65,5 +65,22 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("activity/{id}")]
+        public async Task<IActionResult> UpdateActivity(
+            [FromRoute] Guid id, 
+            [FromBody] ActivityDto activity, 
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                ActivityDto result = await _activityService.UpdateActivityAsync(id, activity, cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

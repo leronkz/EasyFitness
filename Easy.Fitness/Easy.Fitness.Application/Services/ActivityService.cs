@@ -50,5 +50,12 @@ namespace Easy.Fitness.Application.Services
         {
             await _activityRepository.DeleteActivityAsync(activityId, cancellationToken);
         }
+
+        public async Task<ActivityDto> UpdateActivityAsync(Guid id, ActivityDto activity, CancellationToken cancellationToken)
+        {
+            Activity activityToUpdate = activity.ToEntity();
+            Activity updatedActivity = await _activityRepository.UpdateActivityAsync(id, activityToUpdate, cancellationToken);
+            return updatedActivity.ToDto();
+        }
     }
 }

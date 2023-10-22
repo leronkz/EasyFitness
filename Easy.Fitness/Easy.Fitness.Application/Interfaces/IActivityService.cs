@@ -12,5 +12,6 @@ namespace Easy.Fitness.Application.Interfaces
         Task<ActivityDto> SaveNewActivityAsync(ActivityDto activity, CancellationToken cancellationToken);
         Task<PageDto<ActivityDto>> GetActivityPageAsync(GetActivityPageCriteria criteria, CancellationToken cancellationToken);
         Task DeleteActivityAsync(Guid activityId,  CancellationToken cancellationToken);
+        Task<ActivityDto> UpdateActivityAsync(Guid id, ActivityDto activity, CancellationToken cancellationToken);
     }
 }

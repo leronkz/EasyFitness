@@ -200,3 +200,13 @@ export const deleteActivity = async (
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
+
+export const updateActivity = async (
+  id: string,
+  activity: ActivityDto,
+  cancellationSource?: CancellationSource
+): Promise<ActivityDto> => {
+  return put<ActivityDto>(`api/v1/activity/${id}`, activity, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};

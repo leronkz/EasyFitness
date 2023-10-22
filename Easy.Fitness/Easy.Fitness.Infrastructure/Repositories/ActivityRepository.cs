@@ -99,6 +99,26 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
         
+        public async Task<Activity> UpdateActivityAsync(Guid id, Activity activity, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Activity activityToUpdate = await _context.Activities.SingleAsync(x => x.Id == id, cancellationToken);
+                activityToUpdate.Date = activity.Date;
+                activityToUpdate.Type = activity.Type;
+                activityToUpdate.Name = activity.Name;
+                activityToUpdate.Duration = activity.Duration;
+                activityToUpdate.Calories = activity.Calories;
+                _context.Update(activityToUpdate);
+                await _context.SaveChangesAsync(cancellationToken);
+                return activityToUpdate;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to update your activity", ex);
+            }
+        }
+
         private static Expression<Func<Activity, object>> GetSortProperty(string sortColumn)
         {
             return sortColumn switch

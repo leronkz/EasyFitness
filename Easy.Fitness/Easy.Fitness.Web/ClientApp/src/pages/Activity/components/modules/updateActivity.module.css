@@ -1,0 +1,50 @@
+.updateActivityContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    background: white;
+    border: 1px solid #000;
+    border-radius: 15px;
+    padding: 1em 1em;
+  }
+  
+  #updateActivityHeaderText {
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: black;
+  }
+  
+  .updateActivityForm {
+    margin-top: 2ch;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .selectOptions {
+    font-family: 'Lexend';
+  }
+  
+  .updateActivityInput {
+    font-family: 'Lexend';
+  }
+  
+  #saveButton {
+    margin-top: 1ch;
+    text-transform: none !important;
+    font-family: 'Lexend';
+    color: white;
+    border-radius: 30px;
+    align-self: flex-end;
+    background: #41D4F5;
+    transition: color 0.3s ease, background 0.3s ease;
+    width: 40%;
+  }
+  
+  #saveButton:hover {
+    background: #82F6AD;
+    color: black;
+  }

@@ -12,5 +12,6 @@ namespace Easy.Fitness.DomainModels.Interfaces
         Task<IEnumerable<Activity>> GetActivitiesAsync(int page, string sortColumn, bool isDescending, CancellationToken cancellationToken);
         Task<int> GetTotalCountAsync(CancellationToken cancellationToken);
         Task DeleteActivityAsync(Guid id,  CancellationToken cancellationToken);
+        Task<Activity> UpdateActivityAsync(Guid id, Activity activity, CancellationToken cancellationToken);
     }
 }
