@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useState } from 'react';
+import NewPlannedActivity from "./components/NewPlannedActivity";
 
 const COUNT: number = 7;
 
@@ -17,7 +18,8 @@ export default function Schedule() {
   const [sortDirection, setSortDirection] = useState<string>('asc');
   const [page, setPage] = useState<number>(1);
   const [plannedActivites, setPlannedActivities] = useState<any>(null);
-
+  const [openNewPlannedActivity, setOpenNewPlannedActivity] = useState<boolean>(false);
+  
   const onNextPageClick = () => {
     setPage(page + 1);
   };
@@ -71,6 +73,7 @@ export default function Schedule() {
         <Header title={"Twój plan"} />
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <NewPlannedActivity open={openNewPlannedActivity} onClose={() => setOpenNewPlannedActivity(false)} />
           <Box className={styles.schedulePanel}>
             <Box sx={{ display: 'flex', alignSelf: 'flex-start', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
               <Box sx={{ display: 'flex' }}>
@@ -81,6 +84,7 @@ export default function Schedule() {
                 <StyledTooltip title={"Dodaj"}>
                   <IconButton
                     size="medium"
+                    onClick={() => setOpenNewPlannedActivity(true)}
                   >
                     <AddIcon color="success" />
                   </IconButton>
