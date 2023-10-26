@@ -38,7 +38,7 @@ namespace Easy.Fitness.Web.Controllers.v1
         }
 
         [HttpGet("activity")]
-        public async Task<IActionResult> GetActivitiesPage([FromQuery] GetActivityPageCriteria criteria,
+        public async Task<IActionResult> GetActivitiesPage([FromQuery] GetPageCriteria criteria,
             CancellationToken cancellationToken)
         {
             try

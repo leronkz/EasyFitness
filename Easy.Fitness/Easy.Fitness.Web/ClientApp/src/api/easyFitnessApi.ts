@@ -59,6 +59,12 @@ export interface DurationInterface {
   minutes: number;
   seconds: number;
 }
+export interface ScheduleDto {
+  id?: string;
+  date: string;
+  type: string;
+  note: string;
+}
 export interface PageDto<T> {
   items: T[];
   page: number;
@@ -208,6 +214,29 @@ export const updateActivity = async (
   cancellationSource?: CancellationSource
 ): Promise<ActivityDto> => {
   return put<ActivityDto>(`api/v1/activity/${id}`, activity, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const addNewSchedule = async (
+  newSchedule: ScheduleDto,
+  cancellationSource?: CancellationSource
+): Promise<ScheduleDto> => {
+  return post<ScheduleDto>('api/v1/schedule', newSchedule, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getSchedulePage = async (
+  count: number,
+  isDescending: boolean,
+  page: number,
+  sortColumn: string,
+  searchType?: string,
+  cancellationSource?: CancellationSource
+): Promise<PageDto<ScheduleDto>> => {
+  return get<PageDto<ScheduleDto>>('api/v1/schedule', {
+    params: { count, isDescending, page, sortColumn, searchType },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

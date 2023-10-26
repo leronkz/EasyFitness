@@ -1,5 +1,6 @@
 ﻿using Easy.Fitness.Application.Dtos;
 using Easy.Fitness.Application.Dtos.Activity;
+using Easy.Fitness.Application.Dtos.Schedule;
 using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.DomainModels.Models;
 
@@ -9,7 +10,7 @@ namespace Easy.Fitness.Application.Extensions
     {
         public static UserDto ToDto(this User user)
         {
-            if(user == null)
+            if (user == null)
             {
                 return null;
             }
@@ -26,7 +27,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static UserInfoDto toDto(this User user)
         {
-            if(user == null)
+            if (user == null)
             {
                 return null;
             }
@@ -41,7 +42,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static User ToEntity(this UserInfoDto dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 return null;
             }
@@ -71,7 +72,7 @@ namespace Easy.Fitness.Application.Extensions
 
         public static Activity ToEntity(this ActivityDto dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 return null;
             }
@@ -86,7 +87,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static ActivityDto ToDto(this Activity entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 return null;
             }
@@ -98,6 +99,33 @@ namespace Easy.Fitness.Application.Extensions
                 Name = entity.Name,
                 Calories = entity.Calories,
                 Duration = entity.Duration
+            };
+        }
+        public static PlannedActivity ToEntity(this ScheduleDto dto)
+        {
+            if (dto == null)
+            {
+                return null;
+            }
+            return new PlannedActivity
+            (
+                dto.Date,
+                dto.Type,
+                dto.Note
+            );
+        }
+        public static ScheduleDto ToDto(this PlannedActivity entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            return new ScheduleDto
+            {
+                Id = entity.Id,
+                Date = entity.Date,
+                Type = entity.Type,
+                Note = entity.Note
             };
         }
     }

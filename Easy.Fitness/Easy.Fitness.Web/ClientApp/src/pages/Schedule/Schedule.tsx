@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline, Divider, IconButton, Toolbar } from "@mui/material";
+import { Box, Container, CssBaseline, Divider, IconButton, NativeSelect, Toolbar } from "@mui/material";
 import Navbar from "../../components/Navbar";
 import styles from "../../modules/schedule.module.css";
 import Header from "../../components/Header";
@@ -7,8 +7,14 @@ import { StyledTooltip } from "../../components/StyledTooltip";
 import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NewPlannedActivity from "./components/NewPlannedActivity";
+import { Error, PageDto, ScheduleDto, getSchedulePage } from "../../api/easyFitnessApi";
+import { isCancel } from "../../api/axiosSource";
+import CustomizedSnackbar, { SnackbarInterface } from "../../components/CustomizedSnackbar";
+import { useCancellationToken } from "../../hooks/useCancellationToken";
+import CustomizedProgress from "../../components/CustomizedProgress";
+import PlannedActivity from "./components/PlannedActivity";
 
 const COUNT: number = 7;
 
@@ -17,9 +23,14 @@ export default function Schedule() {
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<string>('asc');
   const [page, setPage] = useState<number>(1);
-  const [plannedActivites, setPlannedActivities] = useState<any>(null);
+  const [plannedActivites, setPlannedActivities] = useState<PageDto<ScheduleDto> | null>(null);
   const [openNewPlannedActivity, setOpenNewPlannedActivity] = useState<boolean>(false);
-  
+  const [searchType, setSearchType] = useState<string>('All');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
+
+  const cancellation = useCancellationToken();
+
   const onNextPageClick = () => {
     setPage(page + 1);
   };
@@ -51,7 +62,49 @@ export default function Schedule() {
       }
     }
     return null;
-  }
+  };
+
+  const handleSearchTypeChange = (e: any) => {
+    setSearchType(e.target.value as string);
+  };
+
+  const getScheduleAction = async (cancelToken: any) => {
+    setIsLoading(true);
+    return getSchedulePage(
+      COUNT,
+      (sortDirection === 'asc' ? false : true),
+      page,
+      sortColumn,
+      searchType,
+      cancelToken
+    )
+      .then((items) => {
+        setPlannedActivities(items);
+        setIsLoading(false);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+        setIsLoading(false);
+      });
+  };
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({
+      ...prev,
+      open: false
+    }));
+  };
+
+  useEffect(() => {
+    cancellation((cancelToken) => {
+      getScheduleAction(cancelToken);
+    });
+  }, [sortColumn, sortDirection, page, searchType]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -73,6 +126,7 @@ export default function Schedule() {
         <Header title={"Twój plan"} />
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackbar} />
           <NewPlannedActivity open={openNewPlannedActivity} onClose={() => setOpenNewPlannedActivity(false)} />
           <Box className={styles.schedulePanel}>
             <Box sx={{ display: 'flex', alignSelf: 'flex-start', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
@@ -80,7 +134,26 @@ export default function Schedule() {
                 <CalendarMonthIcon color="error" sx={{ mr: '1ch' }} />
                 <p>Tabela zaplanowanych aktywności</p>
               </Box>
+
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <NativeSelect
+                  value={searchType}
+                  sx={{
+                    fontFamily: 'Lexend'
+                  }}
+                  onChange={handleSearchTypeChange}
+                >
+                  <option id={styles.selectOptions} value={"All"}>Wszystkie aktywności</option>
+                  <option id={styles.selectOptions} value={"Gym"}>Siłownia</option>
+                  <option id={styles.selectOptions} value={"Swimming"}>Pływanie</option>
+                  <option id={styles.selectOptions} value={"Running"}>Bieganie</option>
+                  <option id={styles.selectOptions} value={"Cycling"}>Jazda na rowerze</option>
+                  <option id={styles.selectOptions} value={"Trekking"}>Trekking</option>
+                  <option id={styles.selectOptions} value={"Walking"}>Spacer</option>
+                  <option id={styles.selectOptions} value={"Football"}>Piłka nożna</option>
+                  <option id={styles.selectOptions} value={"Volleyball"}>Siatkówka</option>
+                  <option id={styles.selectOptions} value={"Other"}>Styl dowolny</option>
+                </NativeSelect>
                 <StyledTooltip title={"Dodaj"}>
                   <IconButton
                     size="medium"
@@ -92,6 +165,8 @@ export default function Schedule() {
                 <StyledTooltip title={"Wyświetl poprzednie"}>
                   <IconButton
                     size="medium"
+                    onClick={onPreviousPageClick}
+                    disabled={!plannedActivites?.hasPreviousPage ? true : false}
                   >
                     <ChevronLeftIcon color="primary" />
                   </IconButton>
@@ -99,6 +174,8 @@ export default function Schedule() {
                 <StyledTooltip title={"Wyświetl następne"}>
                   <IconButton
                     size="medium"
+                    onClick={onNextPageClick}
+                    disabled={!plannedActivites?.hasNextPage ? true : false}
                   >
                     <ChevronRightIcon color="primary" />
                   </IconButton>
@@ -113,6 +190,18 @@ export default function Schedule() {
                 <p className={styles.scheduleTableColumnsText}>Akcja</p>
               </Box>
               <Divider />
+              {isLoading ? (
+                <CustomizedProgress position={'center'} />
+              ) : (
+                plannedActivites?.items.map((schedule) => {
+                  return (
+                    <React.Fragment key={schedule.id}>
+                      <PlannedActivity key={schedule.id} id={schedule.id!} date={schedule.date} type={schedule.type} note={schedule.note} />
+                      <Divider />
+                    </React.Fragment>
+                  )
+                })
+              )}
             </Box>
           </Box>
         </Container>

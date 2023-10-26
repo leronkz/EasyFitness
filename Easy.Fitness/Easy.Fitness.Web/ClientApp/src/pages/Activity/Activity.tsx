@@ -3,7 +3,6 @@ import Navbar from '../../components/Navbar';
 import Header from '../../components/Header';
 import styles from '../../modules/activity.module.css';
 import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';

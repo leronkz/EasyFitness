@@ -31,7 +31,7 @@ namespace Easy.Fitness.Application.Services
             return result.ToDto();
         }
         
-        public async Task<PageDto<ActivityDto>> GetActivityPageAsync(GetActivityPageCriteria criteria, CancellationToken cancellationToken)
+        public async Task<PageDto<ActivityDto>> GetActivityPageAsync(GetPageCriteria criteria, CancellationToken cancellationToken)
         {
             IEnumerable<Activity> result = await _activityRepository.GetActivitiesAsync(
                 criteria.Page, criteria.SortColumn, criteria.IsDescending, criteria.SearchType, cancellationToken);
