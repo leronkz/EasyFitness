@@ -73,6 +73,13 @@ export interface PageDto<T> {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
+export interface FoodDto {
+  name: string;
+  calories: string;
+  fat: string;
+  carbs: string;
+  protein: string;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -191,10 +198,11 @@ export const getActivityPage = async (
   page: number,
   sortColumn: string,
   searchType?: string,
+  searchDate?: string,
   cancellationSource?: CancellationSource
 ): Promise<PageDto<ActivityDto>> => {
   return get<PageDto<ActivityDto>>('api/v1/activity', {
-    params: { count, isDescending, page, sortColumn, searchType },
+    params: { count, isDescending, page, sortColumn, searchType, searchDate },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
@@ -233,10 +241,11 @@ export const getSchedulePage = async (
   page: number,
   sortColumn: string,
   searchType?: string,
+  searchDate?: string,
   cancellationSource?: CancellationSource
 ): Promise<PageDto<ScheduleDto>> => {
   return get<PageDto<ScheduleDto>>('api/v1/schedule', {
-    params: { count, isDescending, page, sortColumn, searchType },
+    params: { count, isDescending, page, sortColumn, searchType, searchDate },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

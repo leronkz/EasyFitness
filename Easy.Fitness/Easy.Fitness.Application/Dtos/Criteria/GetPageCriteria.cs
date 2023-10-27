@@ -7,5 +7,6 @@
         public int Page { get; init; }
         public string SortColumn { get; set; }
         public string? SearchType { get; set; }
+        public string? SearchDate { get; set; }
     }
 }
