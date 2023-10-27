@@ -89,6 +89,41 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
+        public async Task DeleteScheduleAsync(Guid scheduleId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = _context.Users
+                    .Include(u => u.PlannedActivities)
+                    .Single(u => u.Id == _userContext.CurrentUserId);
+                PlannedActivity scheduleToDelete = user.PlannedActivities.First(s => s.Id == scheduleId);
+                user.PlannedActivities.Remove(scheduleToDelete);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to delete your schedule", ex);
+            }
+        }
+
+        public async Task<PlannedActivity> UpdateScheduleAsync(Guid scheduleId, PlannedActivity schedule, CancellationToken cancellationToken)
+        {
+            try
+            {
+                PlannedActivity scheduleToUpdate = await _context.Schedule.SingleAsync(s => s.Id == scheduleId, cancellationToken);
+                scheduleToUpdate.Date = schedule.Date;
+                scheduleToUpdate.Type = schedule.Type;
+                scheduleToUpdate.Note = schedule.Note;
+                _context.Update(scheduleToUpdate);
+                await _context.SaveChangesAsync(cancellationToken);
+                return scheduleToUpdate;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to update your schedule", ex);
+            }
+        }
+
         private static Expression<Func<PlannedActivity, object>> GetSortProperty(string sortColumn)
         {
             return sortColumn switch

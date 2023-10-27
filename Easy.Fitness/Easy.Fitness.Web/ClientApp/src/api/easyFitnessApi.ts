@@ -240,3 +240,22 @@ export const getSchedulePage = async (
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
+
+export const deleteSchedule = async (
+  id: string,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return deletion<void>(`api/v1/schedule/${id}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const updateSchedule = async (
+  id: string,
+  schedule: ScheduleDto,
+  cancellationSource?: CancellationSource
+): Promise<ScheduleDto> => {
+  return put<ScheduleDto>(`api/v1/schedule/${id}`, schedule, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};

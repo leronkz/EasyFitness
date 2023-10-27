@@ -45,5 +45,17 @@ namespace Easy.Fitness.Application.Services
             };
             return schedulePage;
         }
+
+        public async Task DeleteScheduleAsync(Guid scheduleId, CancellationToken cancellationToken)
+        {
+            await _scheduleRepository.DeleteScheduleAsync(scheduleId, cancellationToken);
+        }
+
+        public async Task<ScheduleDto> UpdateScheduleAsync(Guid scheduleId, ScheduleDto schedule, CancellationToken cancellationToken)
+        {
+            PlannedActivity scheduleToUpdate = schedule.ToEntity();
+            PlannedActivity updatedSchedule = await _scheduleRepository.UpdateScheduleAsync(scheduleId, scheduleToUpdate, cancellationToken);
+            return updatedSchedule.ToDto();
+        }
     }
 }

@@ -101,7 +101,7 @@ export default function UpdateActivity({ open, onClose, activity }: UpdateActivi
         setIsSubmittingActivity(false);
       })
       .catch((e: Error) => {
-        if(!isCancel(e)) {
+        if (!isCancel(e)) {
           setSnackbar({
             open: true,
             type: "error",
@@ -109,14 +109,14 @@ export default function UpdateActivity({ open, onClose, activity }: UpdateActivi
           });
         }
         setIsSubmittingActivity(false);
-      })
+      });
   };
 
-    const onUpdateActivityClick = async () => {
-      cancellation((cancelToken) => {
-        updateActivityAction(cancelToken);
-      });
-    };
+  const onUpdateActivityClick = async () => {
+    cancellation((cancelToken) => {
+      updateActivityAction(cancelToken);
+    });
+  };
 
   if (!open) {
     return null;

@@ -50,5 +50,33 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("schedule/{id}")]
+        public async Task<IActionResult> DeleteSchedule([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _scheduleService.DeleteScheduleAsync(id, cancellationToken);
+                return Ok();
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("schedule/{id}")]
+        public async Task<IActionResult> UpdateSchedule([FromRoute] Guid id, [FromBody] ScheduleDto schedule, CancellationToken cancellationToken)
+        {
+            try
+            {
+                ScheduleDto result = await _scheduleService.UpdateScheduleAsync(id, schedule, cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
