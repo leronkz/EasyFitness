@@ -101,7 +101,7 @@ export default function UpdateActivity({ open, onClose, activity }: UpdateActivi
         setIsSubmittingActivity(false);
       })
       .catch((e: Error) => {
-        if(!isCancel(e)) {
+        if (!isCancel(e)) {
           setSnackbar({
             open: true,
             type: "error",
@@ -109,14 +109,14 @@ export default function UpdateActivity({ open, onClose, activity }: UpdateActivi
           });
         }
         setIsSubmittingActivity(false);
-      })
+      });
   };
 
-    const onUpdateActivityClick = async () => {
-      cancellation((cancelToken) => {
-        updateActivityAction(cancelToken);
-      });
-    };
+  const onUpdateActivityClick = async () => {
+    cancellation((cancelToken) => {
+      updateActivityAction(cancelToken);
+    });
+  };
 
   if (!open) {
     return null;
@@ -137,7 +137,7 @@ export default function UpdateActivity({ open, onClose, activity }: UpdateActivi
         <Fade in={open}>
           <Box className={styles.updateActivityContainer}>
             <Typography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <p id={styles.updateActivityHeaderText}>Dodaj nową aktywność</p>
+              <p id={styles.updateActivityHeaderText}>Zaaktualizuj aktywność</p>
               <StyledTooltip title={"Zamknij okno"}>
                 <IconButton
                   size="medium"

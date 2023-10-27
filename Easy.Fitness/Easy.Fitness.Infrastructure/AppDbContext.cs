@@ -16,6 +16,7 @@ namespace Easy.Fitness.Infrastructure
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserParameters> UserParameters { get; set; }
         public virtual DbSet<Activity> Activities { get; set; }
+        public virtual DbSet<PlannedActivity> Schedule { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options, IUserContext userContext = null) 
             : base(options) 
@@ -35,6 +36,7 @@ namespace Easy.Fitness.Infrastructure
             ConfigureUserTable(modelBuilder);
             ConfigureUserParametersTable(modelBuilder);
             ConfigureActivitesTable(modelBuilder);
+            ConfigureScheduleTable(modelBuilder);
         }
 
         private void AddAuditInfo()
@@ -84,6 +86,11 @@ namespace Easy.Fitness.Infrastructure
                 .WithOne(u => u.User)
                 .HasForeignKey(u => u.UserId)
                 .IsRequired();
+
+            modelBuilder.Entity<User>().HasMany(x => x.PlannedActivities)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId)
+                .IsRequired();
         }
 
         private void ConfigureUserParametersTable(ModelBuilder modelBuilder)
@@ -121,6 +128,27 @@ namespace Easy.Fitness.Infrastructure
                 v => (Guid)v,
                 v => (UserId)v);
             modelBuilder.Entity<Activity>().Property(x => x.ModifiedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+        }
+
+        private void ConfigureScheduleTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlannedActivity>().ToTable("Schedule");
+            modelBuilder.Entity<PlannedActivity>().Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<PlannedActivity>().Property(x => x.Date)
+                .HasMaxLength(50);
+            modelBuilder.Entity<PlannedActivity>().Property(x => x.Type)
+                .HasMaxLength(100);
+            modelBuilder.Entity<PlannedActivity>().Property(x => x.Note)
+                .HasMaxLength(2000);
+            modelBuilder.Entity<PlannedActivity>().Property(x => x.CreatedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+            modelBuilder.Entity<PlannedActivity>().Property(x => x.ModifiedBy)
                 .HasConversion(
                 v => (Guid)v,
                 v => (UserId)v);

@@ -22,7 +22,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
-        
+
         public async Task<Activity> SaveNewActivityAsync(Activity activity, CancellationToken cancellationToken)
         {
             try
@@ -30,13 +30,13 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 User user = _context.Users
                     .Include(u => u.Activities)
                     .Single(x => x.Id == _userContext.CurrentUserId);
-                Activity newActivity = new  Activity(
+                Activity newActivity = new Activity(
                     activity.Date, activity.Type, activity.Name, activity.Calories, activity.Duration, _userContext.CurrentUserId);
                 user.Activities.Add(newActivity);
                 await _context.SaveChangesAsync(cancellationToken);
                 return newActivity;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to save your activity", ex);
             }
@@ -48,7 +48,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 IQueryable<Activity> activityQuery = _context.Activities
                     .Where(a => a.CreatedBy == _userContext.CurrentUserId);
 
-                if(searchType != "All")
+                if (searchType != "All")
                 {
                     activityQuery = activityQuery.Where(a => a.Type == searchType);
                 }
@@ -87,7 +87,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task DeleteActivityAsync(Guid activityId,  CancellationToken cancellationToken)
+        public async Task DeleteActivityAsync(Guid activityId, CancellationToken cancellationToken)
         {
             try
             {
@@ -98,12 +98,12 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 user.Activities.Remove(activityToDelete);
                 await _context.SaveChangesAsync(cancellationToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to delete your activity", ex);
             }
         }
-        
+
         public async Task<Activity> UpdateActivityAsync(Guid id, Activity activity, CancellationToken cancellationToken)
         {
             try
@@ -118,7 +118,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
                 return activityToUpdate;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to update your activity", ex);
             }

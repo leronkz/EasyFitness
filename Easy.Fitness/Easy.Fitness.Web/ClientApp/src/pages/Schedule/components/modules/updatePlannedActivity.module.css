@@ -1,4 +1,4 @@
-.updateActivityContainer {
+.updateScheduleContainer {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -10,7 +10,7 @@
   padding: 1em 1em;
 }
 
-#updateActivityHeaderText {
+#updateScheduleHeaderText {
   font-family: 'Lexend';
   font-style: normal;
   font-weight: 500;
@@ -18,7 +18,7 @@
   color: black;
 }
 
-.updateActivityForm {
+.updateScheduleForm {
   margin-top: 2ch;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@
   font-family: 'Lexend';
 }
 
-.updateActivityInput {
+.updateScheduleInput {
   font-family: 'Lexend';
 }
 

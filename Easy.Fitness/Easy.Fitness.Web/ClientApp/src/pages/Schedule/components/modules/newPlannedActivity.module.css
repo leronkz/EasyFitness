@@ -1,4 +1,4 @@
-.updateActivityContainer {
+.newPlannedActivityContainer {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -10,7 +10,7 @@
   padding: 1em 1em;
 }
 
-#updateActivityHeaderText {
+#newPlannedActivityHeaderText {
   font-family: 'Lexend';
   font-style: normal;
   font-weight: 500;
@@ -18,7 +18,7 @@
   color: black;
 }
 
-.updateActivityForm {
+.newPlannedActivityForm {
   margin-top: 2ch;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@
   font-family: 'Lexend';
 }
 
-.updateActivityInput {
+.newPlannedActivityInput {
   font-family: 'Lexend';
 }
 

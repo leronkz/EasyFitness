@@ -30,6 +30,8 @@ namespace Easy.Fitness.Web.Bootstrappers
             services.AddScoped<IUserTokenProvider, UserTokenProvider>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
             services.AddScoped<IActivityService, ActivityService>();
+            services.AddScoped<IScheduleRepository, ScheduleRepository>();
+            services.AddScoped<IScheduleService, ScheduleService>();
         }
         private static void RegisterDatabase(IServiceCollection services, AppConfiguration configuration)
         {

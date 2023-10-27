@@ -1,6 +1,6 @@
 ﻿namespace Easy.Fitness.Application.Dtos.Criteria
 {
-    public record GetActivityPageCriteria
+    public record GetPageCriteria
     {
         public int Count { get; init; }
         public bool IsDescending { get; init; }

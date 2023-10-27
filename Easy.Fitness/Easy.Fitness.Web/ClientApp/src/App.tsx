@@ -9,6 +9,7 @@ import ProtectedRoute from './security/ProtectedRoute';
 import Activity from './pages/Activity/Activity';
 import { Suspense } from 'react';
 import Loading from './components/Loading';
+import Schedule from './pages/Schedule/Schedule';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
         <Route path="/activity" element={<ProtectedRoute><Activity /></ProtectedRoute>} />
+        <Route path="/schedule" element={<Schedule />} />
       </Routes>
     </Suspense>
   );
