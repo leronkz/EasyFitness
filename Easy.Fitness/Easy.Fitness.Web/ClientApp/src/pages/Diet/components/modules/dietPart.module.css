@@ -1,0 +1,29 @@
+.dietPartTable {
+  display: flex;
+  flex-direction: column;
+}
+
+.dietPartTableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  font-family: 'Lexend';
+  transition: background 0.3s;
+  padding: 0.5ch;
+  background: #f5f5f5;
+  margin-bottom: 0.5ch;
+}
+
+.dietPartTableHeader:hover {
+  cursor: pointer;
+  background: #FFEDFF;
+}
+
+.dietPartIcon {
+  transition: transform 0.3s ease;
+}
+
+.dietPartIconExpanded {
+  transform: rotate(180deg);
+}
