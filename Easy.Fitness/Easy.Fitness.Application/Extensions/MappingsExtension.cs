@@ -1,5 +1,6 @@
 ﻿using Easy.Fitness.Application.Dtos;
 using Easy.Fitness.Application.Dtos.Activity;
+using Easy.Fitness.Application.Dtos.Diet;
 using Easy.Fitness.Application.Dtos.Schedule;
 using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.DomainModels.Models;
@@ -126,6 +127,37 @@ namespace Easy.Fitness.Application.Extensions
                 Date = entity.Date,
                 Type = entity.Type,
                 Note = entity.Note
+            };
+        }
+        public static Diet ToEntity(this DietPropertiesDto dto)
+        {
+            if(dto == null)
+            {
+                return null;
+            }
+            return new Diet
+            (
+                dto.Date,
+                dto.Calories,
+                dto.Fat,
+                dto.Carbs,
+                dto.Protein
+            );
+        }
+        public static DietPropertiesDto ToDto(this Diet entity)
+        {
+            if(entity == null)
+            {
+                return null;
+            }
+            return new DietPropertiesDto
+            {
+                Id = entity.Id,
+                Date = entity.Date,
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein
             };
         }
     }

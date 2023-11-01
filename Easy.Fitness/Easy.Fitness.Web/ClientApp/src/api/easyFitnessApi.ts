@@ -75,10 +75,18 @@ export interface PageDto<T> {
 }
 export interface FoodDto {
   name: string;
-  calories: string;
-  fat: string;
-  carbs: string;
-  protein: string;
+  calories: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+}
+export interface DayDietDto {
+  id?: string;
+  date: string;
+  calories?: number;
+  fat?: number;
+  carbs?: number;
+  protein?: number;
 }
 
 export const registerUser = async (
@@ -265,6 +273,15 @@ export const updateSchedule = async (
   cancellationSource?: CancellationSource
 ): Promise<ScheduleDto> => {
   return put<ScheduleDto>(`api/v1/schedule/${id}`, schedule, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const setDietProperties = async (
+  dietConfiguration: DayDietDto,
+  cancellationSource?: CancellationSource
+): Promise<DayDietDto> => {
+  return post<DayDietDto>('api/v1/diet/properties', dietConfiguration, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

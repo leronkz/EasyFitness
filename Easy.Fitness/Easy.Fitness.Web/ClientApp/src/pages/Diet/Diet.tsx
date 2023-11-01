@@ -10,12 +10,16 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {useState} from 'react';
 import DateSearch from "../../components/DateSearch";
 import DietPart from "./components/DietPart";
+import ConfigureDiet from "./components/ConfigureDiet";
+import { DayDietDto } from "../../api/easyFitnessApi";
 
 export default function Diet() {
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const formattedDate = `${selectedDate.getDate()}.${selectedDate.getMonth() + 1}.${selectedDate.getFullYear()}`;
   const [searchDate, setSearchDate] = useState<string | null>(null);
+  const [openConfigure, setOpenConfigure] = useState<boolean>(false);
+  const [dateDietConfiguration, setDateDietConfiguration] = useState<DayDietDto | null>({date: formattedDate, calories: 500, fat: 500, carbs: 500, protein: 500});
 
   const handlePrevDay = () => {
     const newDate = new Date(selectedDate);
@@ -49,6 +53,7 @@ export default function Diet() {
         <Header title={"Twoja dieta"} />
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <ConfigureDiet open={openConfigure} onClose={() => setOpenConfigure(false)} dietConfiguration={dateDietConfiguration!} />
           <Box className={styles.dietPanel}>
             <Box sx={{ display: 'flex', alignSelf: 'flex-start', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
               <Box sx={{display: 'flex'}}>
@@ -60,6 +65,7 @@ export default function Diet() {
                 <StyledTooltip title={"Skonfiguruj"}>
                   <IconButton
                     size="medium"
+                    onClick={() => setOpenConfigure(true)}
                   >
                     <ManageAccountsIcon color="secondary" />
                   </IconButton>
