@@ -24,5 +24,11 @@ namespace Easy.Fitness.Application.Services
             Diet result = await _dietRepository.SaveDietParametersAsync(newDietProperties, cancellationToken);
             return result.ToDto();
         }
+
+        public async Task<DietPropertiesDto> GetDietPropertiesAsync(string date, CancellationToken cancellationToken)
+        {
+            Diet dietProperties = await _dietRepository.GetDietParametersAsync(date, cancellationToken);
+            return dietProperties.ToDto();
+        }
     }
 }

@@ -34,5 +34,19 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("diet/properties/{date}")]
+        public async Task<IActionResult> GetDietProperties([FromRoute] string date, CancellationToken cancellationToken)
+        {
+            try
+            {
+                DietPropertiesDto result = await _dietService.GetDietPropertiesAsync(date, cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -12,15 +12,16 @@ import { useCancellationToken } from '../../../hooks/useCancellationToken';
 interface ConfigureDietProps {
   open: boolean;
   onClose: () => void;
-  dietConfiguration: DayDietDto
+  dietConfiguration: DayDietDto;
+  date: string;
 }
 
-export default function ConfigureDiet({ open, onClose, dietConfiguration }: ConfigureDietProps) {
+export default function ConfigureDiet({ open, onClose, dietConfiguration, date }: ConfigureDietProps) {
 
   const [newConfiguration, setNewConfiguration] = useState<DayDietDto>(dietConfiguration);
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [isSubmittinConfiguration, setIsSubmittingConfiguration] = useState<boolean>(false);
-  
+
   const cancellation = useCancellationToken();
 
   const handleCaloriesChange = (e: any) => {
@@ -116,7 +117,7 @@ export default function ConfigureDiet({ open, onClose, dietConfiguration }: Conf
         <Fade in={open}>
           <Box className={styles.configureDietContainer}>
             <Typography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <p id={styles.configureDietHeaderText}>Ustaw parametry diety dla {newConfiguration.date}</p>
+              <p id={styles.configureDietHeaderText}>Ustaw parametry diety dla {date}</p>
               <StyledTooltip title={"Zamknij okno"}>
                 <IconButton
                   size="medium"

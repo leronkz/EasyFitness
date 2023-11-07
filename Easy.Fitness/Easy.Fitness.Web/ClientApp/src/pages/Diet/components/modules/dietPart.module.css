@@ -27,3 +27,16 @@
 .dietPartIconExpanded {
   transform: rotate(180deg);
 }
+
+.dietPartTableBody {
+  display: flex;
+  flex-direction: column;
+  padding: 1ch;
+  background: white;
+}
+
+.dietPartTableColumns {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+}

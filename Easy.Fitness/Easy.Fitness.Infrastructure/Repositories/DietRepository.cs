@@ -33,9 +33,24 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
                 return newDiet;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to save your today's diet properties", ex);
+            }
+        }
+
+        public async Task<Diet> GetDietParametersAsync(string date, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Diet diet = await _context.Diet
+                    .Where(d => d.Date == date)
+                    .SingleAsync(d => d.UserId == _userContext.CurrentUserId, cancellationToken);
+                return diet;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your today's diet properties", ex);
             }
         }
     }

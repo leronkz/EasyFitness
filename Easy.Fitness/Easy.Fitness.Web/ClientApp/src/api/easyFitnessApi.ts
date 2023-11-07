@@ -285,3 +285,12 @@ export const setDietProperties = async (
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
+
+export const getDietProperties = async (
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<DayDietDto> => {
+  return get<DayDietDto>(`api/v1/diet/properties/${date}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
