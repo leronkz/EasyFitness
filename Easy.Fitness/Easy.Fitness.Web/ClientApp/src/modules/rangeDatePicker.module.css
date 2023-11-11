@@ -1,0 +1,28 @@
+.rangeDatePickerContainer {
+  display: flex;
+  align-items: center;
+  font-family: 'Lexend';
+}
+
+.rangeDatePickerInputWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 2ch;
+}
+
+#rangeDatePickerInput {
+  font-family: 'Lexend';
+}
+
+#rangeDatePickerBtn {
+  text-transform: none !important;
+  color: black;
+  font-family: 'Lexend';
+  border: 1px solid black;
+  border-radius: 15px;
+  transition: background 0.3s ease;
+}
+
+#rangeDatePickerBtn:hover {
+  background: #82F6AD;
+}
