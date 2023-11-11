@@ -126,7 +126,7 @@ export const updateUserParameters = async (
   userParameters: UserParametersDto,
   cancellationSource?: CancellationSource
 ): Promise<UserParametersDto> => {
-  return put<UserParametersDto>('api/v1/user/parameters', userParameters, {
+  return post<UserParametersDto>('api/v1/user/parameters', userParameters, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

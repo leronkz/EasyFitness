@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
 using Easy.Fitness.Infrastructure.Exceptions;
+using System.Linq;
 
 namespace Easy.Fitness.Infrastructure.Repositories
 {
@@ -103,21 +104,12 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<UserParameters> UpdateUserParametersAsync(Guid id, UserParameters parameters, CancellationToken cancellationToken)
+        public async Task<UserParameters> SaveUserParametersAsync(Guid id, UserParameters parameters, CancellationToken cancellationToken)
         {
             try
             {
                 User user = await GetUserByIdAsync(id, cancellationToken);
-                if(user.Parameters == null)
-                {
-                    user.Parameters = parameters;
-                }
-                else
-                {
-                    user.Parameters.Weight = parameters.Weight;
-                    user.Parameters.Height = parameters.Height;
-                }
-                _context.Update(user);
+                user.Parameters.Add(parameters);
                 await _context.SaveChangesAsync(cancellationToken);
                 return parameters;
             }
@@ -167,12 +159,15 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<UserParameters> GetUserParametersByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<UserParameters> GetLatestUserParametersByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             try
             {
                 User user = await GetUserByIdAsync(id, cancellationToken);
-                return user.Parameters;
+                UserParameters latestUserParameters = user.Parameters.
+                    OrderByDescending(x => x.CreatedOn)
+                    .First();
+                return latestUserParameters;
             }
             catch(NoUserFoundException ex)
             {

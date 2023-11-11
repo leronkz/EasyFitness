@@ -77,9 +77,9 @@ namespace Easy.Fitness.Infrastructure
                 v => (Guid)v,
                 v => (UserId)v);
 
-            modelBuilder.Entity<User>().HasOne(x => x.Parameters)
+            modelBuilder.Entity<User>().HasMany(x => x.Parameters)
                 .WithOne(u => u.User)
-                .HasForeignKey<UserParameters>(u => u.UserId)
+                .HasForeignKey(u => u.UserId)
                 .IsRequired();
 
             modelBuilder.Entity<User>().HasMany(x => x.Activities)
@@ -98,6 +98,10 @@ namespace Easy.Fitness.Infrastructure
             modelBuilder.Entity<UserParameters>().ToTable("UserParameters");
             modelBuilder.Entity<UserParameters>().Property(x => x.Id)
                 .ValueGeneratedOnAdd();
+            modelBuilder.Entity<UserParameters>().Property(x => x.Height)
+                .HasMaxLength(30);
+            modelBuilder.Entity<UserParameters>().Property(x => x.Weight)
+                .HasMaxLength(30);
             modelBuilder.Entity<UserParameters>().Property(x => x.CreatedBy)
                 .HasConversion(
                 v => (Guid)v,
