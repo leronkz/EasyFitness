@@ -31,13 +31,28 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 List<DateTime> allDaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month))
                                                         .Select(day => new DateTime(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month, day))
                                                         .ToList();
+                List<Activity> activities = user.Activities.Where(a => GetMonth(a.Date) == month)
+                                                        .OrderBy(a => DateTime.ParseExact(a.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture))
+                                                        .ToList();
+                Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
 
-                List<Activity> activities = user.Activities.Where(a => GetMonth(a.Date) == month).OrderBy(a => a.Date).ToList();
+                foreach (var activity in activities)
+                {
+                    DateTime activityDate = DateTime.ParseExact(activity.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
+                    if (caloriesByDay.ContainsKey(activityDate))
+                    {
+                        caloriesByDay[activityDate] += activity.Calories;
+                    }
+                    else
+                    {
+                        caloriesByDay[activityDate] = activity.Calories;
+                    }
+                }
                 List<ActivityMonth> result = allDaysInMonth.Select(day =>
                 {
-                    var matchingActivity = activities.FirstOrDefault(a => GetMonth(a.Date) == month && DateTime.ParseExact(a.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date == day.Date);
-                    return new ActivityMonth(day.ToShortDateString(), matchingActivity != null ? matchingActivity.Calories : 0);
+                    double calories = caloriesByDay.ContainsKey(day) ? caloriesByDay[day] : 0;
+                    return new ActivityMonth(day.ToShortDateString(), calories);
                 }).ToList();
 
                 return result;
@@ -81,11 +96,55 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to load your graph", ex);
             }
         }
+        public async Task<IEnumerable<ActivityMonth>> GetActivityCaloriesByRangeAsync(string startDate, string endDate, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await _context.Users.Include(u => u.Activities).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
+                List<Activity> activities = user.Activities.Where(a => IsDateValid(a.Date, startDate, endDate))
+                    .OrderBy(a => DateTime.ParseExact(a.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture))
+                    .ToList();
+                Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
+
+                foreach (var activity in activities)
+                {
+                    DateTime activityDate = DateTime.ParseExact(activity.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+                    if (caloriesByDay.ContainsKey(activityDate))
+                    {
+                        caloriesByDay[activityDate] += activity.Calories;
+                    }
+                    else
+                    {
+                        caloriesByDay[activityDate] = activity.Calories;
+                    }
+                }
+                List<ActivityMonth> result = caloriesByDay.Select(a => new ActivityMonth(a.Key.ToShortDateString(), a.Value))
+                    .ToList();
+                return result;
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your graph", ex);
+            }
+        }
 
         private static string GetMonth(string date)
         {
             string[] result = date.Split('-');
             return result[1];
+        }
+        
+        private static bool IsDateValid(string date, string startDate, string endDate)
+        {
+            DateTime formattedDate = DateTime.ParseExact(date, "yyyy-MM-dd", null);
+            DateTime formattedStart = DateTime.ParseExact(startDate, "yyyy-MM-dd", null);
+            DateTime formattedEnd = DateTime.ParseExact(endDate, "yyyy-MM-dd", null);
+            if (formattedDate >= formattedStart && formattedDate <= formattedEnd)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

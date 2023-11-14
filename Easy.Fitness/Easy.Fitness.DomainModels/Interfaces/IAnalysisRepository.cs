@@ -9,5 +9,6 @@ namespace Easy.Fitness.DomainModels.Interfaces
     {
         Task<IEnumerable<ActivityMonth>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken);
         Task<IEnumerable<ActivityYear>> GetActivityCaloriesByYearAsync(string year, CancellationToken cancellationToken);
+        Task<IEnumerable<ActivityMonth>> GetActivityCaloriesByRangeAsync(string startDate, string endDate, CancellationToken cancellationToken);
     }
 }

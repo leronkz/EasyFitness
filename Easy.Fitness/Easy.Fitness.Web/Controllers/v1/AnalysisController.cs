@@ -1,4 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos.Analysis.Activity;
+using Easy.Fitness.Application.Dtos.Criteria;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -50,9 +51,17 @@ namespace Easy.Fitness.Web.Controllers.v1
         }
 
         [HttpGet("analysis/activity")]
-        public async Task<IActionResult> GetBurnedCaloriesByRange()
+        public async Task<IActionResult> GetBurnedCaloriesByRange([FromQuery] GetCaloriesCriteria criteria, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                IEnumerable<ActivityMonthDto> result = await _analysisService.GetActivityCaloriesByRangeAsync(criteria, cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

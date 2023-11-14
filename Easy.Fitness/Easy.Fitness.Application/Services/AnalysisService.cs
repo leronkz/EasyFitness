@@ -1,4 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos.Analysis.Activity;
+using Easy.Fitness.Application.Dtos.Criteria;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
@@ -29,6 +30,12 @@ namespace Easy.Fitness.Application.Services
         {
             IEnumerable<ActivityYear> result = await _analysisRepository.GetActivityCaloriesByYearAsync(year, cancellationToken);
             return result.Select(x => new ActivityYearDto { Month = x.Month, Calories = x.Calories }).ToList();
+        }
+
+        public async Task<IEnumerable<ActivityMonthDto>> GetActivityCaloriesByRangeAsync(GetCaloriesCriteria criteria, CancellationToken cancellationToken)
+        {
+            IEnumerable<ActivityMonth> result = await _analysisRepository.GetActivityCaloriesByRangeAsync(criteria.StartDate, criteria.EndDate, cancellationToken);
+            return result.Select(x => new ActivityMonthDto { Day = x.Date, Calories = x.Calories });
         }
     }
 }
