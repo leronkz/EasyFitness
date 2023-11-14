@@ -21,7 +21,7 @@ namespace Easy.Fitness.Application.Services
 
         public async Task<IEnumerable<ActivityMonthDto>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken)
         {
-            IEnumerable<ActivityDay> result = await _analysisRepository.GetActivityCaloriesByMonthAsync(month, cancellationToken);
+            IEnumerable<ActivityMonth> result = await _analysisRepository.GetActivityCaloriesByMonthAsync(month, cancellationToken);
             return result.Select(x => new ActivityMonthDto { Day = x.Date, Calories = x.Calories });
         }
 

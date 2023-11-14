@@ -23,7 +23,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
-        public async Task<IEnumerable<ActivityDay>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ActivityMonth>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken)
         {
             try
             {
@@ -34,10 +34,10 @@ namespace Easy.Fitness.Infrastructure.Repositories
 
                 List<Activity> activities = user.Activities.Where(a => GetMonth(a.Date) == month).OrderBy(a => a.Date).ToList();
 
-                List<ActivityDay> result = allDaysInMonth.Select(day =>
+                List<ActivityMonth> result = allDaysInMonth.Select(day =>
                 {
                     var matchingActivity = activities.FirstOrDefault(a => GetMonth(a.Date) == month && DateTime.ParseExact(a.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date == day.Date);
-                    return new ActivityDay(day.ToShortDateString(), matchingActivity != null ? matchingActivity.Calories : 0);
+                    return new ActivityMonth(day.ToShortDateString(), matchingActivity != null ? matchingActivity.Calories : 0);
                 }).ToList();
 
                 return result;

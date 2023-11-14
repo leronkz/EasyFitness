@@ -1,13 +1,13 @@
 ﻿namespace Easy.Fitness.DomainModels.Models
 {
-    public class ActivityDay
+    public class ActivityYear
     {
-        public string Date { get; private set; }
+        public string Month { get; private set; }
         public double Calories { get; private set; }
 
-        public ActivityDay(string date, double calories)
+        public ActivityYear(string month, double calories)
         {
-            Date = date;
+            Month = month;
             Calories = calories;
         }
     }
