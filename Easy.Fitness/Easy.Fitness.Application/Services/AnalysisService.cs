@@ -19,6 +19,12 @@ namespace Easy.Fitness.Application.Services
             _analysisRepository = analysisRepository ?? throw new ArgumentNullException(nameof(analysisRepository));
         }
 
+        public async Task<IEnumerable<ActivityMonthDto>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken)
+        {
+            IEnumerable<ActivityDay> result = await _analysisRepository.GetActivityCaloriesByMonthAsync(month, cancellationToken);
+            return result.Select(x => new ActivityMonthDto { Day = x.Date, Calories = x.Calories });
+        }
+
         public async Task<IEnumerable<ActivityYearDto>> GetActivityCaloriesByYearAsync(string year, CancellationToken cancellationToken)
         {
             IEnumerable<ActivityYear> result = await _analysisRepository.GetActivityCaloriesByYearAsync(year, cancellationToken);

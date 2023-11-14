@@ -22,9 +22,17 @@ namespace Easy.Fitness.Web.Controllers.v1
         }
 
         [HttpGet("analysis/activity/month/{month}")]
-        public async Task<IActionResult> GetBurnedCaloriesByMonth()
+        public async Task<IActionResult> GetBurnedCaloriesByMonth([FromRoute] string month, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                IEnumerable<ActivityMonthDto> result = await _analysisService.GetActivityCaloriesByMonthAsync(month, cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("analysis/activity/year/{year}")]

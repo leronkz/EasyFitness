@@ -7,6 +7,7 @@ namespace Easy.Fitness.DomainModels.Interfaces
 {
     public interface IAnalysisRepository
     {
+        Task<IEnumerable<ActivityDay>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken);
         Task<IEnumerable<ActivityYear>> GetActivityCaloriesByYearAsync(string year, CancellationToken cancellationToken);
     }
 }
