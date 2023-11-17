@@ -36,7 +36,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                                                         .ToList();
                 Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
 
-                foreach (var activity in activities)
+                foreach (Activity activity in activities)
                 {
                     DateTime activityDate = DateTime.ParseExact(activity.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
@@ -57,7 +57,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
 
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to load your graph", ex);
             }
@@ -91,7 +91,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 }
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to load your graph", ex);
             }
@@ -106,7 +106,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                     .ToList();
                 Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
 
-                foreach (var activity in activities)
+                foreach (Activity activity in activities)
                 {
                     DateTime activityDate = DateTime.ParseExact(activity.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
@@ -123,7 +123,60 @@ namespace Easy.Fitness.Infrastructure.Repositories
                     .ToList();
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your graph", ex);
+            }
+        }
+
+        public async Task<IEnumerable<WeightMonth>> GetWeightByRangeAsync(string startDate, string endDate, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await _context.Users.Include(u => u.Parameters).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
+                List<UserParameters> parameters = user.Parameters.Where(p => IsDateValid(p.CreatedOn, startDate, endDate))
+                     .OrderBy(p => p.CreatedOn)
+                     .ToList();
+                Dictionary<DateTime, double> weightByDay = new Dictionary<DateTime, double>();
+                foreach (UserParameters parameter in parameters)
+                {
+                    weightByDay[parameter.CreatedOn] = parameter.Weight;
+                }
+                List<WeightMonth> result = weightByDay.Select(w => new WeightMonth(w.Key.ToShortDateString(), w.Value))
+                    .ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your graph", ex);
+            }
+        }
+
+        public async Task<IEnumerable<WeightMonth>> GetWeightByMonthAsync(string month, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await _context.Users.Include(u => u.Parameters).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
+                List<DateTime> allDaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month))
+                                                       .Select(day => new DateTime(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month, day))
+                                                       .ToList();
+                List<UserParameters> parameters = user.Parameters.Where(p => p.CreatedOn.Month.ToString() == month)
+                     .OrderBy(p => p.CreatedOn)
+                     .ToList();
+                Dictionary<DateTime, double> weightByDay = new Dictionary<DateTime, double>();
+                foreach (UserParameters parameter in parameters)
+                {
+                    weightByDay[parameter.CreatedOn.Date] = parameter.Weight;
+                }
+                List<WeightMonth> result = allDaysInMonth.Select(day =>
+                {
+                    double weight = weightByDay.ContainsKey(day) ? weightByDay[day] : 0;
+                    return new WeightMonth(day.ToShortDateString(), weight);
+                }).ToList();
+
+                return result;
+            }
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to load your graph", ex);
             }
@@ -134,13 +187,23 @@ namespace Easy.Fitness.Infrastructure.Repositories
             string[] result = date.Split('-');
             return result[1];
         }
-        
+
         private static bool IsDateValid(string date, string startDate, string endDate)
         {
             DateTime formattedDate = DateTime.ParseExact(date, "yyyy-MM-dd", null);
             DateTime formattedStart = DateTime.ParseExact(startDate, "yyyy-MM-dd", null);
             DateTime formattedEnd = DateTime.ParseExact(endDate, "yyyy-MM-dd", null);
             if (formattedDate >= formattedStart && formattedDate <= formattedEnd)
+            {
+                return true;
+            }
+            return false;
+        }
+        private static bool IsDateValid(DateTime date, string startDate, string endDate)
+        {
+            DateTime formattedStart = DateTime.ParseExact(startDate, "yyyy-MM-dd", null);
+            DateTime formattedEnd = DateTime.ParseExact(endDate, "yyyy-MM-dd", null);
+            if (date.Date >= formattedStart && date <= formattedEnd)
             {
                 return true;
             }

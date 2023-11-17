@@ -109,7 +109,17 @@ namespace Easy.Fitness.Infrastructure.Repositories
             try
             {
                 User user = await GetUserByIdAsync(id, cancellationToken);
-                user.Parameters.Add(parameters);
+                if (user.Parameters.Any(p => p.CreatedOn.Date == DateTime.UtcNow.Date))
+                {
+                    UserParameters parameter = user.Parameters.Where(p => p.CreatedOn.Date == DateTime.UtcNow.Date).First();
+                    parameter.Height = parameters.Height;
+                    parameter.Weight = parameters.Weight;
+                    _context.Update(parameter);
+                }
+                else
+                {
+                    user.Parameters.Add(parameters);
+                }
                 await _context.SaveChangesAsync(cancellationToken);
                 return parameters;
             }
