@@ -23,15 +23,15 @@ namespace Easy.Fitness.Web.Controllers.v1
             _analysisService = analysisService ?? throw new ArgumentNullException(nameof(analysisService));
         }
 
-        [HttpGet("analysis/activity/month/{month}")]
-        public async Task<IActionResult> GetBurnedCaloriesByMonth([FromRoute] string month, CancellationToken cancellationToken)
+        [HttpGet("analysis/activity/month/{month}/year/{year}")]
+        public async Task<IActionResult> GetBurnedCaloriesByMonth([FromRoute] string month, string year, CancellationToken cancellationToken)
         {
             try
             {
-                IEnumerable<ActivityMonthDto> result = await _analysisService.GetActivityCaloriesByMonthAsync(month, cancellationToken);
+                IEnumerable<ActivityMonthDto> result = await _analysisService.GetActivityCaloriesByMonthAsync(month, year, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -45,7 +45,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 IEnumerable<ActivityYearDto> result = await _analysisService.GetActivityCaloriesByYearAsync(year, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -59,7 +59,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 IEnumerable<ActivityMonthDto> result = await _analysisService.GetActivityCaloriesByRangeAsync(criteria, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -73,20 +73,21 @@ namespace Easy.Fitness.Web.Controllers.v1
                 IEnumerable<WeightMonthDto> result = await _analysisService.GetWeightByRangeAsync(criteria, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("analysis/weight/month/{month}")]
-        public async Task<IActionResult> GetWeightByMonth([FromRoute] string month, CancellationToken cancellationToken)
+
+        [HttpGet("analysis/weight/month/{month}/year/{year}")]
+        public async Task<IActionResult> GetWeightByMonth([FromRoute] string month, string year, CancellationToken cancellationToken)
         {
             try
             {
-                IEnumerable<WeightMonthDto> result = await _analysisService.GetWeightByMonthAsync(month, cancellationToken);
+                IEnumerable<WeightMonthDto> result = await _analysisService.GetWeightByMonthAsync(month, year, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }

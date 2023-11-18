@@ -21,9 +21,9 @@ namespace Easy.Fitness.Application.Services
             _analysisRepository = analysisRepository ?? throw new ArgumentNullException(nameof(analysisRepository));
         }
 
-        public async Task<IEnumerable<ActivityMonthDto>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ActivityMonthDto>> GetActivityCaloriesByMonthAsync(string month, string year, CancellationToken cancellationToken)
         {
-            IEnumerable<ActivityMonth> result = await _analysisRepository.GetActivityCaloriesByMonthAsync(month, cancellationToken);
+            IEnumerable<ActivityMonth> result = await _analysisRepository.GetActivityCaloriesByMonthAsync(month, year, cancellationToken);
             return result.Select(x => new ActivityMonthDto { Day = x.Date, Calories = x.Calories });
         }
 
@@ -45,9 +45,9 @@ namespace Easy.Fitness.Application.Services
             return result.Select(x => new WeightMonthDto { Day = x.Date, Weight = x.Weight });
         }
         
-        public async Task<IEnumerable<WeightMonthDto>> GetWeightByMonthAsync(string month, CancellationToken cancellationToken)
+        public async Task<IEnumerable<WeightMonthDto>> GetWeightByMonthAsync(string month, string year, CancellationToken cancellationToken)
         {
-            IEnumerable<WeightMonth> result = await _analysisRepository.GetWeightByMonthAsync(month, cancellationToken);
+            IEnumerable<WeightMonth> result = await _analysisRepository.GetWeightByMonthAsync(month, year, cancellationToken);
             return result.Select(x => new WeightMonthDto { Day = x.Date, Weight = x.Weight });
         }
     }

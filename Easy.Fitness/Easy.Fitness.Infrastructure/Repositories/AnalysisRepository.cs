@@ -23,15 +23,15 @@ namespace Easy.Fitness.Infrastructure.Repositories
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
-        public async Task<IEnumerable<ActivityMonth>> GetActivityCaloriesByMonthAsync(string month, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ActivityMonth>> GetActivityCaloriesByMonthAsync(string month, string year, CancellationToken cancellationToken)
         {
             try
             {
                 User user = await _context.Users.Include(u => u.Activities).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
-                List<DateTime> allDaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month))
-                                                        .Select(day => new DateTime(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month, day))
+                List<DateTime> allDaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(int.Parse(year), DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month))
+                                                        .Select(day => new DateTime(int.Parse(year), DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month, day))
                                                         .ToList();
-                List<Activity> activities = user.Activities.Where(a => GetMonth(a.Date) == month)
+                List<Activity> activities = user.Activities.Where(a => GetMonth(a.Date) == month && GetYear(a.Date) == year)
                                                         .OrderBy(a => DateTime.ParseExact(a.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture))
                                                         .ToList();
                 Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
@@ -152,15 +152,15 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<WeightMonth>> GetWeightByMonthAsync(string month, CancellationToken cancellationToken)
+        public async Task<IEnumerable<WeightMonth>> GetWeightByMonthAsync(string month, string year, CancellationToken cancellationToken)
         {
             try
             {
                 User user = await _context.Users.Include(u => u.Parameters).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
-                List<DateTime> allDaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month))
-                                                       .Select(day => new DateTime(DateTime.Now.Year, DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month, day))
+                List<DateTime> allDaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(int.Parse(year), DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month))
+                                                       .Select(day => new DateTime(int.Parse(year), DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month, day))
                                                        .ToList();
-                List<UserParameters> parameters = user.Parameters.Where(p => p.CreatedOn.Month.ToString() == month)
+                List<UserParameters> parameters = user.Parameters.Where(p => p.CreatedOn.Month.ToString() == month && p.CreatedOn.Year.ToString() == year)
                      .OrderBy(p => p.CreatedOn)
                      .ToList();
                 Dictionary<DateTime, double> weightByDay = new Dictionary<DateTime, double>();
@@ -188,6 +188,12 @@ namespace Easy.Fitness.Infrastructure.Repositories
             return result[1];
         }
 
+        private static string GetYear(string date)
+        {
+            string[] result = date.Split('-');
+            return result[0];
+        }
+        
         private static bool IsDateValid(string date, string startDate, string endDate)
         {
             DateTime formattedDate = DateTime.ParseExact(date, "yyyy-MM-dd", null);
@@ -199,6 +205,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
             return false;
         }
+        
         private static bool IsDateValid(DateTime date, string startDate, string endDate)
         {
             DateTime formattedStart = DateTime.ParseExact(startDate, "yyyy-MM-dd", null);
