@@ -7,89 +7,16 @@ import { useState } from 'react';
 import ScaleIcon from '@mui/icons-material/Scale';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
-import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import RangeDatePicker from '../../components/RangeDatePicker';
-
-export interface DateRangeInterface {
-  startDate?: string;
-  endDate?: string;
-}
-
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Line Chart',
-    },
-  },
-};
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [12, 15, 16, 17, 34, 100, 0],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [-5, 10, 23, 54, 12, 100, 0],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
+import AnalysisGraphWorkspace from './components/AnalysisGraphWorkspace';
 
 export default function Analysis() {
 
   const [graphType, setGraphType] = useState<string>('');
-  const [dateRange, setDateRange] = useState<DateRangeInterface>({ startDate: undefined, endDate: undefined });
-
   const handleChangeGraphType = (
     event: React.MouseEvent<HTMLElement>,
     newType: string
   ) => {
     setGraphType(newType);
-  };
-
-  const handleStartDateChange = (e: any) => {
-    setDateRange(prev => ({
-      ...prev,
-      startDate: e.target.value
-    }));
-  };
-
-  const handleEndDateChange = (e: any) => {
-    setDateRange(prev => ({
-      ...prev,
-      endDate: e.target.value
-    }));
-  };
-
-  const resetDateRange = () => {
-    setDateRange({
-      startDate: undefined,
-      endDate: undefined
-    });
   };
 
   return (
@@ -142,16 +69,7 @@ export default function Analysis() {
               </Box>
             </Box>
             <Box className={styles.analysisGraphTable}>
-              <Line options={options} data={data} />
-            </Box>
-            <Box className={styles.analysisGraphOptions}>
-              <RangeDatePicker
-                startDate={dateRange.startDate}
-                endDate={dateRange.endDate}
-                setStartDate={handleStartDateChange}
-                setEndDate={handleEndDateChange}
-                resetDataRange={resetDateRange}
-              />
+              <AnalysisGraphWorkspace type={graphType} />
             </Box>
           </Box>
         </Container>
