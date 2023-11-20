@@ -3,6 +3,7 @@ import styles from '../modules/monthPicker.module.css';
 import { Box } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
+import "dayjs/locale/pl";
 
 interface MonthPickerInterface {
   month: Dayjs | null;
@@ -10,12 +11,12 @@ interface MonthPickerInterface {
 }
 
 export default function MonthPicker({ month, setMonth }: MonthPickerInterface) {
-  
+
   return (
     <Box className={styles.monthPickerContainer}>
       <span>Wybierz miesiąc:</span>
       <Box className={styles.monthPickerInputWrapper}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
           <DatePicker
             views={['month', 'year']}
             value={month}

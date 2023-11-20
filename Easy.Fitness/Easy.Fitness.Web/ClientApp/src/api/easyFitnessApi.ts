@@ -73,6 +73,18 @@ export interface PageDto<T> {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
+export interface BurnedCaloriesMonthDto {
+  day: string;
+  calories: number;
+}
+export interface BurnedCaloriesYearDto {
+  month: string;
+  calories: number;
+}
+export interface WeightMonthDto {
+  day: string;
+  weight: number;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -256,6 +268,57 @@ export const updateSchedule = async (
   cancellationSource?: CancellationSource
 ): Promise<ScheduleDto> => {
   return put<ScheduleDto>(`api/v1/schedule/${id}`, schedule, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getBurnedCaloriesByMonth = async (
+  month: string,
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<BurnedCaloriesMonthDto[]> => {
+  return get<BurnedCaloriesMonthDto[]>(`api/v1/analysis/activity/month/${month}/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getBurnedCaloriesByYear = async (
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<BurnedCaloriesYearDto[]> => {
+  return get<BurnedCaloriesYearDto[]>(`api/v1/analysis/activity/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getBurnedCaloriesByDateRange = async (
+  startDate: string,
+  endDate: string,
+  cancellationSource?: CancellationSource
+): Promise<BurnedCaloriesMonthDto[]> => {
+  return get<BurnedCaloriesMonthDto[]>(`api/v1/analysis/activity`, {
+    params: { startDate, endDate },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getWeightByMonth = async (
+  month: string,
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<WeightMonthDto[]> => {
+  return get<WeightMonthDto[]>(`api/v1/analysis/weight/month/${month}/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getWeightByRange = async (
+  startDate: string,
+  endDate: string,
+  cancellationSource?: CancellationSource
+): Promise<WeightMonthDto[]> => {
+  return get<WeightMonthDto[]>(`api/v1/analysis/weight`, {
+    params: { startDate, endDate },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

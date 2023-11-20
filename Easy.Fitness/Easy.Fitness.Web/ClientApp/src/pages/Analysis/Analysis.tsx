@@ -12,6 +12,7 @@ import AnalysisGraphWorkspace from './components/AnalysisGraphWorkspace';
 export default function Analysis() {
 
   const [graphType, setGraphType] = useState<string>('');
+
   const handleChangeGraphType = (
     event: React.MouseEvent<HTMLElement>,
     newType: string
@@ -61,7 +62,7 @@ export default function Analysis() {
                     <LocalDiningIcon color="primary" />
                     Dieta
                   </ToggleButton>
-                  <ToggleButton id={styles.analysisGraphButton} value="training">
+                  <ToggleButton id={styles.analysisGraphButton} value="activity">
                     <SportsGymnasticsIcon color="primary" />
                     Trening
                   </ToggleButton>

@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import styles from './modules/analysisGraph.module.css';
-import { Box, Divider, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Button, Divider, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import TodayIcon from '@mui/icons-material/Today';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
 import RangeDatePicker from './pickers/RangeDatePicker';
 import YearPicker from './pickers/YearPicker';
 import { Dayjs } from 'dayjs';
 import MonthPicker from './pickers/MonthPicker';
+import GraphComponent from './GraphComponent';
 
 interface AnalysisGraphWorkspaceProps {
   type: string;
@@ -20,55 +19,14 @@ export interface DateRangeInterface {
   endDate?: string;
 }
 
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Line Chart',
-    },
-  },
-};
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [12, 15, 16, 17, 34, 100, 0],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [-5, 10, 23, 54, 12, 100, 0],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
-
 export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceProps) {
+
   const [option, setOption] = useState<string>('');
   const [dateRange, setDateRange] = useState<DateRangeInterface>({ startDate: undefined, endDate: undefined });
   const [year, setYear] = useState<Dayjs | null>(null);
   const [month, setMonth] = useState<Dayjs | null>(null);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [isGraphGenerated, setIsGraphGenerated] = useState<boolean>(false);
 
   const handleStartDateChange = (e: any) => {
     setDateRange(prev => ({
@@ -89,14 +47,17 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
       startDate: undefined,
       endDate: undefined
     });
+    setIsGenerating(false);
   };
 
   const resetYear = () => {
     setYear(null);
+    setIsGenerating(false);
   };
-  
+
   const resetMonth = () => {
     setMonth(null);
+    setIsGenerating(false);
   };
 
   const handleChangeGraphOption = (
@@ -104,16 +65,30 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
     newOption: string
   ) => {
     setOption(newOption);
+    setIsGraphGenerated(false);
   };
 
-  if (type === null || type === undefined) {
+  const generateGraph = () => {
+    setIsGraphGenerated(true);
+    setIsGenerating(true);
+  }
+
+  useEffect(() => {
+    setOption('');
+    resetDateRange();
+    resetMonth();
+    resetYear();
+  }, [type])
+
+  if (type === null || type === undefined || type === '') {
     return null;
   }
+
   return (
     <Box className={styles.analysisWorkspaceContainer}>
       <Box className={styles.analysisWorkspaceGraph}>
-        {option && (
-          <Line data={data} options={options} />
+        {isGenerating && isGraphGenerated && (
+          <GraphComponent type={type} option={option} dateRange={dateRange} year={year} month={month} />
         )}
       </Box>
       <Divider orientation='vertical' flexItem />
@@ -127,10 +102,12 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
           orientation='vertical'
           sx={{ display: 'flex' }}
         >
-          <ToggleButton id={styles.analysisWorkspaceButton} value="year" onClick={resetYear}>
-            <TodayIcon color="secondary" />
-            <span>Widok roczny</span>
-          </ToggleButton>
+          {type === 'activity' && (
+            <ToggleButton id={styles.analysisWorkspaceButton} value="year" onClick={resetYear}>
+              <TodayIcon color="secondary" />
+              <span>Widok roczny</span>
+            </ToggleButton>
+          )}
           <ToggleButton id={styles.analysisWorkspaceButton} value="month" onClick={resetMonth}>
             <CalendarMonthIcon color="secondary" />
             <span>Widok miesięczny</span>
@@ -159,6 +136,9 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
             month={month}
             setMonth={setMonth}
           />
+        )}
+        {option !== '' && option !== null && (
+          <Button id={styles.analysisGenerateButton} onClick={generateGraph}>Generuj wykres</Button>
         )}
       </Box>
     </Box>

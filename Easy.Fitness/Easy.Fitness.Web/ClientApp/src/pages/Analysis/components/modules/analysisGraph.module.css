@@ -23,3 +23,19 @@
   display: flex;
   justify-content: space-between;
 }
+
+#analysisGenerateButton {
+  margin-top: 1ch;
+  text-transform: none !important;
+  font-family: 'Lexend';
+  color: white;
+  border-radius: 30px;
+  align-self: center;
+  background: #41D4F5;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+#analysisGenerateButton:hover {
+  background: #82F6AD;
+  color: black;
+}
