@@ -40,7 +40,7 @@ export default function Navbar({ selected }: NavbarInterface) {
   const onLogoutClick = () => {
     logoutUser();
     navigate("/");
-  }
+  };
 
   return (
     <Drawer variant="permanent" open={true}>
