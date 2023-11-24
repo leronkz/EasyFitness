@@ -28,10 +28,25 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 User user = _context.Users
                     .Include(u => u.Diets)
                     .Single(x => x.Id == _userContext.CurrentUserId);
-                Diet newDiet = new Diet(diet.Date, diet.Calories, diet.Fat, diet.Carbs, diet.Protein, _userContext.CurrentUserId);
-                user.Diets.Add(newDiet);
+                Diet resultDiet;
+                if (user.Diets.Any(d => d.Date == diet.Date))
+                {
+                    Diet updateDiet = user.Diets.Where(d => d.Date == diet.Date).First();
+                    updateDiet.Calories = diet.Calories;
+                    updateDiet.Fat = diet.Fat;
+                    updateDiet.Carbs = diet.Carbs;
+                    updateDiet.Protein = diet.Protein;
+                    _context.Update(updateDiet);
+                    resultDiet = updateDiet;
+                }
+                else
+                {
+                    Diet newDiet = new Diet(diet.Date, diet.Calories, diet.Fat, diet.Carbs, diet.Protein, _userContext.CurrentUserId);
+                    user.Diets.Add(newDiet);
+                    resultDiet = newDiet;
+                }
                 await _context.SaveChangesAsync(cancellationToken);
-                return newDiet;
+                return resultDiet;
             }
             catch (Exception ex)
             {

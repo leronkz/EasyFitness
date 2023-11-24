@@ -2,7 +2,7 @@ import { Backdrop, Box, Button, Divider, Fade, Grid, IconButton, InputLabel, Mod
 import { DayDietDto, Error, setDietProperties } from '../../../api/easyFitnessApi';
 import CustomizedSnackbar, { SnackbarInterface } from '../../../components/CustomizedSnackbar';
 import styles from './modules/configureDiet.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyledTooltip } from '../../../components/StyledTooltip';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomizedProgress from '../../../components/CustomizedProgress';
@@ -98,9 +98,14 @@ export default function ConfigureDiet({ open, onClose, dietConfiguration, date }
     });
   };
 
+  useEffect(() => {
+    setNewConfiguration(dietConfiguration);
+  }, [dietConfiguration]);
+
   if (!open) {
     return null;
   }
+
   return (
     <Box>
       <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackbar} />

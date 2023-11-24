@@ -22,7 +22,7 @@ export default function Diet() {
   const formattedDate = `${selectedDate.getDate()}.${selectedDate.getMonth() + 1}.${selectedDate.getFullYear()}`;
   const [searchDate, setSearchDate] = useState<string | null>(null);
   const [openConfigure, setOpenConfigure] = useState<boolean>(false);
-  const [dateDietConfiguration, setDateDietConfiguration] = useState<DayDietDto>({date: formattedDate, calories: 0, fat: 0, carbs: 0, protein: 0});
+  const [dateDietConfiguration, setDateDietConfiguration] = useState<DayDietDto>({ date: formattedDate, calories: 0, fat: 0, carbs: 0, protein: 0 });
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
 
   const cancellation = useCancellationToken();
@@ -65,11 +65,21 @@ export default function Diet() {
     }));
   };
 
+  const resetDietConfiguration = () => {
+    setDateDietConfiguration({
+      date: formattedDate,
+      calories: 0,
+      carbs: 0,
+      fat: 0,
+      protein: 0
+    });
+  };
+
   useEffect(() => {
+    resetDietConfiguration();
     cancellation((cancelToken) => {
       getDietConfigurationAction(cancelToken);
     });
-    console.log(dateDietConfiguration);
   }, [formattedDate]);
 
   return (
