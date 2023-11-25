@@ -151,6 +151,10 @@ namespace Easy.Fitness.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<double>("Protein")
                         .HasMaxLength(30)
                         .HasColumnType("double precision");

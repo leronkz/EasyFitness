@@ -41,6 +41,7 @@ namespace Easy.Fitness.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Calories = table.Column<double>(type: "double precision", maxLength: 30, nullable: false),
                     Fat = table.Column<double>(type: "double precision", maxLength: 30, nullable: false),
                     Carbs = table.Column<double>(type: "double precision", maxLength: 30, nullable: false),

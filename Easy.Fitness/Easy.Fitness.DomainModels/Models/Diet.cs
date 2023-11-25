@@ -11,7 +11,7 @@ namespace Easy.Fitness.DomainModels.Models
         public double Fat { get; set; }
         public double Carbs { get; set; }
         public double Protein { get; set; }
-        public ICollection<Food> Foods { get; set; }
+        public ICollection<Food> Foods { get; set; } = new List<Food>();
         public Guid UserId { get; private set; }
         public User User { get; private set; }
 

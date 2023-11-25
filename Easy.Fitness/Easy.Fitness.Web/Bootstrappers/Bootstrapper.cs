@@ -9,6 +9,7 @@ using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.Application.Services;
 using Easy.Fitness.Infrastructure.Authorization;
 using Easy.Fitness.Infrastructure.Storage;
+using Easy.Fitness.Infrastructure.WebClients.Diet;
 
 namespace Easy.Fitness.Web.Bootstrappers
 {
@@ -34,6 +35,7 @@ namespace Easy.Fitness.Web.Bootstrappers
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<IDietRepository, DietRepository>();
             services.AddScoped<IDietService, DietService>();
+            services.AddScoped<IFoodDataProvider, FoodDataProvider>();
         }
         private static void RegisterDatabase(IServiceCollection services, AppConfiguration configuration)
         {
@@ -45,6 +47,7 @@ namespace Easy.Fitness.Web.Bootstrappers
             services.AddSingleton(configuration);
             services.AddSingleton(configuration.HostConfiguration);
             services.AddSingleton(configuration.AuthTokenValidation);
+            services.AddSingleton(configuration.FoodDatabaseApi);
         }
     }
 }

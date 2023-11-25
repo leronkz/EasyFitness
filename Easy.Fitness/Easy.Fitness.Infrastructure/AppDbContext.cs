@@ -198,6 +198,8 @@ namespace Easy.Fitness.Infrastructure
             modelBuilder.Entity<Food>().ToTable("Food");
             modelBuilder.Entity<Food>().Property(x => x.Id)
                 .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Food>().Property(x => x.Name)
+                .HasMaxLength(100);
             modelBuilder.Entity<Food>().Property(x => x.Calories)
                 .HasMaxLength(30);
             modelBuilder.Entity<Food>().Property(x => x.Carbs)

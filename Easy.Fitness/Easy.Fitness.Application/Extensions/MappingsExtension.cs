@@ -131,7 +131,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static Diet ToEntity(this DietPropertiesDto dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 return null;
             }
@@ -146,7 +146,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static DietPropertiesDto ToDto(this Diet entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 return null;
             }
@@ -158,6 +158,59 @@ namespace Easy.Fitness.Application.Extensions
                 Fat = entity.Fat,
                 Carbs = entity.Carbs,
                 Protein = entity.Protein
+            };
+        }
+        public static FoodDetailsDto ToDto(this FoodDetails entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            return new FoodDetailsDto
+            {
+                Name = entity.Name,
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein,
+                Weight = entity.Weight
+            };
+        }
+
+        public static Food ToEntity(this FoodDto dto, double by)
+        {
+            if (dto == null || by == 0)
+            {
+                return null;
+            }
+            return new Food    
+            (
+                dto.Name,
+                dto.Calories * by,
+                dto.Fat * by,
+                dto.Carbs * by,
+                dto.Protein * by,
+                dto.Weight,
+                dto.Type
+            );
+        }
+
+        public static FoodDto ToDto(this Food entity)
+        {
+            if(entity == null)
+            {
+                return null;
+            }
+            return new FoodDto
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein,
+                Weight = entity.Weight,
+                Type = entity.Type
             };
         }
     }
