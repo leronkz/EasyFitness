@@ -12,5 +12,6 @@ namespace Easy.Fitness.DomainModels.Interfaces
         Task<Food> AddNewFoodToDietAsync(Food food, string date, CancellationToken cancellationToken);
         Task<Food> UpdateFoodAsync(Guid id, string date, Food food, CancellationToken cancellationToken);
         Task DeleteFoodAsync(Guid id, string date, CancellationToken cancellationToken);
+        Task<Diet> GetDietByDateAsync(string date, CancellationToken cancellationToken);
     }
 }

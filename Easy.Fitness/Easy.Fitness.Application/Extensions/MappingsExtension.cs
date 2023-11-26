@@ -4,6 +4,7 @@ using Easy.Fitness.Application.Dtos.Diet;
 using Easy.Fitness.Application.Dtos.Schedule;
 using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.DomainModels.Models;
+using System.Linq;
 
 namespace Easy.Fitness.Application.Extensions
 {
@@ -183,7 +184,7 @@ namespace Easy.Fitness.Application.Extensions
             {
                 return null;
             }
-            return new Food    
+            return new Food
             (
                 dto.Name,
                 dto.Calories * by,
@@ -197,7 +198,7 @@ namespace Easy.Fitness.Application.Extensions
 
         public static FoodDto ToDto(this Food entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 return null;
             }
@@ -211,6 +212,32 @@ namespace Easy.Fitness.Application.Extensions
                 Protein = entity.Protein,
                 Weight = entity.Weight,
                 Type = entity.Type
+            };
+        }
+
+        public static DietDto toDto(this Diet entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            return new DietDto
+            {
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein,
+                Foods = entity.Foods.Select(f => new FoodDto
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Calories = f.Calories,
+                    Fat = f.Fat,
+                    Carbs = f.Carbs,
+                    Protein = f.Protein,
+                    Weight = f.Weight,
+                    Type = f.Type
+                }).ToList()
             };
         }
     }

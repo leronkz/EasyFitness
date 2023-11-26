@@ -77,6 +77,12 @@ namespace Easy.Fitness.Application.Services
         {
             await _dietRepository.DeleteFoodAsync(id, date, cancellationToken);
         }
+        
+        public async Task<DietDto> GetDietByDateAsync(string date, CancellationToken cancellationToken)
+        {
+            Diet diet = await _dietRepository.GetDietByDateAsync(date, cancellationToken);
+            return diet.toDto();
+        }
 
         private FoodDetailsDto GetFoodDetails(string foodName)
         {

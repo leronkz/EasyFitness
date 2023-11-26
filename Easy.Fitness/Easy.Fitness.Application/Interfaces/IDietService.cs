@@ -14,5 +14,6 @@ namespace Easy.Fitness.Application.Interfaces
         List<string> GetFoodNameList(string foodName);
         Task<FoodDto> UpdateFoodAsync(Guid id, UpdateFoodDto food, CancellationToken cancellationToken);
         Task DeleteFoodAsync(Guid id, string date, CancellationToken cancellationToken);
+        Task<DietDto> GetDietByDateAsync(string date, CancellationToken cancellationToken);
     }
 }

@@ -169,5 +169,21 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to delete your food", ex);
             }
         }
+
+        public async Task<Diet> GetDietByDateAsync(string date, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Diet diet = await _context.Diet
+                    .Include(d => d.Foods)
+                    .Where(d => d.Date == date && d.UserId == _userContext.CurrentUserId)
+                    .SingleOrDefaultAsync(cancellationToken);
+                return diet;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your day", ex);
+            }
+        }
     }
 }
