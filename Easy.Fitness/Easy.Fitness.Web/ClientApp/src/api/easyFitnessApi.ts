@@ -74,11 +74,14 @@ export interface PageDto<T> {
   hasPreviousPage: boolean;
 }
 export interface FoodDto {
+  id: string;
   name: string;
   calories: number;
   fat: number;
   carbs: number;
   protein: number;
+  weight: number;
+  type: string;
 }
 export interface DayDietDto {
   id?: string;
@@ -87,6 +90,12 @@ export interface DayDietDto {
   fat?: number;
   carbs?: number;
   protein?: number;
+}
+export interface AddFoodDto {
+  date: string;
+  name: string;
+  weight: number;
+  type: string;
 }
 
 export const registerUser = async (
@@ -292,5 +301,22 @@ export const getDietProperties = async (
 ): Promise<DayDietDto> => {
   return get<DayDietDto>(`api/v1/diet/properties/${date}`, {
     cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const addNewFood = async (
+  newFood: AddFoodDto,
+  cancellationSource?: CancellationSource
+): Promise<FoodDto> => {
+  return post<FoodDto>(`api/v1/diet/food`, newFood, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getAutocompleteFoodNames = async (
+  foodName: string
+): Promise<string[]> => {
+  return get<string[]>(`api/v1/diet/food`, {
+    params: { foodName }
   });
 };

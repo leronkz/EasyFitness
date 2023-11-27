@@ -144,11 +144,11 @@ export default function Diet() {
               </Box>
               <Divider />
               <Box className={styles.dietTableBodyContainer}>
-                <DietPart title={"Śniadanie"} items={[]} />
-                <DietPart title={"II śniadanie"} items={[]} />
-                <DietPart title={"Obiad"} items={[]} />
-                <DietPart title={"Podwieczorek"} items={[]} />
-                <DietPart title={"Kolacja"} items={[]} />
+                <DietPart title={"Śniadanie"} date={formattedDate} items={[]} />
+                <DietPart title={"II śniadanie"} date={formattedDate} items={[]} />
+                <DietPart title={"Obiad"} date={formattedDate} items={[]} />
+                <DietPart title={"Podwieczorek"} date={formattedDate} items={[]} />
+                <DietPart title={"Kolacja"} date={formattedDate} items={[]} />
               </Box>
             </Box>
           </Box>
