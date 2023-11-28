@@ -11,10 +11,11 @@ import { useState, useEffect } from 'react';
 import DateSearch from "../../components/DateSearch";
 import DietPart from "./components/DietPart";
 import ConfigureDiet from "./components/ConfigureDiet";
-import { DayDietDto, Error, getDietProperties } from "../../api/easyFitnessApi";
+import { DayDietDto, DietDto, Error, getDietByDate, getDietProperties } from "../../api/easyFitnessApi";
 import { isCancel } from "../../api/axiosSource";
 import CustomizedSnackbar, { SnackbarInterface } from "../../components/CustomizedSnackbar";
 import { useCancellationToken } from "../../hooks/useCancellationToken";
+import CustomizedProgress from "../../components/CustomizedProgress";
 
 export default function Diet() {
 
@@ -24,6 +25,8 @@ export default function Diet() {
   const [openConfigure, setOpenConfigure] = useState<boolean>(false);
   const [dateDietConfiguration, setDateDietConfiguration] = useState<DayDietDto>({ date: formattedDate, calories: 0, fat: 0, carbs: 0, protein: 0 });
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
+  const [diet, setDiet] = useState<DietDto | null>(null);
+  const [isLoadingDiet, setIsLoadingDiet] = useState<boolean>(false);
 
   const cancellation = useCancellationToken();
 
@@ -58,6 +61,28 @@ export default function Diet() {
       });
   };
 
+  const getDietByDateAction = async (cancelToken: any) => {
+    setIsLoadingDiet(true);
+    return getDietByDate(
+      formattedDate,
+      cancelToken
+    )
+      .then((result) => {
+        setDiet(result);
+        setIsLoadingDiet(false);
+      })
+      .catch((e: Error) => {
+        if (!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+        setIsLoadingDiet(false);
+      });
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbar(prev => ({
       ...prev,
@@ -79,6 +104,7 @@ export default function Diet() {
     resetDietConfiguration();
     cancellation((cancelToken) => {
       getDietConfigurationAction(cancelToken);
+      getDietByDateAction(cancelToken);
     });
   }, [formattedDate]);
 
@@ -144,11 +170,17 @@ export default function Diet() {
               </Box>
               <Divider />
               <Box className={styles.dietTableBodyContainer}>
-                <DietPart title={"Śniadanie"} date={formattedDate} items={[]} />
-                <DietPart title={"II śniadanie"} date={formattedDate} items={[]} />
-                <DietPart title={"Obiad"} date={formattedDate} items={[]} />
-                <DietPart title={"Podwieczorek"} date={formattedDate} items={[]} />
-                <DietPart title={"Kolacja"} date={formattedDate} items={[]} />
+                {isLoadingDiet && diet === null ? (
+                  <CustomizedProgress position="center" />
+                ) : (
+                  <>
+                    <DietPart title={"Śniadanie"} date={formattedDate} items={diet?.foods?.filter((food) => food.type === 'Breakfast') || []} />
+                    <DietPart title={"II śniadanie"} date={formattedDate} items={diet?.foods?.filter((food) => food.type === 'Breakfast2') || []} />
+                    <DietPart title={"Obiad"} date={formattedDate} items={diet?.foods?.filter((food) => food.type === 'Dinner') || []} />
+                    <DietPart title={"Podwieczorek"} date={formattedDate} items={diet?.foods?.filter((food) => food.type === 'Tea') || []} />
+                    <DietPart title={"Kolacja"} date={formattedDate} items={diet?.foods?.filter((food) => food.type === 'Supper') || []} />
+                  </>
+                )}
               </Box>
             </Box>
           </Box>

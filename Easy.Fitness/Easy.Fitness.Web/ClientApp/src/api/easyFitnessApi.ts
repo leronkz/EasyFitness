@@ -97,6 +97,13 @@ export interface AddFoodDto {
   weight: number;
   type: string;
 }
+export interface DietDto {
+  calories: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  foods: FoodDto[];
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -318,5 +325,25 @@ export const getAutocompleteFoodNames = async (
 ): Promise<string[]> => {
   return get<string[]>(`api/v1/diet/food`, {
     params: { foodName }
+  });
+};
+
+export const getDietByDate = async (
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<DietDto> => {
+  return get<DietDto>(`api/v1/diet/${date}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const deleteFood = async(
+  id: string,
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return deletion<void>(`api/v1/diet/food/${id}`, {
+    params: { date },
+    cancelToken: cancellationSource?.tokenSource.token
   });
 };

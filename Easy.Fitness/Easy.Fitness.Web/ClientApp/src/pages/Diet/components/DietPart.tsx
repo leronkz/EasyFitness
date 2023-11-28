@@ -1,11 +1,12 @@
 import { Box, Divider, IconButton } from "@mui/material";
 import { FoodDto } from "../../../api/easyFitnessApi";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './modules/dietPart.module.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
 import { StyledTooltip } from "../../../components/StyledTooltip";
 import AddFood from "./AddFood";
+import FoodComponent from "./FoodComponent";
 
 interface DietPartProps {
   title: string;
@@ -17,7 +18,7 @@ export default function DietPart({ title, date, items }: DietPartProps) {
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const expandIconStyle = `${styles.dietPartIcon} ${isExpanded ? styles.dietPartIconExpanded : ''}`;
-  const columns = ['Nazwa', 'Kalorie', 'Tłuszcz', 'Węglowodany', 'Białko', 'Waga'];
+  const columns = ['Nazwa', 'Kalorie (kcal)', 'Tłuszcz (g)', 'Węgl. (g)', 'Białko (g)', 'Waga (g)', 'Akcja'];
   const [openAddFood, setOpenAddFood] = useState<boolean>(false);
 
   return (
@@ -53,9 +54,14 @@ export default function DietPart({ title, date, items }: DietPartProps) {
               })}
             </Box>
             <Divider sx={{ mt: '1ch', mb: '0.5ch' }} />
-            <Box className={styles.dietPartTableColumns}>
-
-            </Box>
+              {items.map((food) => {
+                return (
+                  <React.Fragment key={food.id}>
+                    <FoodComponent key={food.id} {...food!} date={date} />
+                    <Divider />
+                  </React.Fragment>
+                )
+              })}
           </Box>
           <Divider />
         </>
