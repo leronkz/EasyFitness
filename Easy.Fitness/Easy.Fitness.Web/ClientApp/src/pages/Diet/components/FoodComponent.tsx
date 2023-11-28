@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { StyledTooltip } from "../../../components/StyledTooltip";
 import { isCancel } from "../../../api/axiosSource";
 import Deletion from "../../../components/Deletion";
+import UpdateFood from "./UpdateFood";
 
 interface FoodProps {
   id: string;
@@ -77,6 +78,7 @@ export default function FoodComponent({ id, name, calories, fat, carbs, protein,
     <Box className={styles.foodContainer}>
       <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackar} />
       <Deletion open={openDeletion} onClose={() => setOpenDeletion(false)} handleDelete={onDeleteFoodClick} isDeleting={isDeletingFood} />
+      <UpdateFood open={openUpdate} onClose={() => setOpenUpdate(false)} date={date} food={food} />
       <Box className={styles.foodWrapper}>
         <p className={styles.foodText}>{name}</p>
         <p className={styles.foodText}>{parseFloat(calories.toFixed(2))}</p>

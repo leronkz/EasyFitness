@@ -104,6 +104,12 @@ export interface DietDto {
   protein: number;
   foods: FoodDto[];
 }
+export interface UpdateFoodDto {
+  name: string;
+  weight: number;
+  type: string;
+  date: string;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -337,13 +343,23 @@ export const getDietByDate = async (
   });
 };
 
-export const deleteFood = async(
+export const deleteFood = async (
   id: string,
   date: string,
   cancellationSource?: CancellationSource
 ): Promise<void> => {
   return deletion<void>(`api/v1/diet/food/${id}`, {
     params: { date },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const updateFood = async (
+  id: string,
+  food: UpdateFoodDto,
+  cancellationSource?: CancellationSource
+): Promise<FoodDto> => {
+  return put<FoodDto>(`api/v1/diet/food/${id}`, food, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
