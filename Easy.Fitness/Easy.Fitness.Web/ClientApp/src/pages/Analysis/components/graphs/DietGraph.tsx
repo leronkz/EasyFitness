@@ -1,15 +1,15 @@
+import { Dayjs } from "dayjs";
 import { DateRangeInterface } from "../AnalysisGraphWorkspace";
-import { Dayjs } from 'dayjs';
-import { Line } from 'react-chartjs-2';
-import { useState, useEffect } from 'react';
-import CustomizedSnackbar, { SnackbarInterface } from '../../../../components/CustomizedSnackbar';
-import { useCancellationToken } from '../../../../hooks/useCancellationToken';
-import { isCancel } from "../../../../api/axiosSource";
-import { Box } from '@mui/material';
-import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import CustomizedProgress from "../../../../components/CustomizedProgress";
 import { GraphDataInterface } from "../GraphComponent";
-import { Error, WeightMonthDto, getWeightByMonth, getWeightByRange } from "../../../../api/easyFitnessApi";
+import { useState, useEffect } from 'react';
+import CustomizedSnackbar, { SnackbarInterface } from "../../../../components/CustomizedSnackbar";
+import { CaloriesMonthDto, Error, getCaloriesByMonth, getCaloriesByRange } from "../../../../api/easyFitnessApi";
+import { useCancellationToken } from "../../../../hooks/useCancellationToken";
+import { isCancel } from "../../../../api/axiosSource";
+import { Box } from "@mui/material";
+import CustomizedProgress from "../../../../components/CustomizedProgress";
+import { Line } from "react-chartjs-2";
+import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
 Chart.register(
   CategoryScale,
@@ -21,7 +21,7 @@ Chart.register(
   Legend
 );
 
-interface ActivityGraphProps {
+interface DietGraphProps {
   option: string;
   dateRange?: DateRangeInterface;
   month: Dayjs | null;
@@ -35,31 +35,31 @@ const options = {
     },
     title: {
       display: true,
-      text: 'Waga'
+      text: 'Kalorie'
     },
   },
 };
 
 export var data: GraphDataInterface = { labels: [], datasets: [] };
 
-export default function WeightGraph({ option, dateRange, month }: ActivityGraphProps) {
+export default function DietGraph({ option, dateRange, month }: DietGraphProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
-  const [weightMonth, setWeightMonth] = useState<WeightMonthDto[]>([]);
-  const [weightRange, setWeightRange] = useState<WeightMonthDto[]>([]);
+  const [dietMonth, setDietMonth] = useState<CaloriesMonthDto[]>([]);
+  const [dietRange, setDietRange] = useState<CaloriesMonthDto[]>([]);
 
   const cancellation = useCancellationToken();
 
-  const getWeightByMonthAction = async (cancelToken: any) => {
+  const getCaloriesByMonthAction = async (cancelToken: any) => {
     setIsLoading(true);
-    return getWeightByMonth(
+    return getCaloriesByMonth(
       (month!.month() + 1).toString(),
       month!.year().toString(),
       cancelToken
     )
       .then((items) => {
-        setWeightMonth(items);
+        setDietMonth(items);
         setIsLoading(false);
       })
       .catch((e: Error) => {
@@ -74,15 +74,15 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
       });
   };
 
-  const getWeightByRangeAction = async (cancelToken: any) => {
+  const getCaloriesByRangeAction = async (cancelToken: any) => {
     setIsLoading(true);
-    return getWeightByRange(
+    return getCaloriesByRange(
       dateRange?.startDate!,
       dateRange?.endDate!,
       cancelToken
     )
       .then((items) => {
-        setWeightRange(items);
+        setDietRange(items);
         setIsLoading(false);
       })
       .catch((e: Error) => {
@@ -94,7 +94,7 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
           });
         }
         setIsLoading(false);
-      })
+      });
   };
 
   const handleCloseSnackbar = () => {
@@ -107,10 +107,10 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
   const getGraphData = async () => {
     cancellation(async (cancelToken) => {
       if (option === 'month') {
-        await getWeightByMonthAction(cancelToken);
+        await getCaloriesByMonthAction(cancelToken);
       }
       else {
-        await getWeightByRangeAction(cancelToken);
+        await getCaloriesByRangeAction(cancelToken);
       }
     });
   };
@@ -118,11 +118,11 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
   const setGraph = () => {
     if (option === 'month') {
       data = {
-        labels: weightMonth.map((item) => item.day),
+        labels: dietMonth.map((item) => item.day),
         datasets: [
           {
-            label: 'Waga',
-            data: weightMonth.map((item) => item.weight),
+            label: 'Kalorie',
+            data: dietMonth.map((item) => parseFloat(item.calories.toFixed(2))),
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor: 'rgb(255, 99, 132)'
           }
@@ -131,11 +131,11 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
     }
     else {
       data = {
-        labels: weightRange.map((item) => item.day),
+        labels: dietRange.map((item) => item.day),
         datasets: [
           {
-            label: 'Waga',
-            data: weightRange.map((item) => item.weight),
+            label: 'Kalorie',
+            data: dietRange.map((item) => parseFloat(item.calories.toFixed(2))),
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor: 'rgb(255, 99, 132)'
           }
@@ -149,13 +149,13 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
   }, [dateRange, month, option]);
 
   useEffect(() => {
-    if (weightMonth.length !== 0) {
+    if (dietMonth.length !== 0) {
       setGraph();
     }
-    if (weightRange.length !== 0) {
+    if (dietRange.length !== 0) {
       setGraph();
     }
-  }, [weightRange, weightMonth]);
+  }, [dietMonth, dietRange]);
 
   return (
     <Box sx={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
@@ -164,8 +164,8 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
         <CustomizedProgress position="center" />
       ) : (
         <>
-          {option === 'month' && weightMonth.length !== 0 && <Line data={data} options={options} />}
-          {option === 'range' && weightRange.length !== 0 && <Line data={data} options={options} />}
+          {option === 'month' && dietMonth.length !== 0 && <Line data={data} options={options} />}
+          {option === 'range' && dietRange.length !== 0 && <Line data={data} options={options} />}
         </>
       )}
     </Box>

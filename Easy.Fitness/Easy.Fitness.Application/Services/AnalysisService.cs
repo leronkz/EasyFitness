@@ -1,4 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos.Analysis.Activity;
+using Easy.Fitness.Application.Dtos.Analysis.Diet;
 using Easy.Fitness.Application.Dtos.Analysis.Weight;
 using Easy.Fitness.Application.Dtos.Criteria;
 using Easy.Fitness.Application.Interfaces;
@@ -44,11 +45,23 @@ namespace Easy.Fitness.Application.Services
             IEnumerable<WeightMonth> result = await _analysisRepository.GetWeightByRangeAsync(critiera.StartDate, critiera.EndDate, cancellationToken);
             return result.Select(x => new WeightMonthDto { Day = x.Date, Weight = x.Weight });
         }
-        
+
         public async Task<IEnumerable<WeightMonthDto>> GetWeightByMonthAsync(string month, string year, CancellationToken cancellationToken)
         {
             IEnumerable<WeightMonth> result = await _analysisRepository.GetWeightByMonthAsync(month, year, cancellationToken);
             return result.Select(x => new WeightMonthDto { Day = x.Date, Weight = x.Weight });
+        }
+
+        public async Task<IEnumerable<DietMonthDto>> GetCaloriesByMonthAsync(string month, string year, CancellationToken cancellationToken)
+        {
+            IEnumerable<DietMonth> result = await _analysisRepository.GetCaloriesByMonthAsync(month, year, cancellationToken);
+            return result.Select(x => new DietMonthDto { Day = x.Date, Calories = x.Calories });
+        }
+
+        public async Task<IEnumerable<DietMonthDto>> GetCaloriesByRangeAsync(GetGraphCriteria criteria, CancellationToken cancellationToken)
+        {
+            IEnumerable<DietMonth> result = await _analysisRepository.GetCaloriesByRangeAsync(criteria.StartDate, criteria.EndDate, cancellationToken);
+            return result.Select(x => new DietMonthDto { Day = x.Date, Calories = x.Calories });
         }
     }
 }

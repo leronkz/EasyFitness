@@ -213,10 +213,10 @@ export default function Diet() {
               </Box>
             </Box>
             <Box className={styles.dietPropertiesInfoContainer}>
-              <p className={styles.dietPropertiesInfoText}>Kalorie: {dietSummary.currentCalories}/{dietSummary.maxCalories} kcal</p>
-              <p className={styles.dietPropertiesInfoText}>Tłuszcz: {dietSummary.currentFat}/{dietSummary.maxFat} g</p>
-              <p className={styles.dietPropertiesInfoText}>Węgl.: {dietSummary.currentCarbs}/{dietSummary.maxCarbs} g</p>
-              <p className={styles.dietPropertiesInfoText}>Białko: {dietSummary.currentProtein}/{dietSummary.maxProtein} g</p>
+              <p className={styles.dietPropertiesInfoText}>Kalorie: {parseFloat(dietSummary.currentCalories.toFixed(2))}/{dietSummary.maxCalories} kcal</p>
+              <p className={styles.dietPropertiesInfoText}>Tłuszcz: {parseFloat(dietSummary.currentFat.toFixed(2))}/{dietSummary.maxFat} g</p>
+              <p className={styles.dietPropertiesInfoText}>Węgl.: {parseFloat(dietSummary.currentCarbs.toFixed(2))}/{dietSummary.maxCarbs} g</p>
+              <p className={styles.dietPropertiesInfoText}>Białko: {parseFloat(dietSummary.currentProtein.toFixed(2))}/{dietSummary.maxProtein} g</p>
             </Box>
           </Box>
         </Container>

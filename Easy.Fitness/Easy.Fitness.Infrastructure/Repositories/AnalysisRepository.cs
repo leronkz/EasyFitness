@@ -182,6 +182,59 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<DietMonth>> GetCaloriesByMonthAsync(string month, string year, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await _context.Users.Include(u => u.Diets).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
+                List<DateTime> allDaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(int.Parse(year), DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month))
+                                                      .Select(day => new DateTime(int.Parse(year), DateTime.ParseExact(month, "MM", CultureInfo.CurrentCulture).Month, day))
+                                                      .ToList();
+                List<Diet> diets = user.Diets.Where(p => p.CreatedOn.Month.ToString() == month && p.CreatedOn.Year.ToString() == year)
+                    .OrderBy(p => p.CreatedOn)
+                    .ToList();
+                Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
+                foreach (Diet diet in diets)
+                {
+                    caloriesByDay[diet.CreatedOn.Date] = diet.Calories;
+                }
+                List<DietMonth> result = allDaysInMonth.Select(day =>
+                {
+                    double calories = caloriesByDay.ContainsKey(day) ? caloriesByDay[day] : 0;
+                    return new DietMonth(day.ToShortDateString(), calories);
+                }).ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your graph", ex);
+            }
+        }
+
+        public async Task<IEnumerable<DietMonth>> GetCaloriesByRangeAsync(string startDate, string endDate, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await _context.Users.Include(u => u.Diets).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
+                List<Diet> diets = user.Diets.Where(p => IsDateValid(p.CreatedOn, startDate, endDate))
+                     .OrderBy(p => p.CreatedOn)
+                     .ToList();
+                Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
+                foreach (Diet diet in diets)
+                {
+                    caloriesByDay[diet.CreatedOn] = diet.Calories;
+                }
+                List<DietMonth> result = caloriesByDay.Select(w => new DietMonth(w.Key.ToShortDateString(), w.Value))
+                    .ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your graph", ex);
+            }
+        }
+
         private static string GetMonth(string date)
         {
             string[] result = date.Split('-');
@@ -193,7 +246,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             string[] result = date.Split('-');
             return result[0];
         }
-        
+
         private static bool IsDateValid(string date, string startDate, string endDate)
         {
             DateTime formattedDate = DateTime.ParseExact(date, "yyyy-MM-dd", null);
@@ -205,7 +258,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
             return false;
         }
-        
+
         private static bool IsDateValid(DateTime date, string startDate, string endDate)
         {
             DateTime formattedStart = DateTime.ParseExact(startDate, "yyyy-MM-dd", null);

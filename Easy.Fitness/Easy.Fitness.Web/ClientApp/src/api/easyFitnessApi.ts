@@ -132,6 +132,10 @@ export interface WeightMonthDto {
   day: string;
   weight: number;
 }
+export interface CaloriesMonthDto {
+  day: string;
+  calories: number;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -441,6 +445,27 @@ export const getWeightByRange = async (
   cancellationSource?: CancellationSource
 ): Promise<WeightMonthDto[]> => {
   return get<WeightMonthDto[]>(`api/v1/analysis/weight`, {
+    params: { startDate, endDate },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getCaloriesByMonth = async (
+  month: string,
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<CaloriesMonthDto[]> => {
+  return get<CaloriesMonthDto[]>(`api/v1/analysis/diet/month/${month}/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getCaloriesByRange = async (
+  startDate: string,
+  endDate: string,
+  cancellationSource?: CancellationSource
+): Promise<CaloriesMonthDto[]> => {
+  return get<CaloriesMonthDto[]>(`api/v1/analysis/diet`, {
     params: { startDate, endDate },
     cancelToken: cancellationSource?.tokenSource.token
   });

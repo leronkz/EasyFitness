@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import styles from './modules/graphComponent.module.css';
 import ActivityGraph from "./graphs/ActivityGraph";
 import WeightGraph from "./graphs/WeightGraph";
+import DietGraph from "./graphs/DietGraph";
 
 interface GraphProps {
   type: string;
@@ -34,6 +35,9 @@ export default function GraphComponent({ type, option, dateRange, year, month }:
       )}
       {type === 'weight' && (
         <WeightGraph option={option} dateRange={dateRange} month={month} />
+      )}
+      {type === 'calories' && (
+        <DietGraph option={option} dateRange={dateRange} month={month} />
       )}
     </Box>
   )

@@ -1,4 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos.Analysis.Activity;
+using Easy.Fitness.Application.Dtos.Analysis.Diet;
 using Easy.Fitness.Application.Dtos.Analysis.Weight;
 using Easy.Fitness.Application.Dtos.Criteria;
 using Easy.Fitness.Application.Interfaces;
@@ -85,6 +86,34 @@ namespace Easy.Fitness.Web.Controllers.v1
             try
             {
                 IEnumerable<WeightMonthDto> result = await _analysisService.GetWeightByMonthAsync(month, year, cancellationToken);
+                return Ok(result);
+            }
+            catch (DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("analysis/diet/month/{month}/year/{year}")]
+        public async Task<IActionResult> GetCaloriesByMonth([FromRoute] string month, string year, CancellationToken cancellationToken)
+        {
+            try
+            {
+                IEnumerable<DietMonthDto> result = await _analysisService.GetCaloriesByMonthAsync(month, year, cancellationToken);
+                return Ok(result);
+            }
+            catch (DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("analysis/diet")]
+        public async Task<IActionResult> GetCaloriesByRange([FromQuery] GetGraphCriteria criteria, CancellationToken cancellationToken)
+        {
+            try
+            {
+                IEnumerable<DietMonthDto> result = await _analysisService.GetCaloriesByRangeAsync(criteria, cancellationToken);
                 return Ok(result);
             }
             catch (DatabaseException ex)
