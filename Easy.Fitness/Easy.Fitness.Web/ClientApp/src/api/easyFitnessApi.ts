@@ -394,7 +394,6 @@ export const getDietSummary = async (
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
-};
 
 export const getBurnedCaloriesByMonth = async (
   month: string,
