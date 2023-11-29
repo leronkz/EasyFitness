@@ -20,7 +20,7 @@ import CustomizedProgress from "../../components/CustomizedProgress";
 export default function Diet() {
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const formattedDate = `${selectedDate.getDate()}.${selectedDate.getMonth() + 1}.${selectedDate.getFullYear()}`;
+  let formattedDate = `${selectedDate.getDate()}.${selectedDate.getMonth() + 1}.${selectedDate.getFullYear()}`;
   const [searchDate, setSearchDate] = useState<string | null>(null);
   const [openConfigure, setOpenConfigure] = useState<boolean>(false);
   const [dateDietConfiguration, setDateDietConfiguration] = useState<DayDietDto>({ date: formattedDate, calories: 0, fat: 0, carbs: 0, protein: 0 });
@@ -32,12 +32,14 @@ export default function Diet() {
   const cancellation = useCancellationToken();
 
   const handlePrevDay = () => {
+    setSearchDate(null);
     const newDate = new Date(selectedDate);
     newDate.setDate(selectedDate.getDate() - 1);
     setSelectedDate(newDate);
   };
 
   const handleNextDay = () => {
+    setSearchDate(null);
     const newDate = new Date(selectedDate);
     newDate.setDate(selectedDate.getDate() + 1);
     setSelectedDate(newDate);
@@ -122,12 +124,18 @@ export default function Diet() {
 
   useEffect(() => {
     resetDietConfiguration();
+    if(searchDate !== null) {
+      formattedDate = `${searchDate.split('-')[2]}.${searchDate.split('-')[1]}.${searchDate.split('-')[0]}`;
+    }
+    else {
+      formattedDate = `${selectedDate.getDate()}.${selectedDate.getMonth() + 1}.${selectedDate.getFullYear()}`;
+    }
     cancellation((cancelToken) => {
       getDietConfigurationAction(cancelToken);
       getDietByDateAction(cancelToken);
       getDietSummaryAction(cancelToken);
     });
-  }, [formattedDate]);
+  }, [formattedDate, searchDate]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -187,7 +195,7 @@ export default function Diet() {
             </Box>
             <Box className={styles.dietTable}>
               <Box className={styles.dietTableHeader}>
-                <p>Obecnie przeglądany dzień: {formattedDate}</p>
+                <p>Obecnie przeglądany dzień: {searchDate !== null ? `${searchDate.split('-')[2]}.${searchDate.split('-')[1]}.${searchDate.split('-')[0]}` : formattedDate}</p>
               </Box>
               <Divider />
               <Box className={styles.dietTableBodyContainer}>
