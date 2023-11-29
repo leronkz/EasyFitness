@@ -17,10 +17,13 @@ namespace Easy.Fitness.Infrastructure
         public virtual DbSet<UserParameters> UserParameters { get; set; }
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<PlannedActivity> Schedule { get; set; }
+        public virtual DbSet<Diet> Diet { get; set; }
+        public virtual DbSet<Food> Food { get; set; }
+        public virtual DbSet<DietProperties> DietProperties { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, IUserContext userContext = null) 
-            : base(options) 
-        { 
+        public AppDbContext(DbContextOptions<AppDbContext> options, IUserContext userContext = null)
+            : base(options)
+        {
             _userContext = userContext;
         }
 
@@ -37,20 +40,23 @@ namespace Easy.Fitness.Infrastructure
             ConfigureUserParametersTable(modelBuilder);
             ConfigureActivitesTable(modelBuilder);
             ConfigureScheduleTable(modelBuilder);
+            ConfigureDietTable(modelBuilder);
+            ConfigureFoodTable(modelBuilder);
+            ConfigureDietPropertiesTable(modelBuilder);
         }
 
         private void AddAuditInfo()
         {
             var entities = ChangeTracker.Entries<Entity<Guid>>().Where(e => e.State == EntityState.Modified);
 
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 entity.Entity.ModifiedBy = _userContext?.CurrentUserId ?? UserId.Empty;
                 entity.Entity.ModifiedOn = DateTime.UtcNow;
             }
         }
-        
-        private void ConfigureUserTable(ModelBuilder modelBuilder)
+
+        private static void ConfigureUserTable(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<User>().Property(x => x.Id).ValueGeneratedOnAdd();
@@ -91,9 +97,14 @@ namespace Easy.Fitness.Infrastructure
                 .WithOne(u => u.User)
                 .HasForeignKey(u => u.UserId)
                 .IsRequired();
+
+            modelBuilder.Entity<User>().HasMany(x => x.Diets)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId)
+                .IsRequired();
         }
 
-        private void ConfigureUserParametersTable(ModelBuilder modelBuilder)
+        private static void ConfigureUserParametersTable(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserParameters>().ToTable("UserParameters");
             modelBuilder.Entity<UserParameters>().Property(x => x.Id)
@@ -112,7 +123,7 @@ namespace Easy.Fitness.Infrastructure
                 v => (UserId)v);
         }
 
-        private void ConfigureActivitesTable(ModelBuilder modelBuilder)
+        private static void ConfigureActivitesTable(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Activity>().ToTable("Activity");
             modelBuilder.Entity<Activity>().Property(x => x.Id)
@@ -137,7 +148,7 @@ namespace Easy.Fitness.Infrastructure
                 v => (UserId)v);
         }
 
-        private void ConfigureScheduleTable(ModelBuilder modelBuilder)
+        private static void ConfigureScheduleTable(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PlannedActivity>().ToTable("Schedule");
             modelBuilder.Entity<PlannedActivity>().Property(x => x.Id)
@@ -153,6 +164,90 @@ namespace Easy.Fitness.Infrastructure
                 v => (Guid)v,
                 v => (UserId)v);
             modelBuilder.Entity<PlannedActivity>().Property(x => x.ModifiedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+        }
+
+        private static void ConfigureDietTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Diet>().ToTable("Diet");
+            modelBuilder.Entity<Diet>().Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Diet>().Property(x => x.Date)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Diet>().Property(x => x.Calories)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Diet>().Property(x => x.Carbs)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Diet>().Property(x => x.Fat)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Diet>().Property(x => x.Protein)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Diet>().Property(x => x.CreatedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+            modelBuilder.Entity<Diet>().Property(x => x.ModifiedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+
+            modelBuilder.Entity<Diet>().HasMany(x => x.Foods)
+                .WithOne(d => d.Diet)
+                .HasForeignKey(d => d.DietId)
+                .IsRequired();
+            modelBuilder.Entity<Diet>().HasOne(x => x.Properties)
+                .WithOne(p => p.Diet)
+                .HasForeignKey<DietProperties>(p => p.DietId)
+                .IsRequired();
+        }
+
+        private static void ConfigureFoodTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Food>().ToTable("Food");
+            modelBuilder.Entity<Food>().Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Food>().Property(x => x.Name)
+                .HasMaxLength(100);
+            modelBuilder.Entity<Food>().Property(x => x.Calories)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Food>().Property(x => x.Carbs)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Food>().Property(x => x.Fat)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Food>().Property(x => x.Protein)
+                .HasMaxLength(30);
+            modelBuilder.Entity<Food>().Property(x => x.CreatedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+            modelBuilder.Entity<Food>().Property(x => x.ModifiedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+        }
+
+        private static void ConfigureDietPropertiesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DietProperties>().ToTable("DietProperties");
+            modelBuilder.Entity<DietProperties>().Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<DietProperties>().Property(x => x.Date)
+                .HasMaxLength(20);
+            modelBuilder.Entity<DietProperties>().Property(x => x.Calories)
+                .HasMaxLength(20);
+            modelBuilder.Entity<DietProperties>().Property(x => x.Carbs)
+                .HasMaxLength(20);
+            modelBuilder.Entity<DietProperties>().Property(x => x.Fat)
+                .HasMaxLength(20);
+            modelBuilder.Entity<DietProperties>().Property(x => x.Protein)
+                .HasMaxLength(20);
+            modelBuilder.Entity<DietProperties>().Property(x => x.CreatedBy)
+                .HasConversion(
+                v => (Guid)v,
+                v => (UserId)v);
+            modelBuilder.Entity<DietProperties>().Property(x => x.ModifiedBy)
                 .HasConversion(
                 v => (Guid)v,
                 v => (UserId)v);

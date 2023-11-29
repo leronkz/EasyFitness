@@ -73,6 +73,53 @@ export interface PageDto<T> {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
+export interface FoodDto {
+  id: string;
+  name: string;
+  calories: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  weight: number;
+  type: string;
+}
+export interface DayDietDto {
+  id?: string;
+  date: string;
+  calories?: number;
+  fat?: number;
+  carbs?: number;
+  protein?: number;
+}
+export interface AddFoodDto {
+  date: string;
+  name: string;
+  weight: number;
+  type: string;
+}
+export interface DietDto {
+  calories: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  foods: FoodDto[];
+}
+export interface UpdateFoodDto {
+  name: string;
+  weight: number;
+  type: string;
+  date: string;
+}
+export interface DietSummaryDto {
+  currentCalories: number;
+  maxCalories: number;
+  currentFat: number;
+  maxFat: number;
+  currentCarbs: number;
+  maxCarbs: number;
+  currentProtein: number;
+  maxProtein: number;
+}
 export interface BurnedCaloriesMonthDto {
   day: string;
   calories: number;
@@ -106,7 +153,7 @@ export const loginUser = async (
 
 export const logoutUser = () => {
   localStorage.removeItem("token");
-}
+};
 
 export const updateUser = async (
   userData: UserInfoDto,
@@ -203,10 +250,11 @@ export const getActivityPage = async (
   page: number,
   sortColumn: string,
   searchType?: string,
+  searchDate?: string,
   cancellationSource?: CancellationSource
 ): Promise<PageDto<ActivityDto>> => {
   return get<PageDto<ActivityDto>>('api/v1/activity', {
-    params: { count, isDescending, page, sortColumn, searchType },
+    params: { count, isDescending, page, sortColumn, searchType, searchDate },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
@@ -245,10 +293,11 @@ export const getSchedulePage = async (
   page: number,
   sortColumn: string,
   searchType?: string,
+  searchDate?: string,
   cancellationSource?: CancellationSource
 ): Promise<PageDto<ScheduleDto>> => {
   return get<PageDto<ScheduleDto>>('api/v1/schedule', {
-    params: { count, isDescending, page, sortColumn, searchType },
+    params: { count, isDescending, page, sortColumn, searchType, searchDate },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
@@ -270,6 +319,81 @@ export const updateSchedule = async (
   return put<ScheduleDto>(`api/v1/schedule/${id}`, schedule, {
     cancelToken: cancellationSource?.tokenSource.token
   });
+};
+
+export const setDietProperties = async (
+  dietConfiguration: DayDietDto,
+  cancellationSource?: CancellationSource
+): Promise<DayDietDto> => {
+  return post<DayDietDto>('api/v1/diet/properties', dietConfiguration, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getDietProperties = async (
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<DayDietDto> => {
+  return get<DayDietDto>(`api/v1/diet/properties/${date}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const addNewFood = async (
+  newFood: AddFoodDto,
+  cancellationSource?: CancellationSource
+): Promise<FoodDto> => {
+  return post<FoodDto>(`api/v1/diet/food`, newFood, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getAutocompleteFoodNames = async (
+  foodName: string
+): Promise<string[]> => {
+  return get<string[]>(`api/v1/diet/food`, {
+    params: { foodName }
+  });
+};
+
+export const getDietByDate = async (
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<DietDto> => {
+  return get<DietDto>(`api/v1/diet/${date}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const deleteFood = async (
+  id: string,
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<void> => {
+  return deletion<void>(`api/v1/diet/food/${id}`, {
+    params: { date },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const updateFood = async (
+  id: string,
+  food: UpdateFoodDto,
+  cancellationSource?: CancellationSource
+): Promise<FoodDto> => {
+  return put<FoodDto>(`api/v1/diet/food/${id}`, food, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getDietSummary = async (
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<DietSummaryDto> => {
+  return get<DietSummaryDto>(`api/v1/diet/${date}/summary`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
 };
 
 export const getBurnedCaloriesByMonth = async (

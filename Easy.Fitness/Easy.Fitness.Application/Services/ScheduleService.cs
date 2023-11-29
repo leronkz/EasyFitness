@@ -34,7 +34,7 @@ namespace Easy.Fitness.Application.Services
         public async Task<PageDto<ScheduleDto>> GetSchedulePageAsync(GetPageCriteria criteria, CancellationToken cancellationToken)
         {
             IEnumerable<PlannedActivity> result = await _scheduleRepository.GetSchedulesAsync(
-                criteria.Page, criteria.SortColumn, criteria.IsDescending, criteria.SearchType, cancellationToken);
+                criteria.Page, criteria.SortColumn, criteria.IsDescending, criteria.SearchType, criteria.SearchDate, cancellationToken);
             int totalCount = await _scheduleRepository.GetTotalCountAsync(cancellationToken);
             PageDto<ScheduleDto> schedulePage = new PageDto<ScheduleDto>
             {

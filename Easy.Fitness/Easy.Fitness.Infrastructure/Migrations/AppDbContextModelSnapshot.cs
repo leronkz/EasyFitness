@@ -23,205 +23,389 @@ namespace Easy.Fitness.Infrastructure.Migrations
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Activity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
 
-                    b.Property<double>("Calories")
-                        .HasMaxLength(50)
-                        .HasColumnType("double precision");
+                b.Property<double>("Calories")
+                    .HasMaxLength(50)
+                    .HasColumnType("double precision");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("CreatedOn")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Date")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                b.Property<string>("Date")
+                    .HasMaxLength(20)
+                    .HasColumnType("character varying(20)");
 
-                    b.Property<string>("Duration")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                b.Property<string>("Duration")
+                    .HasMaxLength(20)
+                    .HasColumnType("character varying(20)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime?>("ModifiedOn")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("Name")
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Type")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                b.Property<string>("Type")
+                    .HasMaxLength(50)
+                    .HasColumnType("character varying(50)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Activity", (string)null);
-                });
+                b.ToTable("Activity", (string)null);
+            });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Diet", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
+
+                b.Property<double>("Calories")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<double>("Carbs")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid");
+
+                b.Property<DateTime>("CreatedOn")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<string>("Date")
+                    .HasMaxLength(30)
+                    .HasColumnType("character varying(30)");
+
+                b.Property<double>("Fat")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uuid");
+
+                b.Property<DateTime?>("ModifiedOn")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<double>("Protein")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uuid");
+
+                b.HasKey("Id");
+
+                b.HasIndex("UserId");
+
+                b.ToTable("Diet", (string)null);
+            });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.DietProperties", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
+
+                b.Property<double>("Calories")
+                    .HasMaxLength(20)
+                    .HasColumnType("double precision");
+
+                b.Property<double>("Carbs")
+                    .HasMaxLength(20)
+                    .HasColumnType("double precision");
+
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid");
+
+                b.Property<DateTime>("CreatedOn")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<string>("Date")
+                    .HasMaxLength(20)
+                    .HasColumnType("character varying(20)");
+
+                b.Property<Guid>("DietId")
+                    .HasColumnType("uuid");
+
+                b.Property<double>("Fat")
+                    .HasMaxLength(20)
+                    .HasColumnType("double precision");
+
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uuid");
+
+                b.Property<DateTime?>("ModifiedOn")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<double>("Protein")
+                    .HasMaxLength(20)
+                    .HasColumnType("double precision");
+
+                b.HasKey("Id");
+
+                b.HasIndex("DietId")
+                    .IsUnique();
+
+                b.ToTable("DietProperties", (string)null);
+            });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Food", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
+
+                b.Property<double>("Calories")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<double>("Carbs")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid");
+
+                b.Property<DateTime>("CreatedOn")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<Guid>("DietId")
+                    .HasColumnType("uuid");
+
+                b.Property<double>("Fat")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uuid");
+
+                b.Property<DateTime?>("ModifiedOn")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<string>("Name")
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
+
+                b.Property<double>("Protein")
+                    .HasMaxLength(30)
+                    .HasColumnType("double precision");
+
+                b.Property<string>("Type")
+                    .HasColumnType("text");
+
+                b.Property<double>("Weight")
+                    .HasColumnType("double precision");
+
+                b.HasKey("Id");
+
+                b.HasIndex("DietId");
+
+                b.ToTable("Food", (string)null);
+            });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.PlannedActivity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("CreatedOn")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Date")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                b.Property<string>("Date")
+                    .HasMaxLength(50)
+                    .HasColumnType("character varying(50)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime?>("ModifiedOn")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Note")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
+                b.Property<string>("Note")
+                    .HasMaxLength(2000)
+                    .HasColumnType("character varying(2000)");
 
-                    b.Property<string>("Type")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("Type")
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Schedule", (string)null);
-                });
+                b.ToTable("Schedule", (string)null);
+            });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
 
-                    b.Property<string>("BirthDate")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("BirthDate")
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("CreatedOn")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("FirstName")
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("text");
+                b.Property<string>("Image")
+                    .HasColumnType("text");
 
-                    b.Property<string>("LastName")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("LastName")
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime?>("ModifiedOn")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("Password")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("PhoneNumber")
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
+                b.HasIndex("Email")
+                    .IsUnique();
 
-                    b.ToTable("User", (string)null);
-                });
+                b.ToTable("User", (string)null);
+            });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.UserParameters", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("CreatedOn")
+                    .HasColumnType("timestamp with time zone");
 
                     b.Property<double>("Height")
                         .HasMaxLength(30)
                         .HasColumnType("double precision");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime?>("ModifiedOn")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uuid");
 
                     b.Property<double>("Weight")
                         .HasMaxLength(30)
                         .HasColumnType("double precision");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserParameters", (string)null);
-                });
+                b.ToTable("UserParameters", (string)null);
+            });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Activity", b =>
-                {
-                    b.HasOne("Easy.Fitness.DomainModels.Models.User", "User")
-                        .WithMany("Activities")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Easy.Fitness.DomainModels.Models.User", "User")
+                    .WithMany("Activities")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Diet", b =>
+            {
+                b.HasOne("Easy.Fitness.DomainModels.Models.User", "User")
+                    .WithMany("Diets")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("User");
+            });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.DietProperties", b =>
+            {
+                b.HasOne("Easy.Fitness.DomainModels.Models.Diet", "Diet")
+                    .WithOne("Properties")
+                    .HasForeignKey("Easy.Fitness.DomainModels.Models.DietProperties", "DietId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Diet");
+            });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Food", b =>
+            {
+                b.HasOne("Easy.Fitness.DomainModels.Models.Diet", "Diet")
+                    .WithMany("Foods")
+                    .HasForeignKey("DietId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Diet");
+            });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.PlannedActivity", b =>
-                {
-                    b.HasOne("Easy.Fitness.DomainModels.Models.User", "User")
-                        .WithMany("PlannedActivities")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Easy.Fitness.DomainModels.Models.User", "User")
+                    .WithMany("PlannedActivities")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.UserParameters", b =>
                 {
@@ -231,17 +415,26 @@ namespace Easy.Fitness.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Diet", b =>
+            {
+                b.Navigation("Foods");
+
+                b.Navigation("Properties");
+            });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.User", b =>
-                {
-                    b.Navigation("Activities");
+            {
+                b.Navigation("Activities");
 
-                    b.Navigation("Parameters");
+                b.Navigation("Diets");
 
-                    b.Navigation("PlannedActivities");
-                });
+                b.Navigation("Parameters");
+
+                b.Navigation("PlannedActivities");
+            });
 #pragma warning restore 612, 618
         }
     }

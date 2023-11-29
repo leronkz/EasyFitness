@@ -15,5 +15,8 @@ namespace Easy.Fitness.Infrastructure.Configuration
 
         [JsonRequired]
         public StorageConfig Storage { get; set; }
+
+        [JsonRequired]
+        public FoodDatabaseConfig FoodDatabaseApi { get; set; }
     }
 }

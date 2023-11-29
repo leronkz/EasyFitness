@@ -87,7 +87,8 @@ export default function NewPlannedActivity({ open, onClose }: NewPlannedActivity
             message: e.response.data
           });
         }
-      })
+        setIsSubmitting(false);
+      });
   };
 
   const onSaveNewScheduleClick = async () => {

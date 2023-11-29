@@ -41,7 +41,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to save your activity", ex);
             }
         }
-        public async Task<IEnumerable<Activity>> GetActivitiesAsync(int page, string sortColumn, bool isDescending, string searchType, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Activity>> GetActivitiesAsync(int page, string sortColumn, bool isDescending, string searchType, string searchDate, CancellationToken cancellationToken)
         {
             try
             {
@@ -51,6 +51,10 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 if (searchType != "All")
                 {
                     activityQuery = activityQuery.Where(a => a.Type == searchType);
+                }
+                if(!string.IsNullOrEmpty(searchDate))
+                {
+                    activityQuery = activityQuery.Where(a => a.Date == searchDate);
                 }
                 if (isDescending)
                 {

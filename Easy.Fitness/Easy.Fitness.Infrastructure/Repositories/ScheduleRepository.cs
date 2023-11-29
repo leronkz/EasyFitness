@@ -43,7 +43,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<PlannedActivity>> GetSchedulesAsync(int page, string sortColumn, bool isDescending, string searchType, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PlannedActivity>> GetSchedulesAsync(int page, string sortColumn, bool isDescending, string searchType, string searchDate, CancellationToken cancellationToken)
         {
             try
             {
@@ -53,6 +53,10 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 if(searchType != "All")
                 {
                     scheduleQuery = scheduleQuery.Where(s => s.Type == searchType);
+                }
+                if(!string.IsNullOrEmpty(searchDate))
+                {
+                    scheduleQuery = scheduleQuery.Where(s => s.Date == searchDate);
                 }
                 if(isDescending)
                 {
