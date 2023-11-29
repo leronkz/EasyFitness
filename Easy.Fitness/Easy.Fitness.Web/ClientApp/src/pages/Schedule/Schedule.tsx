@@ -15,6 +15,7 @@ import CustomizedSnackbar, { SnackbarInterface } from "../../components/Customiz
 import { useCancellationToken } from "../../hooks/useCancellationToken";
 import CustomizedProgress from "../../components/CustomizedProgress";
 import PlannedActivity from "./components/PlannedActivity";
+import DateSearch from "../../components/DateSearch";
 
 const COUNT: number = 7;
 
@@ -28,6 +29,7 @@ export default function Schedule() {
   const [searchType, setSearchType] = useState<string>('All');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
+  const [searchDate, setSearchDate] = useState<string | null>(null);
 
   const cancellation = useCancellationToken();
 
@@ -76,6 +78,7 @@ export default function Schedule() {
       page,
       sortColumn,
       searchType,
+      searchDate!,
       cancelToken
     )
       .then((items) => {
@@ -104,7 +107,7 @@ export default function Schedule() {
     cancellation((cancelToken) => {
       getScheduleAction(cancelToken);
     });
-  }, [sortColumn, sortDirection, page, searchType]);
+  }, [sortColumn, sortDirection, page, searchType, searchDate]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -154,6 +157,7 @@ export default function Schedule() {
                   <option id={styles.selectOptions} value={"Volleyball"}>Siatkówka</option>
                   <option id={styles.selectOptions} value={"Other"}>Styl dowolny</option>
                 </NativeSelect>
+                <DateSearch searchDate={searchDate} setSearchDate={setSearchDate} />
                 <StyledTooltip title={"Dodaj"}>
                   <IconButton
                     size="medium"

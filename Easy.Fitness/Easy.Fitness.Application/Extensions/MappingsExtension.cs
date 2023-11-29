@@ -1,8 +1,10 @@
 ﻿using Easy.Fitness.Application.Dtos;
 using Easy.Fitness.Application.Dtos.Activity;
+using Easy.Fitness.Application.Dtos.Diet;
 using Easy.Fitness.Application.Dtos.Schedule;
 using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.DomainModels.Models;
+using System.Linq;
 
 namespace Easy.Fitness.Application.Extensions
 {
@@ -126,6 +128,116 @@ namespace Easy.Fitness.Application.Extensions
                 Date = entity.Date,
                 Type = entity.Type,
                 Note = entity.Note
+            };
+        }
+        public static DietProperties ToEntity(this DietPropertiesDto dto)
+        {
+            if (dto == null)
+            {
+                return null;
+            }
+            return new DietProperties
+            (
+                dto.Date,
+                dto.Calories,
+                dto.Fat,
+                dto.Carbs,
+                dto.Protein
+            );
+        }
+        public static DietPropertiesDto ToDto(this DietProperties entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            return new DietPropertiesDto
+            {
+                Id = entity.Id,
+                Date = entity.Date,
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein
+            };
+        }
+        public static FoodDetailsDto ToDto(this FoodDetails entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            return new FoodDetailsDto
+            {
+                Name = entity.Name,
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein,
+                Weight = entity.Weight
+            };
+        }
+
+        public static Food ToEntity(this FoodDto dto, double by)
+        {
+            if (dto == null || by == 0)
+            {
+                return null;
+            }
+            return new Food
+            (
+                dto.Name,
+                dto.Calories * by,
+                dto.Fat * by,
+                dto.Carbs * by,
+                dto.Protein * by,
+                dto.Weight,
+                dto.Type
+            );
+        }
+
+        public static FoodDto ToDto(this Food entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            return new FoodDto
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein,
+                Weight = entity.Weight,
+                Type = entity.Type
+            };
+        }
+
+        public static DietDto toDto(this Diet entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+            return new DietDto
+            {
+                Calories = entity.Calories,
+                Fat = entity.Fat,
+                Carbs = entity.Carbs,
+                Protein = entity.Protein,
+                Foods = entity.Foods.Select(f => new FoodDto
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Calories = f.Calories,
+                    Fat = f.Fat,
+                    Carbs = f.Carbs,
+                    Protein = f.Protein,
+                    Weight = f.Weight,
+                    Type = f.Type
+                }).ToList()
             };
         }
     }

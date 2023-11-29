@@ -1,0 +1,15 @@
+.dateSearchContainer {
+  display: flex;
+  align-items: center;
+  font-family: 'Lexend';
+}
+
+.dateSearchInputWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 2ch;
+}
+
+#dateSearchInput {
+  font-family: 'Lexend';
+}

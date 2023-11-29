@@ -26,7 +26,7 @@ namespace Easy.Fitness.Web.Extensions
                         options.SerializerSettings.Converters.Add(item);
                     }
 
-                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
                     JsonConvert.DefaultSettings = () => new JsonSerializerSettings
                     {
                         ContractResolver = new CamelCasePropertyNamesContractResolver()
