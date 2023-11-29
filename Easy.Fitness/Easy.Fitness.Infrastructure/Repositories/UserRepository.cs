@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
 using Easy.Fitness.Infrastructure.Exceptions;
+using System.Linq;
 
 namespace Easy.Fitness.Infrastructure.Repositories
 {
@@ -26,12 +27,12 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
                 return user;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Npgsql.PostgresException dbException = ex.InnerException as Npgsql.PostgresException;
-                if(dbException != null)
+                if (dbException != null)
                 {
-                    if(dbException.SqlState == DUPLICATE_KEY_ERROR_CODE)
+                    if (dbException.SqlState == DUPLICATE_KEY_ERROR_CODE)
                     {
                         throw new UserExistsException(ex);
                     }
@@ -46,7 +47,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             {
                 return await _context.Users.SingleAsync(x => x.Email == email, cancellationToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new NoUserFoundException(ex);
             }
@@ -65,7 +66,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
                 return userToUpdate;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to save your personal data", ex);
             }
@@ -75,10 +76,10 @@ namespace Easy.Fitness.Infrastructure.Repositories
         {
             try
             {
-                User user = await _context.Users.Include(x => x.Parameters).SingleAsync(x => x.Id == id, cancellationToken);
+                User user = await _context.Users.Include(x => x.Parameters).Include(x => x.Activities).SingleAsync(x => x.Id == id, cancellationToken);
                 return user;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to load your personal data", ex);
             }
@@ -93,11 +94,11 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 _context.Update(user);
                 await _context.SaveChangesAsync(cancellationToken);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to change password", ex);
             }
@@ -108,7 +109,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
             try
             {
                 User user = await GetUserByIdAsync(id, cancellationToken);
-                if(user.Parameters == null)
+                if (user.Parameters == null)
                 {
                     user.Parameters = parameters;
                 }
@@ -121,11 +122,11 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
                 return parameters;
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to update your parameters", ex);
             }
@@ -140,11 +141,11 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 _context.Update(user);
                 await _context.SaveChangesAsync(cancellationToken);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to save your photo", ex);
             }
@@ -157,11 +158,11 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 User user = await GetUserByIdAsync(id, cancellationToken);
                 return user.Image;
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to load your photo", ex);
             }
@@ -174,11 +175,11 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 User user = await GetUserByIdAsync(id, cancellationToken);
                 return user.Parameters;
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to load your parameters", ex);
             }
@@ -200,6 +201,29 @@ namespace Easy.Fitness.Infrastructure.Repositories
             catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to delete your photo", ex);
+            }
+        }
+
+        public async Task<UserSummary> GetUserSummaryAsync(Guid id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                User user = await GetUserByIdAsync(id, cancellationToken);
+                int trainings = user.Activities.Count;
+                double calories = user.Activities.Sum(a => a.Calories);
+                return new UserSummary
+                {
+                    Trainings = trainings,
+                    Calories = calories
+                };
+            }
+            catch (NoUserFoundException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your summary", ex);
             }
         }
     }

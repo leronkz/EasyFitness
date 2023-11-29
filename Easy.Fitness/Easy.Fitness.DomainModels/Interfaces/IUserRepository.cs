@@ -17,5 +17,6 @@ namespace Easy.Fitness.DomainModels.Interfaces
         Task SaveUserImageAsync(Guid id, string fileName, CancellationToken cancellationToken);
         Task<string> GetUserImageAsync(Guid id, CancellationToken cancellationToken);
         Task DeleteUserImageAsync(Guid id, CancellationToken cancellationToken);
+        Task<UserSummary> GetUserSummaryAsync(Guid id, CancellationToken cancellationToken);
     }
 }

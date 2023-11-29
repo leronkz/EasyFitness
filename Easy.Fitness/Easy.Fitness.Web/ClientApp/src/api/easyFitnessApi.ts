@@ -120,6 +120,10 @@ export interface DietSummaryDto {
   currentProtein: number;
   maxProtein: number;
 }
+export interface UserActivitySummaryDto{
+  trainings: number;
+  calories: number;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -379,6 +383,14 @@ export const getDietSummary = async (
   cancellationSource?: CancellationSource
 ): Promise<DietSummaryDto> => {
   return get<DietSummaryDto>(`api/v1/diet/${date}/summary`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getUserActivitySummary = async (
+  cancellationSource?: CancellationSource
+): Promise<UserActivitySummaryDto> => {
+  return get<UserActivitySummaryDto>(`api/v1/user/summary`, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

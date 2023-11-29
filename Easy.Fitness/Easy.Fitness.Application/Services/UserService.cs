@@ -137,6 +137,11 @@ namespace Easy.Fitness.Application.Services
             };
         }
 
+        public async Task<UserSummary> GetUserSummaryAsync(CancellationToken cancellationToken)
+        {
+            UserSummary summary = await _userRepository.GetUserSummaryAsync(_userContext.CurrentUserId, cancellationToken);
+            return summary;
+        }
         private static string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
