@@ -110,6 +110,16 @@ export interface UpdateFoodDto {
   type: string;
   date: string;
 }
+export interface DietSummaryDto {
+  currentCalories: number;
+  maxCalories: number;
+  currentFat: number;
+  maxFat: number;
+  currentCarbs: number;
+  maxCarbs: number;
+  currentProtein: number;
+  maxProtein: number;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -131,7 +141,7 @@ export const loginUser = async (
 
 export const logoutUser = () => {
   localStorage.removeItem("token");
-}
+};
 
 export const updateUser = async (
   userData: UserInfoDto,
@@ -360,6 +370,15 @@ export const updateFood = async (
   cancellationSource?: CancellationSource
 ): Promise<FoodDto> => {
   return put<FoodDto>(`api/v1/diet/food/${id}`, food, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getDietSummary = async (
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<DietSummaryDto> => {
+  return get<DietSummaryDto>(`api/v1/diet/${date}/summary`, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

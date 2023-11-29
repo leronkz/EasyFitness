@@ -92,6 +92,11 @@ namespace Easy.Fitness.Application.Services
             return diet.toDto();
         }
 
+        public async Task<DietSummary> GetDietSummaryByDateAsync(string date, CancellationToken cancellationToken)
+        {
+            DietSummary dietSummary = await _dietRepository.GetDietSummaryByDateAsync(date, cancellationToken);
+            return dietSummary;
+        }
         private FoodDetailsDto GetFoodDetails(string foodName)
         {
             FoodDetails foodDetails = _foodProvider.GetFoodDetails(foodName);

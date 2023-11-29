@@ -1,4 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos.Diet;
+using Easy.Fitness.DomainModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -15,5 +16,6 @@ namespace Easy.Fitness.Application.Interfaces
         Task<FoodDto> UpdateFoodAsync(Guid id, UpdateFoodDto food, CancellationToken cancellationToken);
         Task DeleteFoodAsync(Guid id, string date, CancellationToken cancellationToken);
         Task<DietDto> GetDietByDateAsync(string date, CancellationToken cancellationToken);
+        Task<DietSummary> GetDietSummaryByDateAsync(string date, CancellationToken cancellationToken);
     }
 }

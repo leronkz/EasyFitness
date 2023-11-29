@@ -196,5 +196,48 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 throw new DatabaseException("An error occurred while trying to load your day", ex);
             }
         }
+
+        public async Task<DietSummary> GetDietSummaryByDateAsync(string date, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Diet diet = await _context.Diet
+                    .Include(d => d.Properties)
+                    .Where(d => d.Date == date && d.UserId == _userContext.CurrentUserId)
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                if (diet == null)
+                {
+                    return new DietSummary
+                    {
+                        CurrentCalories = 0,
+                        MaxCalories = 0,
+                        CurrentFat = 0,
+                        MaxFat = 0,
+                        CurrentCarbs = 0,
+                        MaxCarbs = 0,
+                        CurrentProtein = 0,
+                        MaxProtein = 0
+                    };
+                }
+
+                DietSummary summary = new DietSummary
+                {
+                    CurrentCalories = diet.Calories,
+                    MaxCalories = diet.Properties.Calories,
+                    CurrentFat = diet.Fat,
+                    MaxFat = diet.Properties.Fat,
+                    CurrentCarbs = diet.Carbs,
+                    MaxCarbs = diet.Properties.Carbs,
+                    CurrentProtein = diet.Protein,
+                    MaxProtein = diet.Properties.Protein
+                };
+                return summary;
+            }
+            catch (Exception ex)
+            {
+                throw new DatabaseException("An error occurred while trying to load your diet summary", ex);
+            }
+        }
     }
 }

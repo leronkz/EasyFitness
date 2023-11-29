@@ -1,5 +1,6 @@
 ﻿using Easy.Fitness.Application.Dtos.Diet;
 using Easy.Fitness.Application.Interfaces;
+using Easy.Fitness.DomainModels.Models;
 using Easy.Fitness.Infrastructure.Exceptions;
 using Easy.Fitness.Infrastructure.WebClients;
 using Microsoft.AspNetCore.Authorization;
@@ -120,6 +121,20 @@ namespace Easy.Fitness.Web.Controllers.v1
             try
             {
                 DietDto result = await _dietService.GetDietByDateAsync(date, cancellationToken);
+                return Ok(result);
+            }
+            catch (DatabaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("diet/{date}/summary")]
+        public async Task<IActionResult> GetDietSummaryByDate([FromRoute] string date, CancellationToken cancellationToken)
+        {
+            try
+            {
+                DietSummary result = await _dietService.GetDietSummaryByDateAsync(date, cancellationToken);
                 return Ok(result);
             }
             catch (DatabaseException ex)

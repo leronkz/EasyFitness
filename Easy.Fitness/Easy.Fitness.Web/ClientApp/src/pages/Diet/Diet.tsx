@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import DateSearch from "../../components/DateSearch";
 import DietPart from "./components/DietPart";
 import ConfigureDiet from "./components/ConfigureDiet";
-import { DayDietDto, DietDto, Error, getDietByDate, getDietProperties } from "../../api/easyFitnessApi";
+import { DayDietDto, DietDto, DietSummaryDto, Error, getDietByDate, getDietProperties, getDietSummary } from "../../api/easyFitnessApi";
 import { isCancel } from "../../api/axiosSource";
 import CustomizedSnackbar, { SnackbarInterface } from "../../components/CustomizedSnackbar";
 import { useCancellationToken } from "../../hooks/useCancellationToken";
@@ -27,6 +27,7 @@ export default function Diet() {
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({ open: false, type: undefined, message: '' });
   const [diet, setDiet] = useState<DietDto | null>(null);
   const [isLoadingDiet, setIsLoadingDiet] = useState<boolean>(false);
+  const [dietSummary, setDietSummary] = useState<DietSummaryDto>({currentCalories: 0, currentCarbs: 0, currentFat: 0, currentProtein: 0, maxCalories: 0, maxCarbs: 0, maxFat: 0, maxProtein: 0});
 
   const cancellation = useCancellationToken();
 
@@ -83,6 +84,25 @@ export default function Diet() {
       });
   };
 
+  const getDietSummaryAction = async (cancelToken: any) => {
+    return getDietSummary(
+      formattedDate,
+      cancelToken
+    )
+      .then((result) => {
+        setDietSummary(result);
+      })
+      .catch((e: Error) => {
+        if(!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+      });
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbar(prev => ({
       ...prev,
@@ -105,6 +125,7 @@ export default function Diet() {
     cancellation((cancelToken) => {
       getDietConfigurationAction(cancelToken);
       getDietByDateAction(cancelToken);
+      getDietSummaryAction(cancelToken);
     });
   }, [formattedDate]);
 
@@ -182,6 +203,12 @@ export default function Diet() {
                   </>
                 )}
               </Box>
+            </Box>
+            <Box className={styles.dietPropertiesInfoContainer}>
+              <p className={styles.dietPropertiesInfoText}>Kalorie: {dietSummary.currentCalories}/{dietSummary.maxCalories} kcal</p>
+              <p className={styles.dietPropertiesInfoText}>Tłuszcz: {dietSummary.currentFat}/{dietSummary.maxFat} g</p>
+              <p className={styles.dietPropertiesInfoText}>Węgl.: {dietSummary.currentCarbs}/{dietSummary.maxCarbs} g</p>
+              <p className={styles.dietPropertiesInfoText}>Białko: {dietSummary.currentProtein}/{dietSummary.maxProtein} g</p>
             </Box>
           </Box>
         </Container>

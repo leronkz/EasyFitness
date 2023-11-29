@@ -210,7 +210,7 @@ export default function AddFood({ open, onClose, date, type }: AddFoodProps) {
                     onInputChange={(e, newInputValue) => {
                       setInputNameValue(newInputValue)
                     }}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => <TextField {...params} inputProps={{ ...params.inputProps, style: { fontFamily: 'Lexend' } }} />}
                   />
                 </Grid>
                 {autocompleteNameValue !== null ? (
