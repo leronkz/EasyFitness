@@ -21,32 +21,43 @@ namespace Easy.Fitness.Infrastructure.Repositories
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
-        public async Task<Diet> SaveDietParametersAsync(Diet diet, CancellationToken cancellationToken)
+        public async Task<DietProperties> SaveDietParametersAsync(DietProperties diet, CancellationToken cancellationToken)
         {
             try
             {
                 User user = _context.Users
                     .Include(u => u.Diets)
+                    .ThenInclude(d => d.Properties)
                     .Single(x => x.Id == _userContext.CurrentUserId);
-                Diet resultDiet;
+                DietProperties resultProperties;
                 if (user.Diets.Any(d => d.Date == diet.Date))
                 {
                     Diet updateDiet = user.Diets.Where(d => d.Date == diet.Date).First();
-                    updateDiet.Calories = diet.Calories;
-                    updateDiet.Fat = diet.Fat;
-                    updateDiet.Carbs = diet.Carbs;
-                    updateDiet.Protein = diet.Protein;
+                    if (updateDiet.Properties != null)
+                    {
+                        updateDiet.Properties.Calories = diet.Calories;
+                        updateDiet.Properties.Fat = diet.Fat;
+                        updateDiet.Properties.Carbs = diet.Carbs;
+                        updateDiet.Properties.Protein = diet.Protein;
+                    }
+                    else
+                    {
+                        DietProperties dietProperties = new DietProperties(diet.Date, diet.Calories, diet.Fat, diet.Carbs, diet.Protein, _userContext.CurrentUserId);
+                        updateDiet.Properties = dietProperties;
+                    }
                     _context.Update(updateDiet);
-                    resultDiet = updateDiet;
+                    resultProperties = updateDiet.Properties;
                 }
                 else
                 {
-                    Diet newDiet = new Diet(diet.Date, diet.Calories, diet.Fat, diet.Carbs, diet.Protein, _userContext.CurrentUserId);
+                    Diet newDiet = new Diet(diet.Date, 0, 0, 0, 0, _userContext.CurrentUserId);
                     user.Diets.Add(newDiet);
-                    resultDiet = newDiet;
+                    DietProperties dietProperties = new DietProperties(diet.Date, diet.Calories, diet.Fat, diet.Carbs, diet.Protein, _userContext.CurrentUserId);
+                    newDiet.Properties = dietProperties;
+                    resultProperties = newDiet.Properties;
                 }
                 await _context.SaveChangesAsync(cancellationToken);
-                return resultDiet;
+                return resultProperties;
             }
             catch (Exception ex)
             {
@@ -54,14 +65,14 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<Diet> GetDietParametersAsync(string date, CancellationToken cancellationToken)
+        public async Task<DietProperties> GetDietParametersAsync(string date, CancellationToken cancellationToken)
         {
             try
             {
-                Diet diet = await _context.Diet
+                DietProperties dietProperties = await _context.DietProperties
                     .Where(d => d.Date == date)
-                    .SingleAsync(d => d.UserId == _userContext.CurrentUserId, cancellationToken);
-                return diet;
+                    .SingleOrDefaultAsync(d => d.Diet.UserId == _userContext.CurrentUserId, cancellationToken);
+                return dietProperties;
             }
             catch (Exception ex)
             {

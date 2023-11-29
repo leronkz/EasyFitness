@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Easy.Fitness.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231125191809_CreateDietAndFoodTable")]
+    [Migration("20231129085313_CreateDietAndFoodTable")]
     partial class CreateDietAndFoodTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,6 +118,55 @@ namespace Easy.Fitness.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Diet", (string)null);
+                });
+
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.DietProperties", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Calories")
+                        .HasMaxLength(20)
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Carbs")
+                        .HasMaxLength(20)
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Date")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid>("DietId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Fat")
+                        .HasMaxLength(20)
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("Protein")
+                        .HasMaxLength(20)
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DietId")
+                        .IsUnique();
+
+                    b.ToTable("DietProperties", (string)null);
                 });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Food", b =>
@@ -326,6 +375,17 @@ namespace Easy.Fitness.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Easy.Fitness.DomainModels.Models.DietProperties", b =>
+                {
+                    b.HasOne("Easy.Fitness.DomainModels.Models.Diet", "Diet")
+                        .WithOne("Properties")
+                        .HasForeignKey("Easy.Fitness.DomainModels.Models.DietProperties", "DietId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diet");
+                });
+
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Food", b =>
                 {
                     b.HasOne("Easy.Fitness.DomainModels.Models.Diet", "Diet")
@@ -362,6 +422,8 @@ namespace Easy.Fitness.Infrastructure.Migrations
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.Diet", b =>
                 {
                     b.Navigation("Foods");
+
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.User", b =>

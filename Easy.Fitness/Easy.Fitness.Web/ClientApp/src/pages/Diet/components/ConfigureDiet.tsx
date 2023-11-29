@@ -100,6 +100,10 @@ export default function ConfigureDiet({ open, onClose, dietConfiguration, date }
 
   useEffect(() => {
     setNewConfiguration(dietConfiguration);
+    setNewConfiguration(prev => ({
+      ...prev,
+      date: date
+    }));
   }, [dietConfiguration]);
 
   if (!open) {

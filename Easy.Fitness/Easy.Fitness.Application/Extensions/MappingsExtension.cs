@@ -130,13 +130,13 @@ namespace Easy.Fitness.Application.Extensions
                 Note = entity.Note
             };
         }
-        public static Diet ToEntity(this DietPropertiesDto dto)
+        public static DietProperties ToEntity(this DietPropertiesDto dto)
         {
             if (dto == null)
             {
                 return null;
             }
-            return new Diet
+            return new DietProperties
             (
                 dto.Date,
                 dto.Calories,
@@ -145,7 +145,7 @@ namespace Easy.Fitness.Application.Extensions
                 dto.Protein
             );
         }
-        public static DietPropertiesDto ToDto(this Diet entity)
+        public static DietPropertiesDto ToDto(this DietProperties entity)
         {
             if (entity == null)
             {

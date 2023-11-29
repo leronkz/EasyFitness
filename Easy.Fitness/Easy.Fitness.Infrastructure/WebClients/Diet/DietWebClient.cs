@@ -66,7 +66,7 @@ namespace Easy.Fitness.Infrastructure.WebClients.Diet
         {
             NameValueCollection collection = CreateQueryParameters();
             collection["ingr"] = foodName;
-            collection["nutrition-type"] = "cooking";
+            collection["nutrition-type"] = "logging";
             return collection;
         }
 
@@ -103,7 +103,7 @@ namespace Easy.Fitness.Infrastructure.WebClients.Diet
             using (HttpResponseMessage response = await _client.SendAsync(request).ConfigureAwait(false))
             {
                 string message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     return JsonConvert.DeserializeObject<TResponseModel>(message);
                 }

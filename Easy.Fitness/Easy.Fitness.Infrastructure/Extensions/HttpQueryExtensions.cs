@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace Easy.Fitness.Infrastructure.Extensions
         {
             IEnumerable<string> segments = from key in nvc.AllKeys
                                            from value in nvc.GetValues(key)
-                                           select string.Format("{0}={1}", key, value);
+                                           select $"{Uri.EscapeDataString(key)}={Uri.EscapeDataString(value)}";
             return string.Join("&", segments);
         }
     }

@@ -23,22 +23,30 @@ namespace Easy.Fitness.Application.Services
 
         public async Task<DietPropertiesDto> SaveDietPropertiesAsync(DietPropertiesDto dietProperties, CancellationToken cancellationToken)
         {
-            Diet newDietProperties = dietProperties.ToEntity();
-            Diet result = await _dietRepository.SaveDietParametersAsync(newDietProperties, cancellationToken);
+            DietProperties newDietProperties = dietProperties.ToEntity();
+            DietProperties result = await _dietRepository.SaveDietParametersAsync(newDietProperties, cancellationToken);
             return result.ToDto();
         }
 
         public async Task<DietPropertiesDto> GetDietPropertiesAsync(string date, CancellationToken cancellationToken)
         {
-            Diet dietProperties = await _dietRepository.GetDietParametersAsync(date, cancellationToken);
+            DietProperties dietProperties = await _dietRepository.GetDietParametersAsync(date, cancellationToken);
             return dietProperties.ToDto();
         }
 
         public async Task<FoodDto> AddNewFoodToDietAsync(AddNewFoodDto newFood, CancellationToken cancellationToken)
         {
             FoodDetailsDto foodDetails = GetFoodDetails(newFood.Name);
-            FoodDto foodDto = new FoodDto { Name = foodDetails.Name, Calories = foodDetails.Calories,
-                Fat = foodDetails.Fat, Carbs = foodDetails.Carbs, Protein = foodDetails.Protein, Type = newFood.Type, Weight = newFood.Weight };
+            FoodDto foodDto = new FoodDto
+            {
+                Name = foodDetails.Name,
+                Calories = foodDetails.Calories,
+                Fat = foodDetails.Fat,
+                Carbs = foodDetails.Carbs,
+                Protein = foodDetails.Protein,
+                Type = newFood.Type,
+                Weight = newFood.Weight
+            };
             double by = newFood.Weight / foodDetails.Weight;
 
             Food food = foodDto.ToEntity(by);
@@ -46,7 +54,7 @@ namespace Easy.Fitness.Application.Services
             Food result = await _dietRepository.AddNewFoodToDietAsync(food, newFood.Date, cancellationToken);
             return result.ToDto();
         }
-        
+
         public List<string> GetFoodNameList(string foodName)
         {
             return GetFoodNameHints(foodName);
@@ -77,7 +85,7 @@ namespace Easy.Fitness.Application.Services
         {
             await _dietRepository.DeleteFoodAsync(id, date, cancellationToken);
         }
-        
+
         public async Task<DietDto> GetDietByDateAsync(string date, CancellationToken cancellationToken)
         {
             Diet diet = await _dietRepository.GetDietByDateAsync(date, cancellationToken);
