@@ -137,7 +137,6 @@ export default function Schedule() {
                 <CalendarMonthIcon color="error" sx={{ mr: '1ch' }} />
                 <p>Tabela zaplanowanych aktywności</p>
               </Box>
-
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <NativeSelect
                   value={searchType}

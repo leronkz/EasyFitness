@@ -340,8 +340,7 @@ export default function Settings() {
                   className={styles.settingInput}
                   onChange={handleChangePhoneNumber}
                   variant='outlined'
-                  defaultCountry={'pl'}
-                  name="phone"
+                  defaultCountry='pl'
                   value={userInfo?.phoneNumber}
                   error={!isFormValid.isPhoneNumberValid}
                 />

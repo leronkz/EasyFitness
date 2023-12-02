@@ -15,7 +15,7 @@ namespace Easy.Fitness.Application.Interfaces
         Task<UserInfoDto> GetUserInfoAsync(CancellationToken cancellationToken);
         Task ChangeUserPasswordAsync(ChangePasswordDto passwordDto, CancellationToken cancellationToken);
         Task<UserParametersDto> UpdateUserParametersAsync(UserParametersDto userParametersDto, CancellationToken cancellationToken);
-        Task<UserParametersDto> GetUserParametersAsync(CancellationToken cancellationToken);
+        Task<UserParametersDto> GetLatestUserParametersAsync(CancellationToken cancellationToken);
         Task ChangeUserImageAsync(IFormFile image, CancellationToken cancellationToken);
         Task<UserImageDto> GetUserImageAsync(CancellationToken cancellationToken);
         Task DeleteUserImageAsync(CancellationToken cancellationToken);

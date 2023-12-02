@@ -35,15 +35,15 @@ namespace Easy.Fitness.Web.Controllers.v1
                 UserDto result = await _userService.CreateNewUserAsync(newUser, cancellationToken);
                 return Ok(result);
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 return BadRequest(ex.Errors);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(UserExistsException ex)
+            catch (UserExistsException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -51,7 +51,7 @@ namespace Easy.Fitness.Web.Controllers.v1
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> AuthenticateUser([FromBody]CreateUserDto user, CancellationToken cancellationToken)
+        public async Task<IActionResult> AuthenticateUser([FromBody] CreateUserDto user, CancellationToken cancellationToken)
         {
             try
             {
@@ -61,81 +61,81 @@ namespace Easy.Fitness.Web.Controllers.v1
                     AccessToken = accessToken
                 });
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(InvalidCredentialsException ex)
+            catch (InvalidCredentialsException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("user")]
-        public async Task<IActionResult> UpdateUser([FromBody]UserInfoDto userData, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateUser([FromBody] UserInfoDto userData, CancellationToken cancellationToken)
         {
             try
             {
                 UserInfoDto updatedUser = await _userService.UpdateUserAsync(userData, cancellationToken);
                 return Ok(updatedUser);
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("user/password")]
-        public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordDto passwordDto, CancellationToken cancellationToken) 
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto passwordDto, CancellationToken cancellationToken)
         {
             try
             {
                 await _userService.ChangeUserPasswordAsync(passwordDto, cancellationToken);
                 return Ok();
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 return BadRequest(ex.Errors);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(InvalidCredentialsException ex)
+            catch (InvalidCredentialsException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut("user/parameters")]
-        public async Task<IActionResult> UpdateUserParameters([FromBody] UserParametersDto userParameters, CancellationToken cancellationToken)
+        [HttpPost("user/parameters")]
+        public async Task<IActionResult> SaveUserParameters([FromBody] UserParametersDto userParameters, CancellationToken cancellationToken)
         {
             try
             {
                 UserParametersDto result = await _userService.UpdateUserParametersAsync(userParameters, cancellationToken);
                 return Ok(result);
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 return BadRequest(ex.Errors);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -149,15 +149,15 @@ namespace Easy.Fitness.Web.Controllers.v1
                 await _userService.ChangeUserImageAsync(image, cancellationToken);
                 return Ok();
             }
-            catch(StorageException ex)
+            catch (StorageException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -171,15 +171,15 @@ namespace Easy.Fitness.Web.Controllers.v1
                 await _userService.DeleteUserImageAsync(cancellationToken);
                 return Ok();
             }
-            catch(StorageException ex)
+            catch (StorageException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -193,11 +193,11 @@ namespace Easy.Fitness.Web.Controllers.v1
                 UserInfoDto result = await _userService.GetUserInfoAsync(cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -208,18 +208,18 @@ namespace Easy.Fitness.Web.Controllers.v1
         {
             try
             {
-                UserParametersDto result = await _userService.GetUserParametersAsync(cancellationToken);
+                UserParametersDto result = await _userService.GetLatestUserParametersAsync(cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -233,15 +233,15 @@ namespace Easy.Fitness.Web.Controllers.v1
                 UserImageDto result = await _userService.GetUserImageAsync(cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(NoUserFoundException ex)
+            catch (NoUserFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(StorageException ex)
+            catch (StorageException ex)
             {
                 return BadRequest(ex.Message);
             }

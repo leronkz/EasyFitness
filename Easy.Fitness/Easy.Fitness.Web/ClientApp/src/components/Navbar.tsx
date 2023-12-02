@@ -1,10 +1,11 @@
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
-import { Toolbar, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Toolbar, List, ListItemButton, ListItemIcon, ListItemText, ListItem } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../img/assets/navbar/logo-color.svg';
@@ -85,6 +86,14 @@ export default function Navbar({ selected }: NavbarInterface) {
               <RestaurantIcon color={selected === 'diet' ? "error" : "primary"} />
             </ListItemIcon>
             <ListItemText primaryTypographyProps={{ fontFamily: 'Lexend' }}>Twoja dieta</ListItemText>
+          </ListItemButton>
+        </Link>
+        <Link to="/analysis" style={{ textDecoration: 'none', color: 'black'}}>
+          <ListItemButton id={selected === 'analysis' ? styles.listItemButtonSelected : styles.listItemButton }>
+            <ListItemIcon>
+              <QueryStatsIcon color={selected === 'analysis' ? "error" : "primary"} />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontFamily: 'Lexend' }}>Twoje postępy</ListItemText>
           </ListItemButton>
         </Link>
         <ListItemButton id={styles.listItemButton} onClick={onLogoutClick}>

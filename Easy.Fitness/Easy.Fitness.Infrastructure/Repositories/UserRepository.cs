@@ -104,21 +104,22 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<UserParameters> UpdateUserParametersAsync(Guid id, UserParameters parameters, CancellationToken cancellationToken)
+        public async Task<UserParameters> SaveUserParametersAsync(Guid id, UserParameters parameters, CancellationToken cancellationToken)
         {
             try
             {
                 User user = await GetUserByIdAsync(id, cancellationToken);
-                if (user.Parameters == null)
+                if (user.Parameters.Any(p => p.CreatedOn.Date == DateTime.UtcNow.Date))
                 {
-                    user.Parameters = parameters;
+                    UserParameters parameter = user.Parameters.Where(p => p.CreatedOn.Date == DateTime.UtcNow.Date).First();
+                    parameter.Height = parameters.Height;
+                    parameter.Weight = parameters.Weight;
+                    _context.Update(parameter);
                 }
                 else
                 {
-                    user.Parameters.Weight = parameters.Weight;
-                    user.Parameters.Height = parameters.Height;
+                    user.Parameters.Add(parameters);
                 }
-                _context.Update(user);
                 await _context.SaveChangesAsync(cancellationToken);
                 return parameters;
             }
@@ -168,12 +169,15 @@ namespace Easy.Fitness.Infrastructure.Repositories
             }
         }
 
-        public async Task<UserParameters> GetUserParametersByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<UserParameters> GetLatestUserParametersByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             try
             {
                 User user = await GetUserByIdAsync(id, cancellationToken);
-                return user.Parameters;
+                UserParameters latestUserParameters = user.Parameters.
+                    OrderByDescending(x => x.CreatedOn)
+                    .First();
+                return latestUserParameters;
             }
             catch (NoUserFoundException ex)
             {

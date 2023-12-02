@@ -328,8 +328,9 @@ namespace Easy.Fitness.Infrastructure.Migrations
                 b.Property<DateTime>("CreatedOn")
                     .HasColumnType("timestamp with time zone");
 
-                b.Property<double>("Height")
-                    .HasColumnType("double precision");
+                    b.Property<double>("Height")
+                        .HasMaxLength(30)
+                        .HasColumnType("double precision");
 
                 b.Property<Guid?>("ModifiedBy")
                     .HasColumnType("uuid");
@@ -340,13 +341,13 @@ namespace Easy.Fitness.Infrastructure.Migrations
                 b.Property<Guid>("UserId")
                     .HasColumnType("uuid");
 
-                b.Property<double>("Weight")
-                    .HasColumnType("double precision");
+                    b.Property<double>("Weight")
+                        .HasMaxLength(30)
+                        .HasColumnType("double precision");
 
                 b.HasKey("Id");
 
-                b.HasIndex("UserId")
-                    .IsUnique();
+                    b.HasIndex("UserId");
 
                 b.ToTable("UserParameters", (string)null);
             });
@@ -407,12 +408,12 @@ namespace Easy.Fitness.Infrastructure.Migrations
             });
 
             modelBuilder.Entity("Easy.Fitness.DomainModels.Models.UserParameters", b =>
-            {
-                b.HasOne("Easy.Fitness.DomainModels.Models.User", "User")
-                    .WithOne("Parameters")
-                    .HasForeignKey("Easy.Fitness.DomainModels.Models.UserParameters", "UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                {
+                    b.HasOne("Easy.Fitness.DomainModels.Models.User", "User")
+                        .WithMany("Parameters")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                 b.Navigation("User");
             });
