@@ -120,6 +120,22 @@ export interface DietSummaryDto {
   currentProtein: number;
   maxProtein: number;
 }
+export interface BurnedCaloriesMonthDto {
+  day: string;
+  calories: number;
+}
+export interface BurnedCaloriesYearDto {
+  month: string;
+  calories: number;
+}
+export interface WeightMonthDto {
+  day: string;
+  weight: number;
+}
+export interface CaloriesMonthDto {
+  day: string;
+  calories: number;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -173,7 +189,7 @@ export const updateUserParameters = async (
   userParameters: UserParametersDto,
   cancellationSource?: CancellationSource
 ): Promise<UserParametersDto> => {
-  return put<UserParametersDto>('api/v1/user/parameters', userParameters, {
+  return post<UserParametersDto>('api/v1/user/parameters', userParameters, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };
@@ -379,6 +395,78 @@ export const getDietSummary = async (
   cancellationSource?: CancellationSource
 ): Promise<DietSummaryDto> => {
   return get<DietSummaryDto>(`api/v1/diet/${date}/summary`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getBurnedCaloriesByMonth = async (
+  month: string,
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<BurnedCaloriesMonthDto[]> => {
+  return get<BurnedCaloriesMonthDto[]>(`api/v1/analysis/activity/month/${month}/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getBurnedCaloriesByYear = async (
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<BurnedCaloriesYearDto[]> => {
+  return get<BurnedCaloriesYearDto[]>(`api/v1/analysis/activity/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getBurnedCaloriesByDateRange = async (
+  startDate: string,
+  endDate: string,
+  cancellationSource?: CancellationSource
+): Promise<BurnedCaloriesMonthDto[]> => {
+  return get<BurnedCaloriesMonthDto[]>(`api/v1/analysis/activity`, {
+    params: { startDate, endDate },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getWeightByMonth = async (
+  month: string,
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<WeightMonthDto[]> => {
+  return get<WeightMonthDto[]>(`api/v1/analysis/weight/month/${month}/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getWeightByRange = async (
+  startDate: string,
+  endDate: string,
+  cancellationSource?: CancellationSource
+): Promise<WeightMonthDto[]> => {
+  return get<WeightMonthDto[]>(`api/v1/analysis/weight`, {
+    params: { startDate, endDate },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getCaloriesByMonth = async (
+  month: string,
+  year: string,
+  cancellationSource?: CancellationSource
+): Promise<CaloriesMonthDto[]> => {
+  return get<CaloriesMonthDto[]>(`api/v1/analysis/diet/month/${month}/year/${year}`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getCaloriesByRange = async (
+  startDate: string,
+  endDate: string,
+  cancellationSource?: CancellationSource
+): Promise<CaloriesMonthDto[]> => {
+  return get<CaloriesMonthDto[]>(`api/v1/analysis/diet`, {
+    params: { startDate, endDate },
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

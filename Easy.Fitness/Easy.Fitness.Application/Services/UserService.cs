@@ -82,7 +82,7 @@ namespace Easy.Fitness.Application.Services
         {
             userParametersDto.Validate();
             UserParameters parameters = new UserParameters(userParametersDto.Weight, userParametersDto.Height, _userContext.CurrentUserId);
-            UserParameters result = await _userRepository.UpdateUserParametersAsync(_userContext.CurrentUserId, parameters, cancellationToken);
+            UserParameters result = await _userRepository.SaveUserParametersAsync(_userContext.CurrentUserId, parameters, cancellationToken);
             return result.ToDto();
         }
 
@@ -103,9 +103,9 @@ namespace Easy.Fitness.Application.Services
             await _userRepository.SaveUserImageAsync(_userContext.CurrentUserId, hashedFileName, cancellationToken);
             await _fileService.SaveFileAsync(userImage, cancellationToken);
         }
-        public async Task<UserParametersDto> GetUserParametersAsync(CancellationToken cancellationToken)
+        public async Task<UserParametersDto> GetLatestUserParametersAsync(CancellationToken cancellationToken)
         {
-            UserParameters parameters = await _userRepository.GetUserParametersByIdAsync(_userContext.CurrentUserId, cancellationToken);
+            UserParameters parameters = await _userRepository.GetLatestUserParametersByIdAsync(_userContext.CurrentUserId, cancellationToken);
             return parameters.ToDto();
         }
 

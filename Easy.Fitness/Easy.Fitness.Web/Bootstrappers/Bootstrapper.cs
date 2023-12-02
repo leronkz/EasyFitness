@@ -36,6 +36,8 @@ namespace Easy.Fitness.Web.Bootstrappers
             services.AddScoped<IDietRepository, DietRepository>();
             services.AddScoped<IDietService, DietService>();
             services.AddScoped<IFoodDataProvider, FoodDataProvider>();
+            services.AddScoped<IAnalysisRepository, AnalysisRepository>();
+            services.AddScoped<IAnalysisService, AnalysisService>();
         }
         private static void RegisterDatabase(IServiceCollection services, AppConfiguration configuration)
         {

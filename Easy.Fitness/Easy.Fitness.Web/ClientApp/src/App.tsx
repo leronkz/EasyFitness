@@ -11,6 +11,7 @@ import { Suspense } from 'react';
 import Loading from './components/Loading';
 import Schedule from './pages/Schedule/Schedule';
 import Diet from './pages/Diet/Diet';
+import Analysis from './pages/Analysis/Analysis';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
         <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
         <Route path="/activity" element={<ProtectedRoute><Activity /></ProtectedRoute>} />
         <Route path="/schedule" element={<ProtectedRoute><Schedule /></ProtectedRoute>} />
-        <Route path="/diet" element={<Diet />} />
+        <Route path="/diet" element={<ProtectedRoute><Diet /></ProtectedRoute>} />
+        <Route path="/analysis" element={<Analysis />} />
       </Routes>
     </Suspense>
   );
