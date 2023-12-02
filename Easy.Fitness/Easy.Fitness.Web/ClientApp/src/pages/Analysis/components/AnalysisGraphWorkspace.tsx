@@ -27,8 +27,10 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
   const [month, setMonth] = useState<Dayjs | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [isGraphGenerated, setIsGraphGenerated] = useState<boolean>(false);
+  const [graphKey, setGraphKey] = useState<number>(0);
 
   const handleStartDateChange = (e: any) => {
+    setIsGenerating(false);
     setDateRange(prev => ({
       ...prev,
       startDate: e.target.value
@@ -36,6 +38,7 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
   };
 
   const handleEndDateChange = (e: any) => {
+    setIsGenerating(false);
     setDateRange(prev => ({
       ...prev,
       endDate: e.target.value
@@ -71,13 +74,17 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
   const generateGraph = () => {
     setIsGraphGenerated(true);
     setIsGenerating(true);
-  }
+    setGraphKey(prev => prev + 1);
+  };
 
   useEffect(() => {
     setOption('');
     resetDateRange();
     resetMonth();
     resetYear();
+    setIsGraphGenerated(false);
+    setIsGenerating(false);
+    setGraphKey(prev => prev + 1);
   }, [type])
 
   if (type === null || type === undefined || type === '') {
@@ -88,7 +95,7 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
     <Box className={styles.analysisWorkspaceContainer}>
       <Box className={styles.analysisWorkspaceGraph}>
         {isGenerating && isGraphGenerated && (
-          <GraphComponent type={type} option={option} dateRange={dateRange} year={year} month={month} />
+          <GraphComponent key={graphKey} type={type} option={option} dateRange={dateRange} year={year} month={month} />
         )}
       </Box>
       <Divider orientation='vertical' flexItem />
@@ -129,12 +136,14 @@ export default function AnalysisGraphWorkspace({ type }: AnalysisGraphWorkspaceP
           <YearPicker
             year={year}
             setYear={setYear}
+            setIsGenerating={setIsGenerating}
           />
         )}
         {option === 'month' && (
           <MonthPicker
             month={month}
             setMonth={setMonth}
+            setIsGenerating={setIsGenerating}
           />
         )}
         {option !== '' && option !== null && (

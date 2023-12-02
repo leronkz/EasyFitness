@@ -165,7 +165,7 @@ export default function WeightGraph({ option, dateRange, month }: ActivityGraphP
       ) : (
         <>
           {option === 'month' && weightMonth.length !== 0 && <Line data={data} options={options} />}
-          {option === 'range' && weightRange.length !== 0 && <Line data={data} options={options} />}
+          {option === 'range' && (weightRange.length !== 0 ? (<Line data={data} options={options} />) : (<p style={{ textAlign: 'center' }}>Brak danych do wyswietlenia</p>))}
         </>
       )}
     </Box>

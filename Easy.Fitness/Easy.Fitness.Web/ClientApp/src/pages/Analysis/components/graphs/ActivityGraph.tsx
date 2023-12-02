@@ -207,12 +207,12 @@ export default function ActivityGraph({ option, dateRange, year, month }: Activi
       <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackbar} />
       {isLoading ? (
         <CustomizedProgress position="center" />
-      ): (
+      ) : (
         <>
-        {option === 'year' && burnedCaloriesYear.length !== 0 && <Bar data={data} options={options} />}
-        {option === 'month' && burnedCaloriesMonth.length !== 0 && <Line data={data} options={options} />}
-        {option === 'range' && burnedCaloriesRange.length !== 0 && <Line data={data} options={options} />}
-      </>
+          {option === 'year' && burnedCaloriesYear.length !== 0 && <Bar data={data} options={options} />}
+          {option === 'month' && burnedCaloriesMonth.length !== 0 && <Line data={data} options={options} />}
+          {option === 'range' && (burnedCaloriesRange.length !== 0 ? (<Line data={data} options={options} />) : (<p style={{ textAlign: 'center' }}>Brak danych do wyswietlenia</p>))}
+        </>
       )}
     </Box>
   )

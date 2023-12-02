@@ -8,9 +8,10 @@ import "dayjs/locale/pl";
 interface MonthPickerInterface {
   month: Dayjs | null;
   setMonth: (param: Dayjs) => void;
+  setIsGenerating: (param: boolean) => void;
 }
 
-export default function MonthPicker({ month, setMonth }: MonthPickerInterface) {
+export default function MonthPicker({ month, setMonth, setIsGenerating }: MonthPickerInterface) {
 
   return (
     <Box className={styles.monthPickerContainer}>
@@ -20,7 +21,7 @@ export default function MonthPicker({ month, setMonth }: MonthPickerInterface) {
           <DatePicker
             views={['month', 'year']}
             value={month}
-            onChange={(newMonth) => setMonth(newMonth!)}
+            onChange={(newMonth) => {setIsGenerating(false); setMonth(newMonth!);}}
           />
         </LocalizationProvider>
       </Box>

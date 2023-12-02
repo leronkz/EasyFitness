@@ -7,9 +7,10 @@ import { Dayjs } from 'dayjs';
 interface YearPickerInterface {
   year: Dayjs | null;
   setYear: (param: Dayjs) => void;
+  setIsGenerating: (param: boolean) => void;
 }
 
-export default function YearPicker({ year, setYear }: YearPickerInterface) {
+export default function YearPicker({ year, setYear, setIsGenerating }: YearPickerInterface) {
 
   return (
     <Box className={styles.yearPickerContainer}>
@@ -19,7 +20,7 @@ export default function YearPicker({ year, setYear }: YearPickerInterface) {
           <DatePicker
             views={['year']}
             value={year}
-            onChange={(newYear) => setYear(newYear!)}
+            onChange={(newYear) => { setIsGenerating(false); setYear(newYear!); }}
           />
         </LocalizationProvider>
       </Box>

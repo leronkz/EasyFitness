@@ -165,7 +165,7 @@ export default function DietGraph({ option, dateRange, month }: DietGraphProps) 
       ) : (
         <>
           {option === 'month' && dietMonth.length !== 0 && <Line data={data} options={options} />}
-          {option === 'range' && dietRange.length !== 0 && <Line data={data} options={options} />}
+          {option === 'range' && (dietRange.length !== 0 ? (<Line data={data} options={options} />) : (<p style={{textAlign: 'center'}}>Brak danych do wyswietlenia</p>))}
         </>
       )}
     </Box>
