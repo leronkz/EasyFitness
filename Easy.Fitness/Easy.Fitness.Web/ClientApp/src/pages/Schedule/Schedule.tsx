@@ -96,6 +96,7 @@ export default function Schedule() {
         setIsLoading(false);
       });
   };
+  
   const handleCloseSnackbar = () => {
     setSnackbar(prev => ({
       ...prev,

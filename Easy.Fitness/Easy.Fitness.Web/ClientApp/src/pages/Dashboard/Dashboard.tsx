@@ -6,16 +6,58 @@ import { Link, useNavigate } from 'react-router-dom';
 import nextIcon from '../../img/assets/dashboard/go_next.svg';
 import gymIcon from '../../img/assets/activity/gym.svg';
 import energyIcon from '../../img/assets/diet/energy.svg'
-import { logoutUser } from '../../api/easyFitnessApi';
+import { DashboardSummaryDto, Error, getDashboardSummary, logoutUser } from '../../api/easyFitnessApi';
+import { useState, useEffect } from 'react';
+import CustomizedSnackbar, { SnackbarInterface } from '../../components/CustomizedSnackbar';
+import { isCancel } from '../../api/axiosSource';
+import { useCancellationToken } from '../../hooks/useCancellationToken';
 
 export default function Dashboard() {
 
+  const [summary, setSummary] = useState<DashboardSummaryDto>({ scheduleDate: '-', scheduleType: '-', activityDate: '-', activityType: '-', dietSummary: { maxCalories: 0, maxCarbs: 0, maxFat: 0, maxProtein: 0, currentCalories: 0, currentCarbs: 0, currentFat: 0, currentProtein: 0 } });
+  const [snackbar, setSnackbar] = useState<SnackbarInterface>({open: false, type: undefined, message: ''});
+
+  const date = new Date();
+  const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+  const cancellation = useCancellationToken();
   const navigate = useNavigate();
 
   const onLogoutClick = () => {
     logoutUser();
     navigate("/");
-  }
+  };
+
+  const getSummaryAction = async (cancelToken: any) => {
+    return getDashboardSummary(
+      formattedDate,
+      cancelToken
+    )
+      .then((result) => {
+        setSummary(result);
+      })
+      .catch((e: Error) => {
+        if(!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+      });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({
+      ...prev,
+      open: false
+    }));
+  };
+
+  useEffect(() => {
+    cancellation((cancelToken) => {
+      getSummaryAction(cancelToken);
+    });
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -37,6 +79,7 @@ export default function Dashboard() {
         <Header title={"Główny panel"} />
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <CustomizedSnackbar {...snackbar} handleClose={handleCloseSnackbar} />
           <Grid container spacing={3} className={styles.tilesMenu}>
             <Grid item xs={12} md={8} lg={4}>
               <Link to="/activity" id={styles.link}>
@@ -52,8 +95,8 @@ export default function Dashboard() {
                       <Box className={styles.activity}>
                         <img id={styles.activityIcon} alt="activity" src={gymIcon} />
                       </Box>
-                      <Typography id={styles.tileText}>Siłownia</Typography>
-                      <Typography id={styles.tileText}>17.06.2023</Typography>
+                      <Typography id={styles.tileText}>{summary.activityType}</Typography>
+                      <Typography id={styles.tileText}>{summary.activityDate}</Typography>
                     </Box>
                   </Box>
                 </Box>
@@ -73,8 +116,8 @@ export default function Dashboard() {
                       <Box className={styles.activity} sx={{ background: "#F2F9DE !important" }}>
                         <img id={styles.activityIcon} alt="activity" src={gymIcon} />
                       </Box>
-                      <Typography id={styles.tileText}>Siłownia</Typography>
-                      <Typography id={styles.tileText}>19.06.2023</Typography>
+                      <Typography id={styles.tileText}>{summary.scheduleType}</Typography>
+                      <Typography id={styles.tileText}>{summary.scheduleDate}</Typography>
                     </Box>
                   </Box>
                 </Box>
@@ -93,20 +136,20 @@ export default function Dashboard() {
                       <Box className={styles.activity} sx={{ background: "rgba(255, 251, 217, 1) !important" }}>
                         <img id={styles.activityIcon} alt="activity" src={energyIcon} />
                       </Box>
-                      <Typography id={styles.tileText}> 1865/2500 kcal</Typography>
+                      <Typography id={styles.tileText}> {parseFloat(summary.dietSummary.currentCalories.toFixed(2))}/{summary.dietSummary.maxCalories} kcal</Typography>
                     </Box>
                     <Box className={styles.tileDietMacros}>
                       <Box className={styles.dietMacro}>
                         <Typography id={styles.tileText}>Węglowodany</Typography>
-                        <Typography id={styles.tileText}>150/170 g</Typography>
+                        <Typography id={styles.tileText}>{parseFloat(summary.dietSummary.currentCarbs.toFixed(2))}/{summary.dietSummary.maxCarbs} g</Typography>
                       </Box>
                       <Box className={styles.dietMacro}>
                         <Typography id={styles.tileText}>Białko</Typography>
-                        <Typography id={styles.tileText}>80/120 g</Typography>
+                        <Typography id={styles.tileText}>{parseFloat(summary.dietSummary.currentProtein.toFixed(2))}/{summary.dietSummary.maxProtein} g</Typography>
                       </Box>
                       <Box className={styles.dietMacro}>
                         <Typography id={styles.tileText}>Tłuszcz</Typography>
-                        <Typography id={styles.tileText}>30/45 g</Typography>
+                        <Typography id={styles.tileText}>{parseFloat(summary.dietSummary.currentFat.toFixed(2))}/{summary.dietSummary.maxFat} g</Typography>
                       </Box>
                     </Box>
                   </Box>
