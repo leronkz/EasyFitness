@@ -25,7 +25,7 @@ function App() {
         <Route path="/activity" element={<ProtectedRoute><Activity /></ProtectedRoute>} />
         <Route path="/schedule" element={<ProtectedRoute><Schedule /></ProtectedRoute>} />
         <Route path="/diet" element={<ProtectedRoute><Diet /></ProtectedRoute>} />
-        <Route path="/analysis" element={<Analysis />} />
+        <Route path="/analysis" element={<ProtectedRoute><Analysis /></ProtectedRoute>} />
       </Routes>
     </Suspense>
   );
