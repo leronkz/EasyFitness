@@ -90,7 +90,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
         {
             return await _context.Schedule
                                           .Where(a => a.CreatedBy == _userContext.CurrentUserId)
-                                          .OrderByDescending(a => a.Date)
+                                          .OrderBy(a => a.Date)
                                           .FirstOrDefaultAsync(cancellationToken);
         }
     }

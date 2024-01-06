@@ -16,11 +16,12 @@ import { isCancel } from "../../api/axiosSource";
 import CustomizedSnackbar, { SnackbarInterface } from "../../components/CustomizedSnackbar";
 import { useCancellationToken } from "../../hooks/useCancellationToken";
 import CustomizedProgress from "../../components/CustomizedProgress";
+import { formatDate } from "../../helpers/date";
 
 export default function Diet() {
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  let formattedDate = `${selectedDate.getDate()}.${selectedDate.getMonth() + 1}.${selectedDate.getFullYear()}`;
+  let formattedDate = selectedDate.getFullYear() + '-' + formatDate(selectedDate.getMonth() + 1) + '-' + formatDate(selectedDate.getDate());
   const [searchDate, setSearchDate] = useState<string | null>(null);
   const [openConfigure, setOpenConfigure] = useState<boolean>(false);
   const [dateDietConfiguration, setDateDietConfiguration] = useState<DayDietDto>({ date: formattedDate, calories: 0, fat: 0, carbs: 0, protein: 0 });
@@ -125,10 +126,11 @@ export default function Diet() {
   useEffect(() => {
     resetDietConfiguration();
     if(searchDate !== null) {
-      formattedDate = `${searchDate.split('-')[2]}.${searchDate.split('-')[1]}.${searchDate.split('-')[0]}`;
+      const splittedSearchDate = searchDate.split('-');
+      formattedDate = splittedSearchDate[0] + '-' + splittedSearchDate[1] + '-' + splittedSearchDate[2];
     }
     else {
-      formattedDate = `${selectedDate.getDate()}.${selectedDate.getMonth() + 1}.${selectedDate.getFullYear()}`;
+      formattedDate = selectedDate.getFullYear() + '-' + formatDate(selectedDate.getMonth() + 1) + '-' + formatDate(selectedDate.getDate());
     }
     cancellation((cancelToken) => {
       getDietConfigurationAction(cancelToken);

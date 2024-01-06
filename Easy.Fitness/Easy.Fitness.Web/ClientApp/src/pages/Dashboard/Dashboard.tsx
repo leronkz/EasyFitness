@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import CustomizedSnackbar, { SnackbarInterface } from '../../components/CustomizedSnackbar';
 import { isCancel } from '../../api/axiosSource';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
+import { formatDate } from '../../helpers/date';
 
 export default function Dashboard() {
 
@@ -18,7 +19,7 @@ export default function Dashboard() {
   const [snackbar, setSnackbar] = useState<SnackbarInterface>({open: false, type: undefined, message: ''});
 
   const date = new Date();
-  const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+  const formattedDate = date.getFullYear() + '-' + formatDate(date.getMonth() + 1) + '-' + formatDate(date.getDate());
   const cancellation = useCancellationToken();
   const navigate = useNavigate();
 
