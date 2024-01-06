@@ -10,6 +10,7 @@ using Easy.Fitness.Infrastructure.Exceptions;
 using Easy.Fitness.Infrastructure.Authorization;
 using Easy.Fitness.Application.Dtos.User;
 using Microsoft.AspNetCore.Http;
+using Easy.Fitness.DomainModels.Models;
 
 namespace Easy.Fitness.Web.Controllers.v1
 {
@@ -259,6 +260,20 @@ namespace Easy.Fitness.Web.Controllers.v1
                 return BadRequest(ex.Message);
             }
             catch (NoUserFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user/summary")]
+        public async Task<IActionResult> GetUserSummary(CancellationToken cancellationToken)
+        {
+            try
+            {
+                UserSummary result = await _userService.GetUserSummaryAsync(cancellationToken);
+                return Ok(result);
+            }
+            catch(DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }

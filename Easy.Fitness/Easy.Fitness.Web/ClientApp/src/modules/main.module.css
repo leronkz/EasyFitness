@@ -38,7 +38,6 @@
 
 .tile:hover {
   transform: translateY(-5px);
-  /* box-shadow: -5px 9px 26px -3px rgba(66, 68, 90, 1); */
   box-shadow: -5px 8px 36px -13px rgba(66, 68, 90, 1);
 }
 

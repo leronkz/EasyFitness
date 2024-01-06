@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Easy.Fitness.Application.Dtos;
 using Easy.Fitness.Application.Dtos.User;
+using Easy.Fitness.DomainModels.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace Easy.Fitness.Application.Interfaces
@@ -19,5 +20,6 @@ namespace Easy.Fitness.Application.Interfaces
         Task<UserImageDto> GetUserImageAsync(CancellationToken cancellationToken);
         Task DeleteUserImageAsync(CancellationToken cancellationToken);
         Task<UserAccountDto> GetUserPersonalInfoAsync(CancellationToken cancellationToken);
+        Task<UserSummary> GetUserSummaryAsync(CancellationToken cancellationToken);
     }
 }

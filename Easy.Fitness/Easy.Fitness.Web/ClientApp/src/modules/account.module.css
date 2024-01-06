@@ -65,6 +65,10 @@
   padding: 1ch;
 }
 
+.profileSummaryPanel {
+  margin-top: 1ch;
+}
+
 .profileSummaryContainer {
   margin-top: 1ch;
   border: 3px solid #f5f5f5;

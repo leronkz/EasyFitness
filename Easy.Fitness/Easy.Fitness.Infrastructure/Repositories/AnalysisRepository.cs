@@ -217,13 +217,14 @@ namespace Easy.Fitness.Infrastructure.Repositories
             try
             {
                 User user = await _context.Users.Include(u => u.Diets).Where(u => u.Id == _userContext.CurrentUserId).FirstAsync(cancellationToken);
-                List<Diet> diets = user.Diets.Where(p => IsDateValid(p.CreatedOn, startDate, endDate))
-                     .OrderBy(p => p.CreatedOn)
+                List<Diet> diets = user.Diets.Where(p => IsDateValid(p.Date, startDate, endDate))
+                     .OrderBy(d => DateTime.ParseExact(d.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture))
                      .ToList();
                 Dictionary<DateTime, double> caloriesByDay = new Dictionary<DateTime, double>();
                 foreach (Diet diet in diets)
                 {
-                    caloriesByDay[diet.CreatedOn] = diet.Calories;
+                    DateTime dietDate = DateTime.ParseExact(diet.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+                    caloriesByDay[dietDate] = diet.Calories;
                 }
                 List<DietMonth> result = caloriesByDay.Select(w => new DietMonth(w.Key.ToShortDateString(), w.Value))
                     .ToList();

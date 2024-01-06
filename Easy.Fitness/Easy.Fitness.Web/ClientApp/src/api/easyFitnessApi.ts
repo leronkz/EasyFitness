@@ -136,6 +136,17 @@ export interface CaloriesMonthDto {
   day: string;
   calories: number;
 }
+export interface UserActivitySummaryDto{
+  trainings: number;
+  calories: number;
+}
+export interface DashboardSummaryDto {
+  dietSummary: DietSummaryDto;
+  scheduleType: string;
+  scheduleDate: string;
+  activityType: string;
+  activityDate: string;
+}
 
 export const registerUser = async (
   newUser: LoginDto,
@@ -467,6 +478,23 @@ export const getCaloriesByRange = async (
 ): Promise<CaloriesMonthDto[]> => {
   return get<CaloriesMonthDto[]>(`api/v1/analysis/diet`, {
     params: { startDate, endDate },
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getUserActivitySummary = async (
+  cancellationSource?: CancellationSource
+): Promise<UserActivitySummaryDto> => {
+  return get<UserActivitySummaryDto>(`api/v1/user/summary`, {
+    cancelToken: cancellationSource?.tokenSource.token
+  });
+};
+
+export const getDashboardSummary = async (
+  date: string,
+  cancellationSource?: CancellationSource
+): Promise<DashboardSummaryDto> => {
+  return get<DashboardSummaryDto>(`api/v1/summary/${date}`, {
     cancelToken: cancellationSource?.tokenSource.token
   });
 };

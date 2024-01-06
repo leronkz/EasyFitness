@@ -14,7 +14,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
-import { Error, UserInfoDto, UserParametersDto, changeUserPicture, deleteUserPicture, getUserAccountInfo, getUserParameters, getUserPicture, updateUserParameters } from '../../api/easyFitnessApi';
+import { Error, UserActivitySummaryDto, UserInfoDto, UserParametersDto, changeUserPicture, deleteUserPicture, getUserAccountInfo, getUserActivitySummary, getUserParameters, getUserPicture, updateUserParameters } from '../../api/easyFitnessApi';
 import { SnackbarInterface } from '../../components/CustomizedSnackbar';
 import { isCancel } from '../../api/axiosSource';
 import CustomizedProgress from '../../components/CustomizedProgress';
@@ -46,6 +46,7 @@ export default function Account() {
   const [isDeletingPhoto, setIsDeletingPhoto] = useState<boolean>(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState<boolean>(false);
   const [userAccountInfo, setUserAccountInfo] = useState<UserInfoDto>({ firstName: undefined, lastName: undefined, birthDate: undefined });
+  const [userActivitySummary, setUserActivitySummary] = useState<UserActivitySummaryDto>({trainings: 0, calories: 0});
 
   const cancellation = useCancellationToken();
 
@@ -246,7 +247,25 @@ export default function Account() {
           });
         }
       });
-  }
+  };
+
+  const getActivitySummaryAction = async (cancelToken: any) => {
+    return getUserActivitySummary(
+      cancelToken
+    )
+      .then((summary) => {
+        setUserActivitySummary(summary);
+      })
+      .catch((e: Error) => {
+        if(!isCancel(e)) {
+          setSnackbar({
+            open: true,
+            type: "error",
+            message: e.response.data
+          });
+        }
+      });
+  };
 
   const onUpdateUserParametersClick = async () => {
     if (validateParametersForm(userParameters)) {
@@ -287,6 +306,7 @@ export default function Account() {
       getUserParametersAction(cancelToken);
       getUserProfilePictureAction(cancelToken);
       getUserAccountInfoAction(cancelToken);
+      getActivitySummaryAction(cancelToken);
     });
   }, []);
 
@@ -404,21 +424,14 @@ export default function Account() {
                   <Box className={styles.summaryPart}>
                     <DirectionsRunIcon color="primary" />
                     <Box className={styles.summaryPartTextContainer}>
-                      <p id={styles.summaryPartText}><b>100</b></p>
+                      <p id={styles.summaryPartText}><b>{userActivitySummary.trainings}</b></p>
                       <p id={styles.summaryPartText}>Sesje treningowe</p>
-                    </Box>
-                  </Box>
-                  <Box className={styles.summaryPart}>
-                    <AccessTimeIcon color="success" />
-                    <Box className={styles.summaryPartTextContainer}>
-                      <p id={styles.summaryPartText}><b>10d 21h 46min</b></p>
-                      <p id={styles.summaryPartText}>Łączny czas trwania</p>
                     </Box>
                   </Box>
                   <Box className={styles.summaryPart}>
                     <LocalFireDepartmentIcon color="error" />
                     <Box className={styles.summaryPartTextContainer}>
-                      <p id={styles.summaryPartText}><b>97564 kcal</b></p>
+                      <p id={styles.summaryPartText}><b>{parseFloat(userActivitySummary.calories.toFixed(2))} kcal</b></p>
                       <p id={styles.summaryPartText}>Łączna liczba kalorii</p>
                     </Box>
                   </Box>
