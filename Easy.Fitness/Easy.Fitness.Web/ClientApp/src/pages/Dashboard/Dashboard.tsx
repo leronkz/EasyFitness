@@ -4,7 +4,6 @@ import Navbar from '../../components/Navbar';
 import Header from '../../components/Header';
 import { Link, useNavigate } from 'react-router-dom';
 import nextIcon from '../../img/assets/dashboard/go_next.svg';
-import gymIcon from '../../img/assets/activity/gym.svg';
 import energyIcon from '../../img/assets/diet/energy.svg'
 import { DashboardSummaryDto, Error, getDashboardSummary, logoutUser } from '../../api/easyFitnessApi';
 import { useState, useEffect } from 'react';
@@ -12,6 +11,7 @@ import CustomizedSnackbar, { SnackbarInterface } from '../../components/Customiz
 import { isCancel } from '../../api/axiosSource';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
 import { formatDate } from '../../helpers/date';
+import { getIconFromType } from '../../helpers/activityType';
 
 export default function Dashboard() {
 
@@ -94,7 +94,7 @@ export default function Dashboard() {
                     <Typography id={styles.tileText}>Twoja ostatnia aktywność</Typography>
                     <Box className={styles.tileActivity}>
                       <Box className={styles.activity}>
-                        <img id={styles.activityIcon} alt="activity" src={gymIcon} />
+                        <img id={styles.activityIcon} alt="activity" src={getIconFromType(summary.activityType)} />
                       </Box>
                       <Typography id={styles.tileText}>{summary.activityType}</Typography>
                       <Typography id={styles.tileText}>{summary.activityDate}</Typography>
@@ -115,7 +115,7 @@ export default function Dashboard() {
                     <Typography id={styles.tileText}>Następna zaplanowana aktywność:</Typography>
                     <Box className={styles.tileActivity}>
                       <Box className={styles.activity} sx={{ background: "#F2F9DE !important" }}>
-                        <img id={styles.activityIcon} alt="activity" src={gymIcon} />
+                        <img id={styles.activityIcon} alt="activity" src={getIconFromType(summary.scheduleType)} />
                       </Box>
                       <Typography id={styles.tileText}>{summary.scheduleType}</Typography>
                       <Typography id={styles.tileText}>{summary.scheduleDate}</Typography>
