@@ -1,6 +1,6 @@
 ﻿using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.DomainModels.Interfaces;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Summary;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

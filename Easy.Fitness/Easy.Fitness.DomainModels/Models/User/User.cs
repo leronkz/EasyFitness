@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Easy.Fitness.DomainModels.Ids;
+using Easy.Fitness.DomainModels.Models.Schedule;
 
 namespace Easy.Fitness.DomainModels.Models
 {
@@ -15,7 +16,7 @@ namespace Easy.Fitness.DomainModels.Models
         public ICollection<UserParameters> Parameters { get; set; }
         public ICollection<Activity> Activities { get; set; }
         public ICollection<PlannedActivity> PlannedActivities { get; set; }
-        public ICollection<Diet> Diets { get; set; }
+        public ICollection<Diet.Diet> Diets { get; set; }
         public string Image { get; set; }
         
         public User(string email, string password)

@@ -6,6 +6,7 @@ using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
 using Easy.Fitness.Infrastructure.Exceptions;
 using System.Linq;
+using Easy.Fitness.DomainModels.Models.Summary;
 
 namespace Easy.Fitness.Infrastructure.Repositories
 {

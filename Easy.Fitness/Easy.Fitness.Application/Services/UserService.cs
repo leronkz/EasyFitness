@@ -9,6 +9,7 @@ using Easy.Fitness.Application.Extensions;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Summary;
 using Microsoft.AspNetCore.Http;
 
 namespace Easy.Fitness.Application.Services

@@ -1,7 +1,7 @@
 ﻿using Easy.Fitness.DomainModels.Ids;
 using System;
 
-namespace Easy.Fitness.DomainModels.Models
+namespace Easy.Fitness.DomainModels.Models.Diet
 {
     public class Food : Entity<Guid>
     {

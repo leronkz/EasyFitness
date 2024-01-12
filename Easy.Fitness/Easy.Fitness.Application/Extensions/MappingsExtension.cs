@@ -4,6 +4,8 @@ using Easy.Fitness.Application.Dtos.Diet;
 using Easy.Fitness.Application.Dtos.Schedule;
 using Easy.Fitness.Application.Dtos.User;
 using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Diet;
+using Easy.Fitness.DomainModels.Models.Schedule;
 using System.Linq;
 
 namespace Easy.Fitness.Application.Extensions

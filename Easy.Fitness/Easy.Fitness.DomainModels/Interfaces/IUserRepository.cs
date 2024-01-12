@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Summary;
 
 namespace Easy.Fitness.DomainModels.Interfaces
 {

@@ -1,5 +1,5 @@
 ﻿using Easy.Fitness.Application;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Diet;
 using Easy.Fitness.Infrastructure.Configuration;
 using System.Collections.Generic;
 using System.Net.Http;

@@ -4,7 +4,7 @@ using Easy.Fitness.Application.Dtos.Analysis.Weight;
 using Easy.Fitness.Application.Dtos.Criteria;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.DomainModels.Interfaces;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Analysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;

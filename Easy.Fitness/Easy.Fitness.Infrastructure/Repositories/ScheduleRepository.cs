@@ -1,6 +1,7 @@
 ﻿using Easy.Fitness.Application;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Schedule;
 using Easy.Fitness.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;

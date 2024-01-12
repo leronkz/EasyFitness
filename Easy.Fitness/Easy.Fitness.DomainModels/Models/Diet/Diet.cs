@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Easy.Fitness.DomainModels.Models
+namespace Easy.Fitness.DomainModels.Models.Diet
 {
     public class Diet : Entity<Guid>
     {

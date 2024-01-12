@@ -1,4 +1,4 @@
-﻿using Easy.Fitness.DomainModels.Models;
+﻿using Easy.Fitness.DomainModels.Models.Diet;
 using System.Collections.Generic;
 
 namespace Easy.Fitness.Application

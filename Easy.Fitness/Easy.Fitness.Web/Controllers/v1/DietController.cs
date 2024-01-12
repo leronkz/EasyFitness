@@ -1,6 +1,6 @@
 ﻿using Easy.Fitness.Application.Dtos.Diet;
 using Easy.Fitness.Application.Interfaces;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Summary;
 using Easy.Fitness.Infrastructure.Exceptions;
 using Easy.Fitness.Infrastructure.WebClients;
 using Microsoft.AspNetCore.Authorization;

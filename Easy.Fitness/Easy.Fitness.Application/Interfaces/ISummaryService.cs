@@ -1,4 +1,4 @@
-﻿using Easy.Fitness.DomainModels.Models;
+﻿using Easy.Fitness.DomainModels.Models.Summary;
 using System.Threading;
 using System.Threading.Tasks;
 

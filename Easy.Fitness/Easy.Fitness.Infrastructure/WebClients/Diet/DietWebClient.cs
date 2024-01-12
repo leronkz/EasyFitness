@@ -1,4 +1,4 @@
-﻿using Easy.Fitness.DomainModels.Models;
+﻿using Easy.Fitness.DomainModels.Models.Diet;
 using Easy.Fitness.Infrastructure.Configuration;
 using Easy.Fitness.Infrastructure.Extensions;
 using Easy.Fitness.Infrastructure.WebClients.Diet.Dto;

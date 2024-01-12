@@ -1,4 +1,4 @@
-﻿namespace Easy.Fitness.DomainModels.Models
+﻿namespace Easy.Fitness.DomainModels.Models.Diet
 {
     public class FoodDetails
     {

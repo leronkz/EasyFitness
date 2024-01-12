@@ -1,5 +1,5 @@
 ﻿using Easy.Fitness.Application.Dtos.Diet;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Summary;
 using System;
 using System.Collections.Generic;
 using System.Threading;

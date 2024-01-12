@@ -2,7 +2,8 @@
 using Easy.Fitness.Application.Extensions;
 using Easy.Fitness.Application.Interfaces;
 using Easy.Fitness.DomainModels.Interfaces;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Diet;
+using Easy.Fitness.DomainModels.Models.Summary;
 using System;
 using System.Collections.Generic;
 using System.Threading;

@@ -10,7 +10,7 @@ using Easy.Fitness.Infrastructure.Exceptions;
 using Easy.Fitness.Infrastructure.Authorization;
 using Easy.Fitness.Application.Dtos.User;
 using Microsoft.AspNetCore.Http;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Summary;
 
 namespace Easy.Fitness.Web.Controllers.v1
 {

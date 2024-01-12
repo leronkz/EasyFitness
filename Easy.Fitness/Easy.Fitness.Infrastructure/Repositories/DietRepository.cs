@@ -1,6 +1,8 @@
 ﻿using Easy.Fitness.Application;
 using Easy.Fitness.DomainModels.Interfaces;
 using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Diet;
+using Easy.Fitness.DomainModels.Models.Summary;
 using Easy.Fitness.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;

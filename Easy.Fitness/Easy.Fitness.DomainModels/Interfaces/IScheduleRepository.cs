@@ -1,4 +1,4 @@
-﻿using Easy.Fitness.DomainModels.Models;
+﻿using Easy.Fitness.DomainModels.Models.Schedule;
 using System;
 using System.Collections.Generic;
 using System.Threading;

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Easy.Fitness.Application.Dtos;
 using Easy.Fitness.Application.Dtos.User;
-using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Summary;
 using Microsoft.AspNetCore.Http;
 
 namespace Easy.Fitness.Application.Interfaces

@@ -7,6 +7,8 @@ using Easy.Fitness.Application;
 using Easy.Fitness.DomainModels;
 using Easy.Fitness.DomainModels.Ids;
 using Easy.Fitness.DomainModels.Models;
+using Easy.Fitness.DomainModels.Models.Schedule;
+using Easy.Fitness.DomainModels.Models.Diet;
 
 namespace Easy.Fitness.Infrastructure
 {
