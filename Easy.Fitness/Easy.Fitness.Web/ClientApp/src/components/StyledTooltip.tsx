@@ -14,5 +14,5 @@ export const StyledTooltip = ({ title, children }: StyledTooltipInterface) => {
     >
       {children}
     </Tooltip>
-    );
+  );
 }
