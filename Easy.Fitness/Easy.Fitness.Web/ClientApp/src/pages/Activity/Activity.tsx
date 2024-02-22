@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline, Divider, IconButton, NativeSelect, SelectChangeEvent, Toolbar } from '@mui/material';
+import { Box, Container, CssBaseline, Divider, IconButton, NativeSelect, Toolbar } from '@mui/material';
 import Navbar from '../../components/Navbar';
 import Header from '../../components/Header';
 import styles from '../../modules/activity.module.css';
