@@ -1,0 +1,311 @@
+{
+  "signup": {
+    "title": "Stwórz nowe konto",
+    "details": "Podaj swoje dane, aby utworzyć konto w aplikacji",
+    "passwordError": "Hasło musi składać się przynajmniej z 8 znaków, zawierać duzą oraz małą litere i cyfre",
+    "signupButton": "Załóź konto",
+    "signInButton": "Zaloguj się",
+    "externalLogin": "lub zaloguj się za pomocą",
+    "haveAccount": "Masz już konto?"
+  },
+  "login": {
+    "title": "Zaloguj się",
+    "details": "Podaj swoje dane, aby się zalogować do aplikacji",
+    "signInButton": "Zaloguj się",
+    "externalLogin": "lub zaloguj się za pomocą",
+    "haveAccount": "Nie masz konta?",
+    "signUp": "Zarejestruj się"
+  },
+  "settings": {
+    "header": "Ustawienia",
+    "editProfile": "Edytuj profil",
+    "name": "Imię",
+    "surname": "Nazwisko",
+    "phone": "Numer telefonu",
+    "birthdate": "Data urodzenia",
+    "submit": "Zastosuj zmiany",
+    "changePassword": "Zmień hasło",
+    "currentPassword": "Obecne hasło",
+    "newPassword": "Nowe hasło",
+    "passwordError": "Hasło musi składać się przynajmniej z 8 znaków, zawierać duzą oraz małą litere i cyfre",
+    "changeLanguage": "Zmień język aplikacji",
+    "currentLanguage": "Obecnie wybrany język",
+    "pl": "Polski",
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "account": {
+    "profile": "Twój profil",
+    "changePhoto": "Zmień zdjęcie profilowe",
+    "clickToChange": "Kliknij aby zmienić zdjęcie profilowe",
+    "deletePhoto": "Usuń zdjęcie profilowe",
+    "parameters": "Twoje parametry",
+    "weight": "Waga",
+    "height": "Wzrost",
+    "submit": "Zastosuj zmiany",
+    "summary": "Podsumowanie",
+    "trainingSessions": "Sesje treningowe",
+    "calories": "kcal",
+    "sumCalories": "Łączna liczba kalorii"
+  },
+  "dashboard": {
+    "header": "Główny panel",
+    "activity": "Aktywność fizyczna",
+    "lastActivity": "Twoja ostatnia aktywność",
+    "schedule": "Plan",
+    "nextActivity": "Następna zaplanowana aktywność",
+    "diet": "Dieta",
+    "calories": "kcal",
+    "carbs": "Węglowodany",
+    "protein": "Białko",
+    "fat": "Tłuszcz",
+    "account": "Twój profil",
+    "settings": "Ustawienia",
+    "logout": "Wyloguj się"
+  },
+  "activity": {
+    "header": "Twoja aktywność",
+    "table": "Tabela aktywności",
+    "all": "Wszystkie aktywności",
+    "gym": "Siłownia",
+    "swimming": "Pływanie",
+    "running": "Bieganie",
+    "cycling": "Jazda na rowerze",
+    "trekking": "Trekking",
+    "walking": "Spacer",
+    "football": "Piłka nożna",
+    "volleyball": "Siatkówka",
+    "other": "Inne",
+    "addNew": "Dodaj nową aktywność",
+    "showPrevious": "Wyświetl wcześniejsze aktywności",
+    "showNext": "Wyświetl kolejne aktywności",
+    "date": "Data",
+    "type": "Typ",
+    "name": "Nazwa",
+    "time": "Czas",
+    "calories": "Kalorie",
+    "action": "Akcja",
+    "component": {
+      "edit": "Edytuj",
+      "delete": "Usuń"
+    },
+    "newActivity": {
+      "addNew": "Dodaj nową aktywność",
+      "close": "Zamknij okno",
+      "date": "Data",
+      "type": "Typ",
+      "gym": "Siłownia",
+      "swimming": "Pływanie",
+      "running": "Bieganie",
+      "cycling": "Jazda na rowerze",
+      "trekking": "Trekking",
+      "walking": "Spacer",
+      "football": "Piłka nożna",
+      "volleyball": "Siatkówka",
+      "other": "Inne",
+      "name": "Nazwa",
+      "calories": "Kalorie",
+      "duration": "Czas trwania",
+      "save": "Zapisz"
+    },
+    "updateActivity": {
+      "update": "Zaaktualizuj aktywność",
+      "close": "Zamknij okno",
+      "date": "Data",
+      "type": "Typ",
+      "gym": "Siłownia",
+      "swimming": "Pływanie",
+      "running": "Bieganie",
+      "cycling": "Jazda na rowerze",
+      "trekking": "Trekking",
+      "walking": "Spacer",
+      "football": "Piłka nożna",
+      "volleyball": "Siatkówka",
+      "other": "Inne",
+      "name": "Nazwa",
+      "newActivity": "Nowa aktywność",
+      "calories": "Kalorie",
+      "caloriesUnit": "kcal",
+      "duration": "Czas trwania",
+      "save": "Zapisz"
+    }
+  },
+  "schedule": {
+    "header": "Twój plan",
+    "table": "Tabela zaplanowanych aktywności",
+    "all": "Wszystkie aktywności",
+    "gym": "Siłownia",
+    "swimming": "Pływanie",
+    "running": "Bieganie",
+    "cycling": "Jazda na rowerze",
+    "trekking": "Trekking",
+    "walking": "Spacer",
+    "football": "Piłka nożna",
+    "volleyball": "Siatkówka",
+    "other": "Inne",
+    "add": "Dodaj",
+    "showPrevious": "Wyświetl poprzednie",
+    "showNext": "Wyświetl następne",
+    "date": "Data",
+    "type": "Typ",
+    "note": "Notatka",
+    "action": "Akcja",
+    "newSchedule": {
+      "addNew": "Zaplanuj nową aktywność",
+      "close": "Zamknij okno",
+      "date": "Data",
+      "type": "Typ",
+      "gym": "Siłownia",
+      "swimming": "Pływanie",
+      "running": "Bieganie",
+      "cycling": "Jazda na rowerze",
+      "trekking": "Trekking",
+      "walking": "Spacer",
+      "football": "Piłka nożna",
+      "volleyball": "Siatkówka",
+      "other": "Inne",
+      "note": "Notatka",
+      "schedule": "Nowa zaplanowana aktywność",
+      "save": "Zapisz"
+    },
+    "component": {
+      "edit": "Edytuj",
+      "delete": "Usuń"
+    },
+    "updateSchedule": {
+      "update": "Zaaktualizuj zaplanowaną aktywność",
+      "close":"Zamknij okno",
+      "date": "Data",
+      "type": "Typ",
+      "gym": "Siłownia",
+      "swimming": "Pływanie",
+      "running": "Bieganie",
+      "cycling": "Jazda na rowerze",
+      "trekking": "Trekking",
+      "walking": "Spacer",
+      "football": "Piłka nożna",
+      "volleyball": "Siatkówka",
+      "other": "Inne",
+      "note": "Notatka",
+      "schedule":"Nowa zaplanowana aktywność",
+      "save": "Zapisz"
+    }
+  },
+  "diet": {
+    "header": "Twoja dieta",
+    "table": "Twój dzień jedzenia",
+    "configure": "Skonfiguruj",
+    "showPrevious": "Wyświetl poprzedni dzień",
+    "showNext": "Wyświetl następny dzień",
+    "currentDay": "Obecnie przeglądany dzień",
+    "breakfast": "Śniadanie",
+    "secondBreakfast": "II śniadanie",
+    "dinner": "Obiad",
+    "tea": "Podwieczorek",
+    "supper": "Kolacja",
+    "calories": "Kalorie",
+    "cal": "kcal",
+    "fat": "Tłuszcz",
+    "carbs": "Węglowodany",
+    "protein": "Białko",
+    "newDiet": {
+      "addNew": "Dodaj nowy posiłek",
+      "close":"Zamknij okno",
+      "name": "Nazwa posiłku",
+      "weight": "Waga",
+      "save": "Zapisz"
+    },
+    "configureDiet": {
+      "setParameters": "Ustaw parametry diety dla",
+      "close": "Zamknij okno",
+      "calories": "Kalorie",
+      "fat": "Tłuszcz",
+      "carbs": "Węglowodany",
+      "protein": "Białko",
+      "save": "Zapisz"
+    },
+    "dietPart": {
+      "name": "Nazwa",
+      "calories": "Kalorie",
+      "cal": "kcal",
+      "fat": "Tłuszcz",
+      "carbs": "Węglowodany",
+      "protein": "Białko",
+      "weight": "Waga",
+      "action": "Akcja",
+      "addNew": "Dodaj nową pozycje"
+    },
+    "foodComponent": {
+      "edit": "Edytuj",
+      "delete": "Usuń"
+    },
+    "updateFood": {
+      "update": "Zaaktualizuj posiłek",
+      "close": "Zamknij okno",
+      "name": "Nazwa posiłku",
+      "weight": "Waga",
+      "save": "Zapisz"
+    }
+  },
+  "analysis": {
+    "header": "Twoje postępy",
+    "table": "Wykres twoich postępów",
+    "options": "Opcje",
+    "weigt": "Waga",
+    "diet": "Dieta",
+    "activity": "Trening",
+    "workspace": {
+      "type": "Wybierz rodzaj wykresu",
+      "year": "Widok roczny",
+      "month": "Widok miesięczny",
+      "range": "Wybrany zakres",
+      "generate": "Generuj wykres"
+    },
+    "pickers": {
+      "locale": "pl",
+      "month": "Wybierz miesiąc",
+      "from": "Od",
+      "to": "do",
+      "year": "Wybierz rok"
+    },
+    "activityGraph": {
+      "title": "Spalone kalorie",
+      "label": "Kalorie",
+      "noContent": "Brak danych do wyświetlenia"
+    },
+    "dietGraph": {
+      "title": "Kalorie",
+      "label": "Kalorie",
+      "noContent": "Brak danych do wyświetlenia"
+    },
+    "weightGraph": {
+      "title": "Waga",
+      "label": "Waga",
+      "noContent": "Brak danych do wyświetlenia"
+    }
+  },
+  "components": {
+    "dateSearch": {
+      "close": "Zakończ",
+      "search": "Wyszukaj po dacie"
+    },
+    "deletion": {
+      "confirm": "Potwierdź usunięcie",
+      "delete": "Usuń",
+      "cancel": "Anuluj"
+    },
+    "header": {
+      "profile": "Profil",
+      "settings": "Ustawienia",
+      "logout": "Wyloguj się"
+    },
+    "navbar": {
+      "dashboard": "Główny panel",
+      "activity": "Twoja aktywność",
+      "schedule": "Twój plan",
+      "diet": "Twoja dieta",
+      "progress": "Twoje postępy",
+      "logout": "Wyloguj się"
+    }
+  }
+}
