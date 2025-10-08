@@ -5,7 +5,7 @@ import styles from '../../modules/settings.module.css';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import KeyIcon from '@mui/icons-material/Key';
 import TranslateIcon from '@mui/icons-material/Translate';
-import MuiPhoneNumber from 'material-ui-phone-number';
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 import { useState, useEffect, MouseEvent } from 'react';
 import { ChangePasswordDto, Error, UserInfoDto, changePassword, getUserInfo, updateUser } from '../../api/easyFitnessApi';
 import { isCancel } from '../../api/axiosSource';
