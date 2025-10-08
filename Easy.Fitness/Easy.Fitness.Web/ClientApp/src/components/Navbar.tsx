@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
-import { Toolbar, List, ListItemButton, ListItemIcon, ListItemText, ListItem } from '@mui/material';
+import { Toolbar, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -88,8 +88,8 @@ export default function Navbar({ selected }: NavbarInterface) {
             <ListItemText primaryTypographyProps={{ fontFamily: 'Lexend' }}>Twoja dieta</ListItemText>
           </ListItemButton>
         </Link>
-        <Link to="/analysis" style={{ textDecoration: 'none', color: 'black'}}>
-          <ListItemButton id={selected === 'analysis' ? styles.listItemButtonSelected : styles.listItemButton }>
+        <Link to="/analysis" style={{ textDecoration: 'none', color: 'black' }}>
+          <ListItemButton id={selected === 'analysis' ? styles.listItemButtonSelected : styles.listItemButton}>
             <ListItemIcon>
               <QueryStatsIcon color={selected === 'analysis' ? "error" : "primary"} />
             </ListItemIcon>

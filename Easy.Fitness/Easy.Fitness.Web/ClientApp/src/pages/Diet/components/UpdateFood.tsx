@@ -3,7 +3,7 @@ import styles from './modules/updateFood.module.css';
 import { Autocomplete, Backdrop, Box, Button, Divider, Fade, Grid, IconButton, InputLabel, Modal, OutlinedInput, TextField, Typography } from '@mui/material';
 import { StyledTooltip } from '../../../components/StyledTooltip';
 import CloseIcon from '@mui/icons-material/Close';
-import { AddFoodDto, Error, FoodDto, updateFood, getAutocompleteFoodNames, UpdateFoodDto } from '../../../api/easyFitnessApi';
+import { Error, FoodDto, updateFood, getAutocompleteFoodNames, UpdateFoodDto } from '../../../api/easyFitnessApi';
 import CustomizedProgress from '../../../components/CustomizedProgress';
 import { useCancellationToken } from '../../../hooks/useCancellationToken';
 import CustomizedSnackbar, { SnackbarInterface } from '../../../components/CustomizedSnackbar';

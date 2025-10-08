@@ -10,7 +10,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { StyledTooltip } from '../../components/StyledTooltip';
 import HeightIcon from '@mui/icons-material/Height';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import { useCancellationToken } from '../../hooks/useCancellationToken';
