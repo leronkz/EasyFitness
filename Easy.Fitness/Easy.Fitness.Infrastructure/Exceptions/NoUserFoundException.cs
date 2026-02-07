@@ -11,7 +11,7 @@ namespace Easy.Fitness.Infrastructure.Exceptions
         }
 
         public NoUserFoundException(Exception innerException) : base(NoUserFoundMessage, innerException)
-        { 
+        {
         }
     }
 }

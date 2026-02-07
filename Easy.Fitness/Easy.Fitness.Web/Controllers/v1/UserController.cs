@@ -273,7 +273,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 UserSummary result = await _userService.GetUserSummaryAsync(cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }

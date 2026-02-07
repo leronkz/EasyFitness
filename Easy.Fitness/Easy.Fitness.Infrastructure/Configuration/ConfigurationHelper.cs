@@ -16,7 +16,7 @@ namespace Easy.Fitness.Infrastructure.Configuration
             string externalConfigFile = GetConfigEnvVariable();
             IConfigurationBuilder configBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json");
-            if(!string.IsNullOrWhiteSpace(externalConfigFile))
+            if (!string.IsNullOrWhiteSpace(externalConfigFile))
             {
                 configBuilder = configBuilder.AddJsonFile(externalConfigFile);
             }
@@ -32,7 +32,7 @@ namespace Easy.Fitness.Infrastructure.Configuration
             return config;
         }
         public static TConfig Create<TConfig>()
-            where TConfig: class, new()
+            where TConfig : class, new()
         {
             IConfigurationRoot configuration = CreateRoot();
             return CreateForm<TConfig>(configuration);

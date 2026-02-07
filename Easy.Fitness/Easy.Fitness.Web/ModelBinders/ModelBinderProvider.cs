@@ -7,16 +7,16 @@ namespace Easy.Fitness.Web.ModelBinders
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
-            if(context == null)
+            if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
-            if(!context.Metadata.IsComplexType &&
+            if (!context.Metadata.IsComplexType &&
                 context.Metadata.ModelType == typeof(DateTime))
             {
                 return new DateTimeBinder();
             }
-            if(!context.Metadata.IsComplexType && 
+            if (!context.Metadata.IsComplexType &&
                 context.Metadata.ModelType == typeof(DateTime?))
             {
                 return new NullableDateTimeBinder();

@@ -20,7 +20,7 @@ namespace Easy.Fitness.Infrastructure
 
         public UserContext(IHttpContextAccessor httpContext)
         {
-            if(httpContext.HttpContext != null)
+            if (httpContext.HttpContext != null)
             {
                 _user = httpContext.HttpContext.User;
             }

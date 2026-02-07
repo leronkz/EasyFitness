@@ -13,7 +13,7 @@ namespace Easy.Fitness.Application.Extensions
         private static UserParametersDtoValidator _userParametersDtoValidator = new UserParametersDtoValidator();
         public static void Validate(this CreateUserDto dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 throw new Exceptions.ValidationException();
             }
@@ -21,7 +21,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static void Validate(this UserInfoDto dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 throw new Exceptions.ValidationException();
             }
@@ -29,7 +29,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static void Validate(this ChangePasswordDto dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 throw new Exceptions.ValidationException();
             }
@@ -37,7 +37,7 @@ namespace Easy.Fitness.Application.Extensions
         }
         public static void Validate(this UserParametersDto dto)
         {
-            if(dto == null)
+            if (dto == null)
             {
                 throw new Exceptions.ValidationException();
             }

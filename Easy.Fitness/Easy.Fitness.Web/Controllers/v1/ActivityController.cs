@@ -31,7 +31,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 ActivityDto result = await _activityService.SaveNewActivityAsync(activity, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -60,7 +60,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 await _activityService.DeleteActivityAsync(id, cancellationToken);
                 return Ok();
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -68,8 +68,8 @@ namespace Easy.Fitness.Web.Controllers.v1
 
         [HttpPut("activity/{id}")]
         public async Task<IActionResult> UpdateActivity(
-            [FromRoute] Guid id, 
-            [FromBody] ActivityDto activity, 
+            [FromRoute] Guid id,
+            [FromBody] ActivityDto activity,
             CancellationToken cancellationToken)
         {
             try
@@ -77,7 +77,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 ActivityDto result = await _activityService.UpdateActivityAsync(id, activity, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }

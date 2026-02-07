@@ -52,7 +52,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 {
                     activityQuery = activityQuery.Where(a => a.Type == searchType);
                 }
-                if(!string.IsNullOrEmpty(searchDate))
+                if (!string.IsNullOrEmpty(searchDate))
                 {
                     activityQuery = activityQuery.Where(a => a.Date == searchDate);
                 }

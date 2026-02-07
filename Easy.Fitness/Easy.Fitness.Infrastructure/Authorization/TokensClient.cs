@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Easy.Fitness.Infrastructure.Configuration;
+
 namespace Easy.Fitness.Infrastructure.Authorization
 {
     internal class TokensClient

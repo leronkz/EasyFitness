@@ -8,22 +8,22 @@ namespace Easy.Fitness.Web.ModelBinders
     {
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            if(bindingContext == null)
+            if (bindingContext == null)
             {
                 throw new ArgumentNullException(nameof(bindingContext));
             }
             ValueProviderResult valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
-            if(valueProviderResult == ValueProviderResult.None)
+            if (valueProviderResult == ValueProviderResult.None)
             {
                 return Task.CompletedTask;
             }
             bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
             string value = valueProviderResult.FirstValue;
-            if(string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return Task.CompletedTask;
             }
-            if(!long.TryParse(value, out long ms))
+            if (!long.TryParse(value, out long ms))
             {
                 bindingContext.ModelState.TryAddModelError(
                     bindingContext.ModelName,

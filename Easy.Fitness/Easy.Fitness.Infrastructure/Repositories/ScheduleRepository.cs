@@ -37,7 +37,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
                 return newSchedule;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to save your schedule", ex);
             }
@@ -50,15 +50,15 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 IQueryable<PlannedActivity> scheduleQuery = _context.Schedule
                     .Where(s => s.CreatedBy == _userContext.CurrentUserId);
 
-                if(searchType != "All")
+                if (searchType != "All")
                 {
                     scheduleQuery = scheduleQuery.Where(s => s.Type == searchType);
                 }
-                if(!string.IsNullOrEmpty(searchDate))
+                if (!string.IsNullOrEmpty(searchDate))
                 {
                     scheduleQuery = scheduleQuery.Where(s => s.Date == searchDate);
                 }
-                if(isDescending)
+                if (isDescending)
                 {
                     scheduleQuery = scheduleQuery.OrderByDescending(GetSortProperty(sortColumn));
                 }
@@ -73,12 +73,12 @@ namespace Easy.Fitness.Infrastructure.Repositories
                     .ToListAsync(cancellationToken);
                 return schedules;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to load your schedule", ex);
             }
         }
-        
+
         public async Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
         {
             try
@@ -87,7 +87,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                     .Where(s => s.CreatedBy == _userContext.CurrentUserId)
                     .CountAsync(cancellationToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to count your schedules", ex);
             }
@@ -104,7 +104,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 user.PlannedActivities.Remove(scheduleToDelete);
                 await _context.SaveChangesAsync(cancellationToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to delete your schedule", ex);
             }
@@ -122,7 +122,7 @@ namespace Easy.Fitness.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
                 return scheduleToUpdate;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new DatabaseException("An error occurred while trying to update your schedule", ex);
             }

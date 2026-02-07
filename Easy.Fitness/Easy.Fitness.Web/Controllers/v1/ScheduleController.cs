@@ -31,7 +31,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 ScheduleDto result = await _scheduleService.SaveNewScheduleAsync(schedule, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -45,7 +45,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 PageDto<ScheduleDto> result = await _scheduleService.GetSchedulePageAsync(criteria, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -59,7 +59,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 await _scheduleService.DeleteScheduleAsync(id, cancellationToken);
                 return Ok();
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -73,7 +73,7 @@ namespace Easy.Fitness.Web.Controllers.v1
                 ScheduleDto result = await _scheduleService.UpdateScheduleAsync(id, schedule, cancellationToken);
                 return Ok(result);
             }
-            catch(DatabaseException ex)
+            catch (DatabaseException ex)
             {
                 return BadRequest(ex.Message);
             }

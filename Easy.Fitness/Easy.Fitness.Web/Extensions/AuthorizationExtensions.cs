@@ -14,7 +14,7 @@ namespace Easy.Fitness.Web.Extensions
         public static void AddAuthorization(this IServiceCollection services, AuthConfiguration auth, IWebHostEnvironment env)
         {
             bool requireHttpsMetadata = true;
-            if(env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 requireHttpsMetadata = false;
             }

@@ -21,8 +21,8 @@ namespace Easy.Fitness.Application.Services
         private readonly IFileService _fileService;
 
         public UserService(
-            IUserRepository userRepository, 
-            IUserContext userContext, 
+            IUserRepository userRepository,
+            IUserContext userContext,
             IUserTokenProvider tokenProvider,
             IFileService fileService)
         {
@@ -65,12 +65,12 @@ namespace Easy.Fitness.Application.Services
             User user = await _userRepository.GetUserByIdAsync(_userContext.CurrentUserId, cancellationToken);
             return user.toDto();
         }
-        
+
         public async Task ChangeUserPasswordAsync(ChangePasswordDto passwordDto, CancellationToken cancellationToken)
         {
             passwordDto.Validate();
             User user = await _userRepository.GetUserByIdAsync(_userContext.CurrentUserId, cancellationToken);
-            if(VerifyPassword(passwordDto.CurrentPassword, user.Password))
+            if (VerifyPassword(passwordDto.CurrentPassword, user.Password))
             {
                 string hashedPassword = HashPassword(passwordDto.NewPassword);
                 await _userRepository.UpdateUserPasswordAsync(_userContext.CurrentUserId, hashedPassword, cancellationToken);

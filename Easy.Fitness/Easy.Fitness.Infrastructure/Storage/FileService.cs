@@ -37,7 +37,7 @@ namespace Easy.Fitness.Infrastructure.Storage
 
                 await _minio.PutObjectAsync(args, cancellationToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new StorageException("There is a problem with saving your file", ex);
             }
@@ -63,7 +63,7 @@ namespace Easy.Fitness.Infrastructure.Storage
                     return Convert.ToBase64String(data);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new StorageException("An error occurred while trying to load your profile picture", ex);
             }
@@ -78,7 +78,7 @@ namespace Easy.Fitness.Infrastructure.Storage
                                             .WithObject(fileName);
                 await _minio.RemoveObjectAsync(args, cancellationToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new StorageException("An error occurred while trying to delete your profile picture", ex);
             }

@@ -17,7 +17,7 @@ namespace Easy.Fitness.DomainModels.Models
         public ICollection<PlannedActivity> PlannedActivities { get; set; }
         public ICollection<Diet> Diets { get; set; }
         public string Image { get; set; }
-        
+
         public User(string email, string password)
         {
             Email = !string.IsNullOrEmpty(email) ? email : throw new ArgumentNullException(nameof(email));
@@ -39,7 +39,7 @@ namespace Easy.Fitness.DomainModels.Models
             PhoneNumber = phoneNumber;
             BirthDate = birthDate;
         }
-        
+
         public User(Guid id, string firstName, string lastName, string phoneNumber, string birthdate) : base(id)
         {
             FirstName = firstName;

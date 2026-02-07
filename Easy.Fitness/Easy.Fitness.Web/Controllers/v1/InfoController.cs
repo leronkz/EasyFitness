@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace Easy.Fitness.Web.Controllers.v1
 {
     [ApiVersionNeutral]
-    [Authorize]
     public class InfoController : Controller
     {
         [HttpGet("info")]

@@ -17,7 +17,7 @@ namespace Easy.Fitness.Application.Services
     {
         private readonly IActivityRepository _activityRepository;
         private const int PAGE_SIZE = 7;
-        
+
         public ActivityService(IActivityRepository activityRepository)
         {
             _activityRepository = activityRepository ?? throw new ArgumentNullException(nameof(activityRepository));
@@ -30,7 +30,7 @@ namespace Easy.Fitness.Application.Services
 
             return result.ToDto();
         }
-        
+
         public async Task<PageDto<ActivityDto>> GetActivityPageAsync(GetPageCriteria criteria, CancellationToken cancellationToken)
         {
             IEnumerable<Activity> result = await _activityRepository.GetActivitiesAsync(

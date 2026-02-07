@@ -9,7 +9,7 @@ namespace Easy.Fitness.Infrastructure.Exceptions
 
         }
 
-        public StorageException(string message, Exception innerException) : base(message, innerException) 
+        public StorageException(string message, Exception innerException) : base(message, innerException)
         {
 
         }

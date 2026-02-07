@@ -2,11 +2,11 @@
 
 namespace Easy.Fitness.Application.Exceptions
 {
-    public class InvalidCredentialsException: Exception
+    public class InvalidCredentialsException : Exception
     {
         public const string InvalidCredentialsMessage = "Wrong credentials";
 
-        public InvalidCredentialsException() : base(InvalidCredentialsMessage) 
+        public InvalidCredentialsException() : base(InvalidCredentialsMessage)
         {
         }
     }
