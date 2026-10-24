@@ -1,7 +1,7 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const rewriteFn = function (path, req) {
-  return path.replace('/api', '/api');
+  return path;
 }
 
 module.exports = function (app) {
